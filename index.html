@@ -734,6 +734,22 @@
                     <span class="unit" style="width: 50px;">V gap</span>
                 </div>
                 
+                <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">5 Items Layouts</h4>
+                <div class="config-item">
+                    <label>3×2 rows (2-3 or 3-2):<span class="info-icon" data-tooltip="For top/bottom positions: 2 rows, 3 columns (2 on top + 3 on bottom, or vice versa)">ℹ</span></label>
+                    <input type="number" id="layout_3x2_5items_gapH" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">H gap</span>
+                    <input type="number" id="layout_3x2_5items_gapV" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">V gap</span>
+                </div>
+                <div class="config-item">
+                    <label>2×3 cols (2|3 or 3|2):<span class="info-icon" data-tooltip="For left/right positions: 2 columns (one with 2 fruits, one with 3 fruits, vertically centered)">ℹ</span></label>
+                    <input type="number" id="layout_2x3_5items_gapH" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">H gap</span>
+                    <input type="number" id="layout_2x3_5items_gapV" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">V gap</span>
+                </div>
+                
                 <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">6 Items Layouts</h4>
                 <div class="config-item">
                     <label>3×2 (wider):<span class="info-icon" data-tooltip="Multiplier for 2 rows, 3 columns arrangement (horizontal)">ℹ</span></label>
@@ -781,9 +797,9 @@
             fruits: {
                 apple: { gapH: 77, gapV: 77, offset: 84 },
                 pear: { gapH: 77, gapV: 77, offset: 84 },
-                orange: { gapH: 77, gapV: 77, offset: 84 },
-                banana: { gapH: 77, gapV: 77, offset: 84 },
-                cherry: { gapH: 77, gapV: 77, offset: 84 }
+                orange: { gapH: 70, gapV: 70, offset: 84 },
+                banana: { gapH: 90, gapV: 30, offset: 90 },
+                cherry: { gapH: 70, gapV: 50, offset: 84 }
             },
             layoutMultipliers: {
                 '1x2': { gapH: 1.0, gapV: 1.0 },
@@ -791,7 +807,9 @@
                 '2x2': { gapH: 1.0, gapV: 1.0 },
                 '1x3': { gapH: 1.0, gapV: 1.0 },
                 '3x1': { gapH: 1.0, gapV: 1.0 },
-                '3x2': { gapH: 1.0, gapV: 1.0 },
+                '3x2_5items': { gapH: 0.9, gapV: 0.6 },
+                '2x3_5items': { gapH: 0.5, gapV: 1.1 },
+                '3x2': { gapH: 1.0, gapV: 0.6 },
                 '2x3': { gapH: 1.0, gapV: 1.0 }
             }
         };
@@ -862,7 +880,7 @@
             });
             
             // Update layout multiplier configs
-            ['1x2', '2x1', '2x2', '1x3', '3x1', '3x2', '2x3'].forEach(layout => {
+            ['1x2', '2x1', '2x2', '1x3', '3x1', '3x2_5items', '2x3_5items', '3x2', '2x3'].forEach(layout => {
                 const config = spacingConfig.layoutMultipliers[layout];
                 document.getElementById(`layout_${layout}_gapH`).value = config.gapH;
                 document.getElementById(`layout_${layout}_gapV`).value = config.gapV;
@@ -896,7 +914,7 @@
             });
             
             // Read layout multiplier configs
-            ['1x2', '2x1', '2x2', '1x3', '3x1', '3x2', '2x3'].forEach(layout => {
+            ['1x2', '2x1', '2x2', '1x3', '3x1', '3x2_5items', '2x3_5items', '3x2', '2x3'].forEach(layout => {
                 spacingConfig.layoutMultipliers[layout] = {
                     gapH: parseFloat(document.getElementById(`layout_${layout}_gapH`).value),
                     gapV: parseFloat(document.getElementById(`layout_${layout}_gapV`).value)
@@ -1859,8 +1877,10 @@
                         layoutKey = '2x2';
                         cols = 2; rows = 2;
                     } else if (count === 5) {
-                        layoutKey = '3x2';
-                        cols = 3; rows = 2;
+                        const useColumns = groupPosition === 'left' || groupPosition === 'right';
+                        layoutKey = useColumns ? '2x3_5items' : '3x2_5items';
+                        cols = useColumns ? 2 : 3;
+                        rows = useColumns ? 3 : 2;
                     } else if (count === 6) {
                         const useVertical = groupPosition === 'left' || groupPosition === 'right';
                         layoutKey = useVertical ? '2x3' : '3x2';
@@ -1897,25 +1917,51 @@
                             relativePositions.push({ x: spacingH * 0.6, y: spacingV * 0.6 });
                             break;
                         case 5: {
-                            const twoTop = Math.random() < 0.5;
-                            const rowOffset = spacingV * 0.9;
-                            const colOffset = spacingH * 1.0;
-                            if (twoTop) {
-                                // Top row: 2
-                                relativePositions.push({ x: -colOffset * 0.5, y: -rowOffset });
-                                relativePositions.push({ x: colOffset * 0.5, y: -rowOffset });
-                                // Bottom row: 3
-                                relativePositions.push({ x: -colOffset, y: rowOffset });
-                                relativePositions.push({ x: 0, y: rowOffset });
-                                relativePositions.push({ x: colOffset, y: rowOffset });
+                            const useColumns = groupPosition === 'left' || groupPosition === 'right';
+                            if (useColumns) {
+                                // Column-based layout for left/right positions: 2 columns (2|3 or 3|2)
+                                const twoLeft = Math.random() < 0.5;
+                                const colOffset = spacingH * 1.0;
+                                const rowOffset = spacingV * 0.95;
+                                if (twoLeft) {
+                                    // Left column: 2 fruits (vertically centered)
+                                    relativePositions.push({ x: -colOffset, y: -rowOffset * 0.5 });
+                                    relativePositions.push({ x: -colOffset, y: rowOffset * 0.5 });
+                                    // Right column: 3 fruits
+                                    relativePositions.push({ x: colOffset, y: -rowOffset });
+                                    relativePositions.push({ x: colOffset, y: 0 });
+                                    relativePositions.push({ x: colOffset, y: rowOffset });
+                                } else {
+                                    // Left column: 3 fruits
+                                    relativePositions.push({ x: -colOffset, y: -rowOffset });
+                                    relativePositions.push({ x: -colOffset, y: 0 });
+                                    relativePositions.push({ x: -colOffset, y: rowOffset });
+                                    // Right column: 2 fruits (vertically centered)
+                                    relativePositions.push({ x: colOffset, y: -rowOffset * 0.5 });
+                                    relativePositions.push({ x: colOffset, y: rowOffset * 0.5 });
+                                }
                             } else {
-                                // Top row: 3
-                                relativePositions.push({ x: -colOffset, y: -rowOffset });
-                                relativePositions.push({ x: 0, y: -rowOffset });
-                                relativePositions.push({ x: colOffset, y: -rowOffset });
-                                // Bottom row: 2
-                                relativePositions.push({ x: -colOffset * 0.5, y: rowOffset });
-                                relativePositions.push({ x: colOffset * 0.5, y: rowOffset });
+                                // Row-based layout for top/bottom positions: 2 rows (2-3 or 3-2)
+                                const twoTop = Math.random() < 0.5;
+                                const rowOffset = spacingV * 0.9;
+                                const colOffset = spacingH * 1.0;
+                                if (twoTop) {
+                                    // Top row: 2
+                                    relativePositions.push({ x: -colOffset * 0.5, y: -rowOffset });
+                                    relativePositions.push({ x: colOffset * 0.5, y: -rowOffset });
+                                    // Bottom row: 3
+                                    relativePositions.push({ x: -colOffset, y: rowOffset });
+                                    relativePositions.push({ x: 0, y: rowOffset });
+                                    relativePositions.push({ x: colOffset, y: rowOffset });
+                                } else {
+                                    // Top row: 3
+                                    relativePositions.push({ x: -colOffset, y: -rowOffset });
+                                    relativePositions.push({ x: 0, y: -rowOffset });
+                                    relativePositions.push({ x: colOffset, y: -rowOffset });
+                                    // Bottom row: 2
+                                    relativePositions.push({ x: -colOffset * 0.5, y: rowOffset });
+                                    relativePositions.push({ x: colOffset * 0.5, y: rowOffset });
+                                }
                             }
                             break;
                         }
@@ -2078,8 +2124,10 @@
                         layoutKey = '2x2';
                         cols = 2; rows = 2;
                     } else if (count === 5) {
-                        layoutKey = '3x2';
-                        cols = 3; rows = 2;
+                        const useColumns = groupPosition === 'left' || groupPosition === 'right';
+                        layoutKey = useColumns ? '2x3_5items' : '3x2_5items';
+                        cols = useColumns ? 2 : 3;
+                        rows = useColumns ? 3 : 2;
                     } else if (count === 6) {
                         const useVertical = groupPosition === 'left' || groupPosition === 'right';
                         layoutKey = useVertical ? '2x3' : '3x2';
@@ -2116,25 +2164,51 @@
                             relativePositions.push({ x: spacingH * 0.6, y: spacingV * 0.6 });
                             break;
                         case 5: {
-                            const twoTop = Math.random() < 0.5;
-                            const rowOffset = spacingV * 0.9;
-                            const colOffset = spacingH * 1.0;
-                            if (twoTop) {
-                                // Top row: 2
-                                relativePositions.push({ x: -colOffset * 0.5, y: -rowOffset });
-                                relativePositions.push({ x: colOffset * 0.5, y: -rowOffset });
-                                // Bottom row: 3
-                                relativePositions.push({ x: -colOffset, y: rowOffset });
-                                relativePositions.push({ x: 0, y: rowOffset });
-                                relativePositions.push({ x: colOffset, y: rowOffset });
+                            const useColumns = groupPosition === 'left' || groupPosition === 'right';
+                            if (useColumns) {
+                                // Column-based layout for left/right positions: 2 columns (2|3 or 3|2)
+                                const twoLeft = Math.random() < 0.5;
+                                const colOffset = spacingH * 1.0;
+                                const rowOffset = spacingV * 0.95;
+                                if (twoLeft) {
+                                    // Left column: 2 fruits (vertically centered)
+                                    relativePositions.push({ x: -colOffset, y: -rowOffset * 0.5 });
+                                    relativePositions.push({ x: -colOffset, y: rowOffset * 0.5 });
+                                    // Right column: 3 fruits
+                                    relativePositions.push({ x: colOffset, y: -rowOffset });
+                                    relativePositions.push({ x: colOffset, y: 0 });
+                                    relativePositions.push({ x: colOffset, y: rowOffset });
+                                } else {
+                                    // Left column: 3 fruits
+                                    relativePositions.push({ x: -colOffset, y: -rowOffset });
+                                    relativePositions.push({ x: -colOffset, y: 0 });
+                                    relativePositions.push({ x: -colOffset, y: rowOffset });
+                                    // Right column: 2 fruits (vertically centered)
+                                    relativePositions.push({ x: colOffset, y: -rowOffset * 0.5 });
+                                    relativePositions.push({ x: colOffset, y: rowOffset * 0.5 });
+                                }
                             } else {
-                                // Top row: 3
-                                relativePositions.push({ x: -colOffset, y: -rowOffset });
-                                relativePositions.push({ x: 0, y: -rowOffset });
-                                relativePositions.push({ x: colOffset, y: -rowOffset });
-                                // Bottom row: 2
-                                relativePositions.push({ x: -colOffset * 0.5, y: rowOffset });
-                                relativePositions.push({ x: colOffset * 0.5, y: rowOffset });
+                                // Row-based layout for top/bottom positions: 2 rows (2-3 or 3-2)
+                                const twoTop = Math.random() < 0.5;
+                                const rowOffset = spacingV * 0.9;
+                                const colOffset = spacingH * 1.0;
+                                if (twoTop) {
+                                    // Top row: 2
+                                    relativePositions.push({ x: -colOffset * 0.5, y: -rowOffset });
+                                    relativePositions.push({ x: colOffset * 0.5, y: -rowOffset });
+                                    // Bottom row: 3
+                                    relativePositions.push({ x: -colOffset, y: rowOffset });
+                                    relativePositions.push({ x: 0, y: rowOffset });
+                                    relativePositions.push({ x: colOffset, y: rowOffset });
+                                } else {
+                                    // Top row: 3
+                                    relativePositions.push({ x: -colOffset, y: -rowOffset });
+                                    relativePositions.push({ x: 0, y: -rowOffset });
+                                    relativePositions.push({ x: colOffset, y: -rowOffset });
+                                    // Bottom row: 2
+                                    relativePositions.push({ x: -colOffset * 0.5, y: rowOffset });
+                                    relativePositions.push({ x: colOffset * 0.5, y: rowOffset });
+                                }
                             }
                             break;
                         }
@@ -2362,7 +2436,7 @@
         
         document.getElementById('targetFruit').addEventListener('change', updateFruitPreview);
 
-        document.getElementById('generateBtn').addEventListener('click', generateTest);
+        document.getElementById('generateBtn').addEventListener('click', () => generateTest());
         document.getElementById('downloadBtn').addEventListener('click', downloadTest);
 
         // Load configuration and generate initial test
