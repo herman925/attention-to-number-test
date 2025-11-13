@@ -1313,75 +1313,73 @@
                 rows = Math.ceil(count / cols);
             }
             
-            // Calculate spacing with configurable gaps
-            const totalGapWidth = shapeConfig.gapH * (cols - 1);
-            const totalGapHeight = shapeConfig.gapV * (rows - 1);
-            
-            // Calculate cell dimensions (space for each shape without gaps)
-            const cellWidth = (usableWidth - totalGapWidth) / cols;
-            const cellHeight = (usableHeight - totalGapHeight) / rows;
-            
-            // Calculate the total grid dimensions
-            const gridWidth = cellWidth * cols + totalGapWidth;
-            const gridHeight = cellHeight * rows + totalGapHeight;
-            
-            // Calculate offset to center the grid
-            const offsetX = (usableWidth - gridWidth) / 2;
-            const offsetY = (usableHeight - gridHeight) / 2;
-            
-            // Base position is box corner + safe padding + centering offset
-            const baseX = boxX + safePadding + offsetX;
-            const baseY = boxY + safePadding + offsetY;
+            // Base position starts at padding boundary
+            const baseX = boxX + safePadding;
+            const baseY = boxY + safePadding;
             
             // Special arrangements for odd numbers
             if (count === 3) {
                 // 1 centered on top, 2 on bottom
-                const topX = baseX + cellWidth + shapeConfig.gapH / 2;
+                // Top row: 1 shape centered
+                const topRowWidth = size;
+                const topCenterX = baseX + (usableWidth - topRowWidth) / 2;
                 positions.push({
-                    x: topX + cellWidth / 2,
-                    y: baseY + cellHeight / 2,
+                    x: topCenterX + size / 2,
+                    y: baseY + size / 2,
+                    rotation: 0
+                });
+                // Bottom row: 2 shapes
+                const bottomRowWidth = size * 2 + shapeConfig.gapH;
+                const bottomCenterX = baseX + (usableWidth - bottomRowWidth) / 2;
+                positions.push({
+                    x: bottomCenterX + size / 2,
+                    y: baseY + size + shapeConfig.gapV + size / 2,
                     rotation: 0
                 });
                 positions.push({
-                    x: baseX + cellWidth / 2,
-                    y: baseY + cellHeight + shapeConfig.gapV + cellHeight / 2,
-                    rotation: 0
-                });
-                positions.push({
-                    x: baseX + cellWidth + shapeConfig.gapH + cellWidth / 2,
-                    y: baseY + cellHeight + shapeConfig.gapV + cellHeight / 2,
+                    x: bottomCenterX + size + shapeConfig.gapH + size / 2,
+                    y: baseY + size + shapeConfig.gapV + size / 2,
                     rotation: 0
                 });
             } else if (count === 5) {
                 // 2 on top, 3 on bottom
-                const topOffsetX = cellWidth / 2 + shapeConfig.gapH / 2;
+                // Top row: 2 shapes
+                const topRowWidth = size * 2 + shapeConfig.gapH;
+                const topCenterX = baseX + (usableWidth - topRowWidth) / 2;
                 positions.push({
-                    x: baseX + topOffsetX + cellWidth / 2,
-                    y: baseY + cellHeight / 2,
+                    x: topCenterX + size / 2,
+                    y: baseY + size / 2,
                     rotation: 0
                 });
                 positions.push({
-                    x: baseX + topOffsetX + cellWidth + shapeConfig.gapH + cellWidth / 2,
-                    y: baseY + cellHeight / 2,
+                    x: topCenterX + size + shapeConfig.gapH + size / 2,
+                    y: baseY + size / 2,
                     rotation: 0
                 });
-                // Bottom row (3 items)
+                // Bottom row: 3 shapes
+                const bottomRowWidth = size * 3 + shapeConfig.gapH * 2;
+                const bottomCenterX = baseX + (usableWidth - bottomRowWidth) / 2;
                 for(let i = 0; i < 3; i++) {
                     positions.push({
-                        x: baseX + (cellWidth + shapeConfig.gapH) * i + cellWidth / 2,
-                        y: baseY + cellHeight + shapeConfig.gapV + cellHeight / 2,
+                        x: bottomCenterX + (size + shapeConfig.gapH) * i + size / 2,
+                        y: baseY + size + shapeConfig.gapV + size / 2,
                         rotation: 0
                     });
                 }
             } else {
-                // Standard grid for even numbers and others
+                // Standard grid for even numbers (2, 4, 6)
+                // Center the entire grid horizontally and vertically
+                const gridWidth = size * cols + shapeConfig.gapH * (cols - 1);
+                const gridHeight = size * rows + shapeConfig.gapV * (rows - 1);
+                const startX = baseX + (usableWidth - gridWidth) / 2;
+                const startY = baseY + (usableHeight - gridHeight) / 2;
+                
                 for(let i = 0; i < count; i++) {
                     const col = i % cols;
                     const row = Math.floor(i / cols);
                     
-                    // Position each shape in the center of its grid cell
-                    const x = baseX + (cellWidth + shapeConfig.gapH) * col + cellWidth / 2;
-                    const y = baseY + (cellHeight + shapeConfig.gapV) * row + cellHeight / 2;
+                    const x = startX + (size + shapeConfig.gapH) * col + size / 2;
+                    const y = startY + (size + shapeConfig.gapV) * row + size / 2;
                     
                     positions.push({
                         x: x,
