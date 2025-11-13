@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attention to Number Test Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+            font-size: 14px;
+        }
+
+        select, input[type="number"], input[type="color"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        /* Custom select styling with previews */
+        .select-with-preview {
+            position: relative;
+        }
+
+        .select-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .select-preview {
+            width: 35px;
+            height: 35px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            flex-shrink: 0;
+            background: white;
+        }
+
+        .select-wrapper select {
+            flex: 1;
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        #downloadBtn {
+            background-color: #2196F3;
+        }
+
+        #downloadBtn:hover {
+            background-color: #0b7dda;
+        }
+
+        #testCanvas {
+            border: 2px solid #ddd;
+            display: block;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .info {
+            text-align: center;
+            color: #666;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .test-type-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .test-type-btn {
+            padding: 10px 20px;
+            background-color: #e0e0e0;
+            color: #333;
+            border: 2px solid transparent;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .test-type-btn.active {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Attention to Number Test Generator</h1>
+        
+
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="targetType">Target Type:</label>
+                <select id="targetType">
+                    <option value="shape">Shape</option>
+                    <option value="fruit">Fruit</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="targetCount">Target Count:</label>
+                <select id="targetCount">
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4" selected>4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                </select>
+            </div>
+
+            <div class="control-group select-with-preview" id="shapeGroup">
+                <label for="targetShape">Target Shape:</label>
+                <div class="select-wrapper">
+                    <canvas id="shapePreview" width="35" height="35" class="select-preview"></canvas>
+                    <select id="targetShape">
+                        <option value="circle">⚫ Circle</option>
+                        <option value="square">⬛ Square</option>
+                        <option value="triangle">▲ Triangle</option>
+                        <option value="rectangle">▬ Rectangle</option>
+                        <option value="star">★ Star</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group select-with-preview hidden" id="fruitGroup">
+                <label for="targetFruit">Target Fruit:</label>
+                <div class="select-wrapper">
+                    <canvas id="fruitPreview" width="35" height="35" class="select-preview"></canvas>
+                    <select id="targetFruit">
+                        <option value="apple">🍎 Apple</option>
+                        <option value="pear">🍐 Pear</option>
+                        <option value="orange">🍊 Orange</option>
+                        <option value="banana">🍌 Banana</option>
+                        <option value="cherry">🍒 Cherry</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group select-with-preview" id="colorGroup">
+                <label for="targetColor">Target Color:</label>
+                <div class="select-wrapper">
+                    <canvas id="colorPreview" width="35" height="35" class="select-preview"></canvas>
+                    <select id="targetColor">
+                        <option value="#FF6B35">🟠 Orange</option>
+                        <option value="#4ECDC4">🔷 Teal</option>
+                        <option value="#FFD93D">🟡 Yellow</option>
+                        <option value="#A855F7">🟣 Purple</option>
+                        <option value="#3B82F6">🔵 Blue</option>
+                        <option value="#EF4444">🔴 Red</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group select-with-preview">
+                <label for="targetPattern">Target Pattern:</label>
+                <div class="select-wrapper">
+                    <canvas id="patternPreview" width="35" height="35" class="select-preview"></canvas>
+                    <select id="targetPattern">
+                        <option value="solid">█ Solid</option>
+                        <option value="striped">▒ Striped</option>
+                        <option value="dotted">⨿ Dotted</option>
+                        <option value="grid">▦ Grid</option>
+                        <option value="fullrandom" id="fullrandomOption" class="hidden">🎲 Full Random</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="action-buttons">
+            <button id="generateBtn">Generate Test</button>
+            <button id="downloadBtn">Download as PNG</button>
+        </div>
+
+        <canvas id="testCanvas" width="1600" height="900"></canvas>
+
+        <div class="info">
+            <p>The test includes a target and 4 choices. Only one choice will match based on the selected test type.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('testCanvas');
+        const ctx = canvas.getContext('2d');
+        let currentTestType = 'number-vs-features';
+
+        // Test type selection
+        document.querySelectorAll('.test-type-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.test-type-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentTestType = btn.dataset.type;
+            });
+        });
+
+        // Fruit drawing functions
+        function drawFruit(x, y, size, fruit, pattern, position = 'center') {
+            ctx.save();
+            
+            // Position adjustment based on location (for B2-style requirements)
+            let offsetX = 0, offsetY = 0;
+            if (position === 'top') offsetY = -size * 0.6;
+            else if (position === 'bottom') offsetY = size * 0.6;
+            else if (position === 'left') offsetX = -size * 0.6;
+            else if (position === 'right') offsetX = size * 0.6;
+            
+            ctx.translate(x + offsetX, y + offsetY);
+            
+            // Draw fruit based on type
+            switch(fruit) {
+                case 'apple':
+                    drawApple(0, 0, size, pattern);
+                    break;
+                case 'pear':
+                    drawPear(0, 0, size, pattern);
+                    break;
+                case 'orange':
+                    drawOrange(0, 0, size, pattern);
+                    break;
+                case 'banana':
+                    drawBanana(0, 0, size, pattern);
+                    break;
+                case 'cherry':
+                    drawCherry(0, 0, size, pattern);
+                    break;
+            }
+            
+            ctx.restore();
+        }
+
+        function drawApple(x, y, size, pattern) {
+            const baseColor = '#DC143C'; // Red
+            
+            ctx.save();
+            ctx.translate(x, y);
+            
+            // Apple body
+            ctx.beginPath();
+            ctx.ellipse(0, size * 0.1, size * 0.4, size * 0.45, 0, 0, Math.PI * 2);
+            ctx.fillStyle = baseColor;
+            ctx.fill();
+            
+            // Leaves and stem
+            ctx.fillStyle = '#228B22';
+            ctx.beginPath();
+            ctx.ellipse(size * 0.15, -size * 0.3, size * 0.15, size * 0.08, Math.PI / 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Apply pattern with proper clipping
+            if (pattern !== 'solid') {
+                ctx.save();
+                ctx.beginPath();
+                ctx.ellipse(0, size * 0.1, size * 0.4, size * 0.45, 0, 0, Math.PI * 2);
+                ctx.clip();
+                applyPattern(pattern, size * 0.9);
+                ctx.restore();
+            }
+            
+            ctx.strokeStyle = '#8B0000';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.ellipse(0, size * 0.1, size * 0.4, size * 0.45, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Stem
+            ctx.fillStyle = '#654321';
+            ctx.fillRect(-size * 0.05, -size * 0.4, size * 0.1, size * 0.4);
+            
+            // Leaf
+            ctx.fillStyle = '#228B22';
+            ctx.beginPath();
+            ctx.ellipse(size * 0.15, -size * 0.3, size * 0.15, size * 0.08, Math.PI / 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.restore();
+        }
+
+        function drawPear(x, y, size, pattern) {
+            const baseColor = '#9ACD32';
+            const outlineColor = '#6B8E23';
+            const creaseColor = '#D9F47D';
+            const scale = 0.7;
+            const s = size * scale;
+            
+            ctx.save();
+            ctx.translate(x, y);
+
+            const tracePearBody = () => {
+                ctx.beginPath();
+                ctx.moveTo(0, s * 0.55);
+                ctx.bezierCurveTo(-s * 0.48, s * 0.55, -s * 0.65, s * 0.12, -s * 0.32, -s * 0.38);
+                ctx.bezierCurveTo(-s * 0.18, -s * 0.64, -s * 0.05, -s * 0.74, 0, -s * 0.68);
+                ctx.bezierCurveTo(s * 0.05, -s * 0.74, s * 0.18, -s * 0.64, s * 0.32, -s * 0.38);
+                ctx.bezierCurveTo(s * 0.65, s * 0.12, s * 0.48, s * 0.55, 0, s * 0.55);
+                ctx.closePath();
+            };
+
+            tracePearBody();
+            ctx.fillStyle = baseColor;
+            ctx.fill();
+
+            if (pattern !== 'solid') {
+                ctx.save();
+                tracePearBody();
+                ctx.clip();
+                applyPattern(pattern, s);
+                ctx.restore();
+            }
+
+            ctx.strokeStyle = outlineColor;
+            ctx.lineWidth = 2;
+            tracePearBody();
+            ctx.stroke();
+
+            // Leaf and stem
+            ctx.fillStyle = '#3A9D41';
+            ctx.beginPath();
+            ctx.ellipse(s * 0.32, -s * 0.36, s * 0.22, s * 0.11, Math.PI / 10, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = '#654321';
+            ctx.lineWidth = s * 0.12;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(-s * 0.02, -s * 0.58);
+            ctx.lineTo(s * 0.06, -s * 0.7);
+            ctx.stroke();
+            
+            ctx.restore();
+        }
+
+        function drawOrange(x, y, size, pattern) {
+            const baseColor = '#FFA500'; // Orange
+            
+            ctx.save();
+            ctx.translate(x, y);
+            
+            // Orange body
+            ctx.beginPath();
+            ctx.arc(0, 0, size * 0.45, 0, Math.PI * 2);
+            ctx.fillStyle = baseColor;
+            ctx.fill();
+            
+            // Apply pattern with proper clipping
+            if (pattern !== 'solid') {
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(0, 0, size * 0.45, 0, Math.PI * 2);
+                ctx.clip();
+                applyPattern(pattern, size * 0.9);
+                ctx.restore();
+            }
+            
+            ctx.strokeStyle = '#FF8C00';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(0, 0, size * 0.45, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Texture dots - only show for solid pattern to maintain fruit identity
+            if (pattern === 'solid') {
+                ctx.fillStyle = '#CC7000';
+                // Fixed seed positions for consistency
+                const dotPositions = [
+                    [0.2, 0.1], [-0.15, 0.15], [0.1, -0.2], [-0.2, -0.1],
+                    [0.25, -0.05], [-0.1, -0.25], [0, 0.25], [-0.25, 0.05]
+                ];
+                dotPositions.forEach(([dx, dy]) => {
+                    ctx.beginPath();
+                    ctx.arc(dx * size, dy * size, size * 0.02, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+            
+            ctx.restore();
+        }
+
+        function drawBanana(x, y, size, pattern) {
+            const baseColor = '#FFD966'; // Banana yellow
+            
+            ctx.save();
+            ctx.translate(x, y);
+            
+            // Banana curved shape - more curvy and longer
+            ctx.beginPath();
+            ctx.moveTo(-size * 0.5, -size * 0.1);
+            ctx.bezierCurveTo(-size * 0.4, -size * 0.35, -size * 0.1, -size * 0.4, 0.1 * size, -size * 0.35);
+            ctx.bezierCurveTo(size * 0.3, -size * 0.3, size * 0.45, -size * 0.15, size * 0.5, 0.05);
+            ctx.bezierCurveTo(size * 0.48, 0.2, size * 0.4, 0.3, size * 0.25, 0.35);
+            ctx.bezierCurveTo(size * 0.1, 0.35, -size * 0.1, 0.3, -size * 0.3, 0.2);
+            ctx.bezierCurveTo(-size * 0.42, 0.15, -size * 0.48, 0.05, -size * 0.5, -0.1);
+            ctx.closePath();
+            ctx.fillStyle = baseColor;
+            ctx.fill();
+            
+            // Apply pattern with proper clipping
+            if (pattern !== 'solid') {
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(-size * 0.5, -size * 0.1);
+                ctx.bezierCurveTo(-size * 0.4, -size * 0.35, -size * 0.1, -size * 0.4, 0.1 * size, -size * 0.35);
+                ctx.bezierCurveTo(size * 0.3, -size * 0.3, size * 0.45, -size * 0.15, size * 0.5, 0.05);
+                ctx.bezierCurveTo(size * 0.48, 0.2, size * 0.4, 0.3, size * 0.25, 0.35);
+                ctx.bezierCurveTo(size * 0.1, 0.35, -size * 0.1, 0.3, -size * 0.3, 0.2);
+                ctx.bezierCurveTo(-size * 0.42, 0.15, -size * 0.48, 0.05, -size * 0.5, -0.1);
+                ctx.closePath();
+                ctx.clip();
+                applyPattern(pattern, size);
+                ctx.restore();
+            }
+            
+            ctx.strokeStyle = '#DAA520';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(-size * 0.5, -size * 0.1);
+            ctx.bezierCurveTo(-size * 0.4, -size * 0.35, -size * 0.1, -size * 0.4, 0.1 * size, -size * 0.35);
+            ctx.bezierCurveTo(size * 0.3, -size * 0.3, size * 0.45, -size * 0.15, size * 0.5, 0.05);
+            ctx.bezierCurveTo(size * 0.48, 0.2, size * 0.4, 0.3, size * 0.25, 0.35);
+            ctx.bezierCurveTo(size * 0.1, 0.35, -size * 0.1, 0.3, -size * 0.3, 0.2);
+            ctx.bezierCurveTo(-size * 0.42, 0.15, -size * 0.48, 0.05, -size * 0.5, -0.1);
+            ctx.closePath();
+            ctx.stroke();
+            
+            // Stem end
+            ctx.fillStyle = '#654321';
+            ctx.fillRect(-size * 0.52, -size * 0.15, size * 0.08, size * 0.12);
+            
+            ctx.restore();
+        }
+
+        function drawCherry(x, y, size, pattern) {
+    const fruitColor = '#D63031';
+    const outlineColor = '#A81F22';
+    const highlightColor = 'rgba(255,255,255,0.5)';
+    const stemColor = '#6B4A2B';
+    const leafColor = '#2ECC71';
+
+    ctx.save();
+    ctx.translate(x, y);
+
+    const scale = 0.7;
+    const radius = size * 0.32 * scale;
+    const offsetX = radius * 1.0;
+    const offsetY = size * 0.05 * scale;
+    const cherries = [
+        { cx: -offsetX, cy: offsetY },
+        { cx: offsetX, cy: offsetY }
+    ];
+
+    cherries.forEach(({ cx, cy }) => {
+        ctx.save();
+        ctx.translate(cx, cy);
+
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, Math.PI * 2);
+        ctx.fillStyle = fruitColor;
+        ctx.fill();
+
+        if (pattern !== 'solid') {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(0, 0, radius, 0, Math.PI * 2);
+            ctx.clip();
+            applyPattern(pattern, radius * 2.1);
+            ctx.restore();
+        }
+
+        ctx.strokeStyle = outlineColor;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Highlight
+        ctx.fillStyle = highlightColor;
+        ctx.beginPath();
+        ctx.ellipse(-radius * 0.25, -radius * 0.35, radius * 0.18, radius * 0.1, -Math.PI / 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+    });
+
+    // Stems
+    ctx.strokeStyle = stemColor;
+    ctx.lineCap = 'round';
+    ctx.lineWidth = size * 0.08 * scale;
+    ctx.beginPath();
+    ctx.moveTo(-offsetX * 0.9, offsetY - radius * 0.9);
+    ctx.bezierCurveTo(-offsetX * 0.4, -size * 0.2, -size * 0.1, -size * 0.25, 0, -size * 0.3);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(offsetX * 0.9, offsetY - radius * 0.9);
+    ctx.bezierCurveTo(offsetX * 0.4, -size * 0.2, size * 0.1, -size * 0.25, 0, -size * 0.3);
+    ctx.stroke();
+
+    // Leaf at top junction
+    ctx.fillStyle = leafColor;
+    ctx.save();
+    ctx.translate(size * 0.14, -size * 0.38);
+    ctx.rotate(Math.PI / 7);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, size * 0.14, size * 0.07, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Stem tip
+    ctx.strokeStyle = stemColor;
+    ctx.lineWidth = size * 0.08 * scale;
+    ctx.beginPath();
+    ctx.moveTo(0, -size * 0.3);
+    ctx.lineTo(size * 0.01, -size * 0.45);
+    ctx.stroke();
+
+    ctx.restore();
+}
+
+        function applyPattern(pattern, size) {
+            if (pattern === 'solid') return;
+            
+            // Pattern uses white background for better contrast
+            // This creates white vs fruit color (e.g., white vs red for strawberry)
+            switch(pattern) {
+                case 'striped':
+                    // Thicker, less dense stripes with white color
+                    ctx.fillStyle = 'white';
+                    for(let i = -size; i < size; i += 20) {
+                        ctx.fillRect(i, -size, 10, size * 2);
+                    }
+                    break;
+                case 'dotted':
+                    // Bigger, more visible dots with white color
+                    ctx.fillStyle = 'white';
+                    for(let dx = -size/2; dx < size/2; dx += 18) {
+                        for(let dy = -size/2; dy < size/2; dy += 18) {
+                            ctx.beginPath();
+                            ctx.arc(dx, dy, 4, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    }
+                    break;
+                case 'grid':
+                    // Checkerboard pattern with white
+                    ctx.fillStyle = 'white';
+                    const squareSize = 12;
+                    for(let x = -size; x < size; x += squareSize) {
+                        for(let y = -size; y < size; y += squareSize) {
+                            // Checkerboard logic
+                            const col = Math.floor((x + size) / squareSize);
+                            const row = Math.floor((y + size) / squareSize);
+                            if ((col + row) % 2 === 0) {
+                                ctx.fillRect(x, y, squareSize, squareSize);
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+
+        // Shape drawing functions
+        function drawShape(x, y, size, shape, color, pattern, rotation = 0) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(rotation);
+
+            // Create path for the shape
+            ctx.beginPath();
+            switch(shape) {
+                case 'circle':
+                    ctx.arc(0, 0, size/2, 0, Math.PI * 2);
+                    break;
+                case 'square':
+                    ctx.rect(-size/2, -size/2, size, size);
+                    break;
+                case 'triangle':
+                    ctx.moveTo(0, -size/2);
+                    ctx.lineTo(size/2, size/2);
+                    ctx.lineTo(-size/2, size/2);
+                    ctx.closePath();
+                    break;
+                case 'rectangle':
+                    ctx.rect(-size/2, -size/3, size, size * 2/3);
+                    break;
+                case 'hexagon':
+                    for(let i = 0; i < 6; i++) {
+                        const angle = (Math.PI / 3) * i;
+                        const px = (size/2) * Math.cos(angle);
+                        const py = (size/2) * Math.sin(angle);
+                        if(i === 0) ctx.moveTo(px, py);
+                        else ctx.lineTo(px, py);
+                    }
+                    ctx.closePath();
+                    break;
+                case 'star':
+                    for(let i = 0; i < 5; i++) {
+                        const angle = (Math.PI * 2 / 5) * i - Math.PI/2;
+                        const outerX = (size/2) * Math.cos(angle);
+                        const outerY = (size/2) * Math.sin(angle);
+                        const innerAngle = angle + Math.PI/5;
+                        const innerX = (size/4) * Math.cos(innerAngle);
+                        const innerY = (size/4) * Math.sin(innerAngle);
+                        if(i === 0) ctx.moveTo(outerX, outerY);
+                        else ctx.lineTo(outerX, outerY);
+                        ctx.lineTo(innerX, innerY);
+                    }
+                    ctx.closePath();
+                    break;
+                case 'crescent':
+                    ctx.arc(size/6, 0, size/2, 0, Math.PI * 2);
+                    ctx.arc(0, 0, size/2, 0, Math.PI * 2, true);
+                    break;
+            }
+
+            // Fill with base color
+            ctx.fillStyle = color;
+            ctx.fill();
+            
+            // Apply pattern if not solid
+            if(pattern !== 'solid') {
+                ctx.save();
+                ctx.clip();
+                applyPattern(pattern, size);
+                ctx.restore();
+            }
+
+            // Draw outline
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        function arrangeShapes(count, boxX, boxY, boxSize, size) {
+            const positions = [];
+            
+            // Calculate safe margins - shapes must fit completely within the box
+            const shapeRadius = size / 2;
+            const safePadding = shapeRadius + 8; // Extra padding from edges
+            const usableWidth = boxSize - (safePadding * 2);
+            const usableHeight = boxSize - (safePadding * 2);
+
+            // Determine grid layout based on count for nice arrangements
+            let cols, rows;
+            if (count === 2) {
+                cols = 2;
+                rows = 1;
+            } else if (count === 3) {
+                // Triangle arrangement: 1 on top, 2 on bottom
+                cols = 2;
+                rows = 2;
+            } else if (count === 4) {
+                cols = 2;
+                rows = 2;
+            } else if (count === 5) {
+                // Pentagon-like: 2 on top, 3 on bottom
+                cols = 3;
+                rows = 2;
+            } else if (count === 6) {
+                cols = 3;
+                rows = 2;
+            } else {
+                cols = Math.ceil(Math.sqrt(count));
+                rows = Math.ceil(count / cols);
+            }
+            
+            // Calculate spacing
+            const cellWidth = usableWidth / cols;
+            const cellHeight = usableHeight / rows;
+            
+            // Special arrangements for odd numbers
+            if (count === 3) {
+                // 1 centered on top, 2 on bottom
+                positions.push({
+                    x: boxX + safePadding + usableWidth / 2,
+                    y: boxY + safePadding + cellHeight / 2,
+                    rotation: 0
+                });
+                positions.push({
+                    x: boxX + safePadding + cellWidth / 2,
+                    y: boxY + safePadding + cellHeight + cellHeight / 2,
+                    rotation: 0
+                });
+                positions.push({
+                    x: boxX + safePadding + cellWidth + cellWidth / 2,
+                    y: boxY + safePadding + cellHeight + cellHeight / 2,
+                    rotation: 0
+                });
+            } else if (count === 5) {
+                // 2 on top, 3 on bottom
+                positions.push({
+                    x: boxX + safePadding + cellWidth / 2 + cellWidth / 2,
+                    y: boxY + safePadding + cellHeight / 2,
+                    rotation: 0
+                });
+                positions.push({
+                    x: boxX + safePadding + cellWidth + cellWidth / 2 + cellWidth / 2,
+                    y: boxY + safePadding + cellHeight / 2,
+                    rotation: 0
+                });
+                // Bottom row (3 items)
+                for(let i = 0; i < 3; i++) {
+                    positions.push({
+                        x: boxX + safePadding + cellWidth * i + cellWidth / 2,
+                        y: boxY + safePadding + cellHeight + cellHeight / 2,
+                        rotation: 0
+                    });
+                }
+            } else {
+                // Standard grid for even numbers and others
+                for(let i = 0; i < count; i++) {
+                    const col = i % cols;
+                    const row = Math.floor(i / cols);
+                    
+                    // Position each shape in the center of its grid cell
+                    const x = boxX + safePadding + cellWidth * col + cellWidth / 2;
+                    const y = boxY + safePadding + cellHeight * row + cellHeight / 2;
+                    
+                    positions.push({
+                        x: x,
+                        y: y,
+                        rotation: 0
+                    });
+                }
+            }
+            
+            return positions;
+        }
+        
+        function randomArrangement() {
+            // Not used anymore, but kept for compatibility
+            return 'grid';
+        }
+
+        function drawBox(x, y, size, label) {
+            // Fill white background first
+            ctx.fillStyle = 'white';
+            ctx.fillRect(x, y, size, size);
+            
+            // Draw border
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 6;
+            ctx.strokeRect(x, y, size, size);
+            
+            // Draw label
+            ctx.fillStyle = '#666';
+            ctx.font = 'bold 32px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, x + size/2, y - 20);
+        }
+
+        function randomChoice(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function randomColor() {
+            const colors = ['#FF6B35', '#4ECDC4', '#FFD93D', '#A855F7', '#3B82F6', '#EF4444'];
+            return randomChoice(colors);
+        }
+
+        function randomShape() {
+            const shapes = ['circle', 'square', 'triangle', 'rectangle', 'star'];
+            return randomChoice(shapes);
+        }
+
+        function randomPattern() {
+            const patterns = ['solid', 'striped', 'dotted', 'grid'];
+            return randomChoice(patterns);
+        }
+
+        function randomFruit() {
+            const fruits = ['apple', 'pear', 'orange', 'banana', 'cherry'];
+            return randomChoice(fruits);
+        }
+
+        function generateTest() {
+            // Always use horizontal layout
+            canvas.width = 2400;
+            canvas.height = 800;
+            
+            // Clear canvas with white background
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Scale everything up for better resolution
+            const boxSize = 380;
+            const margin = 60;
+            const shapeSize = 70;
+
+            // Get target parameters
+            const targetType = document.getElementById('targetType').value;
+            const targetCount = parseInt(document.getElementById('targetCount').value);
+            const targetPattern = document.getElementById('targetPattern').value;
+            
+            const boxY = 200;
+
+            if (targetType === 'shape') {
+                // Original shape-based logic
+                const targetShape = document.getElementById('targetShape').value;
+                const targetColor = document.getElementById('targetColor').value;
+
+                // Generate choices
+                const choices = [];
+                const correctIndex = Math.floor(Math.random() * 4);
+                const usedCounts = new Set([targetCount]);
+                const usedColors = new Set([targetColor]);
+
+                for(let i = 0; i < 4; i++) {
+                    let choice;
+                    if(i === correctIndex) {
+                        // Correct answer - same count, different shape and color
+                        let choiceColor;
+                        let colorAttempts = 0;
+                        do {
+                            choiceColor = randomColor();
+                            colorAttempts++;
+                        } while(usedColors.has(choiceColor) && colorAttempts < 20);
+                        
+                        usedColors.add(choiceColor);
+                        
+                        choice = {
+                            count: targetCount,
+                            shape: randomShape(),
+                            color: choiceColor,
+                            pattern: targetPattern
+                        };
+                    } else {
+                        // Foil answers - different count (must be unique)
+                        let count;
+                        let attempts = 0;
+                        do {
+                            count = Math.floor(Math.random() * 5) + 2;
+                            attempts++;
+                            if (attempts > 20) {
+                                for (let c = 2; c <= 6; c++) {
+                                    if (!usedCounts.has(c)) {
+                                        count = c;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        } while(usedCounts.has(count));
+                        
+                        usedCounts.add(count);
+                        
+                        let choiceColor;
+                        let colorAttempts = 0;
+                        do {
+                            choiceColor = randomColor();
+                            colorAttempts++;
+                        } while(usedColors.has(choiceColor) && colorAttempts < 20);
+                        
+                        usedColors.add(choiceColor);
+                        
+                        choice = {
+                            count: count,
+                            shape: randomShape(),
+                            color: choiceColor,
+                            pattern: targetPattern
+                        };
+                    }
+                    choices.push(choice);
+                }
+
+                // Draw target
+                const targetX = margin;
+                drawBox(targetX, boxY, boxSize, '目标');
+                const targetPositions = arrangeShapes(targetCount, targetX, boxY, boxSize, shapeSize);
+                targetPositions.forEach(pos => {
+                    drawShape(pos.x, pos.y, shapeSize, targetShape, targetColor, targetPattern, pos.rotation);
+                });
+
+                // Draw choices
+                for(let i = 0; i < 4; i++) {
+                    const x = margin + (boxSize + margin) * (i + 1);
+                    drawBox(x, boxY, boxSize, `${i + 1}`);
+                    const positions = arrangeShapes(choices[i].count, x, boxY, boxSize, shapeSize);
+                    positions.forEach(pos => {
+                        drawShape(pos.x, pos.y, shapeSize, choices[i].shape, choices[i].color, choices[i].pattern, pos.rotation);
+                    });
+                }
+
+                console.log(`Correct answer: ${correctIndex + 1}`);
+                
+            } else if (targetType === 'fruit') {
+                // Fruit-based logic with B2 positioning requirements
+                const targetFruit = document.getElementById('targetFruit').value;
+                const usedFruits = new Set([targetFruit]);
+
+                // Generate choices according to requirements:
+                // 1. Different fruit types for each choice
+                // 2. Pattern handling based on mode
+                // 3. One option with same count as target (correct answer)
+                // 4. Each choice's fruit group positioned at different locations (top, bottom, left, right)
+                
+                const choices = [];
+                const correctIndex = Math.floor(Math.random() * 4); // Correct answer has same count
+                const usedCounts = new Set([targetCount]);
+                const positions = ['top', 'bottom', 'left', 'right'];
+                const targetGroupPosition = randomChoice(['top', 'bottom', 'left', 'right', 'center']);
+                // Shuffle positions array
+                for (let i = positions.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [positions[i], positions[j]] = [positions[j], positions[i]];
+                }
+
+                // Handle fullrandom pattern - ensure all 4 patterns appear
+                let targetPatternValue = targetPattern;
+                let choicePatterns = [];
+                
+                if (targetPattern === 'fullrandom') {
+                    const allPatterns = ['solid', 'striped', 'dotted', 'grid'];
+                    // Shuffle patterns to randomize assignment
+                    const shuffledPatterns = [...allPatterns].sort(() => Math.random() - 0.5);
+                    // Target uses the first pattern
+                    targetPatternValue = shuffledPatterns[0];
+                    // Remaining unique patterns for other choices
+                    const remainingPatterns = shuffledPatterns.slice(1);
+                    const otherPatterns = remainingPatterns.sort(() => Math.random() - 0.5);
+                    // Ensure exactly one choice matches the target pattern
+                    const samePatternChoiceIndex = Math.floor(Math.random() * 4);
+                    choicePatterns = new Array(4);
+                    choicePatterns[samePatternChoiceIndex] = targetPatternValue;
+                    let otherIndex = 0;
+                    for (let i = 0; i < 4; i++) {
+                        if (i === samePatternChoiceIndex) continue;
+                        choicePatterns[i] = otherPatterns[otherIndex % otherPatterns.length];
+                        otherIndex++;
+                    }
+                }
+
+                for(let i = 0; i < 4; i++) {
+                    // Get unique fruit type
+                    let fruit;
+                    let attempts = 0;
+                    do {
+                        fruit = randomFruit();
+                        attempts++;
+                    } while(usedFruits.has(fruit) && attempts < 20);
+                    usedFruits.add(fruit);
+
+                    let choice;
+                    const choicePattern = targetPattern === 'fullrandom' ? choicePatterns[i] : targetPattern;
+                    
+                    if(i === correctIndex) {
+                        // Correct answer - same count as target
+                        choice = {
+                            count: targetCount,
+                            fruit: fruit,
+                            pattern: choicePattern,
+                            position: positions[i]
+                        };
+                    } else {
+                        // Other options - different count
+                        let count;
+                        let countAttempts = 0;
+                        do {
+                            count = Math.floor(Math.random() * 5) + 2;
+                            countAttempts++;
+                        } while(usedCounts.has(count) && countAttempts < 20);
+                        usedCounts.add(count);
+                        
+                        choice = {
+                            count: count,
+                            fruit: fruit,
+                            pattern: choicePattern,
+                            position: positions[i]
+                        };
+                    }
+                    choices.push(choice);
+                }
+
+                // Arrange fruits in a compact group, then shift entire group based on position
+                const getPositionsForCount = (count, centerX, centerY, boxSize, groupPosition) => {
+                    const positions = [];
+                    const spacing = shapeSize * 1.1; // Base spacing between fruits
+                    
+                    // First, arrange fruits in a compact group around origin (0,0)
+                    let relativePositions = [];
+                    switch (count) {
+                        case 1:
+                            relativePositions.push({ x: 0, y: 0 });
+                            break;
+                        case 2:
+                            relativePositions.push({ x: -spacing * 0.6, y: 0 });
+                            relativePositions.push({ x: spacing * 0.6, y: 0 });
+                            break;
+                        case 3:
+                            relativePositions.push({ x: 0, y: -spacing * 0.6 });
+                            relativePositions.push({ x: -spacing * 0.6, y: spacing * 0.6 });
+                            relativePositions.push({ x: spacing * 0.6, y: spacing * 0.6 });
+                            break;
+                        case 4:
+                            relativePositions.push({ x: -spacing * 0.6, y: -spacing * 0.6 });
+                            relativePositions.push({ x: spacing * 0.6, y: -spacing * 0.6 });
+                            relativePositions.push({ x: -spacing * 0.6, y: spacing * 0.6 });
+                            relativePositions.push({ x: spacing * 0.6, y: spacing * 0.6 });
+                            break;
+                        case 5: {
+                            const twoTop = Math.random() < 0.5;
+                            const rowOffset = shapeSize * 0.9;
+                            const colOffset = shapeSize * 1.0;
+                            if (twoTop) {
+                                // Top row: 2
+                                relativePositions.push({ x: -colOffset * 0.5, y: -rowOffset });
+                                relativePositions.push({ x: colOffset * 0.5, y: -rowOffset });
+                                // Bottom row: 3
+                                relativePositions.push({ x: -colOffset, y: rowOffset });
+                                relativePositions.push({ x: 0, y: rowOffset });
+                                relativePositions.push({ x: colOffset, y: rowOffset });
+                            } else {
+                                // Top row: 3
+                                relativePositions.push({ x: -colOffset, y: -rowOffset });
+                                relativePositions.push({ x: 0, y: -rowOffset });
+                                relativePositions.push({ x: colOffset, y: -rowOffset });
+                                // Bottom row: 2
+                                relativePositions.push({ x: -colOffset * 0.5, y: rowOffset });
+                                relativePositions.push({ x: colOffset * 0.5, y: rowOffset });
+                            }
+                            break;
+                        }
+                        case 6: {
+                            const useVertical = groupPosition === 'left' || groupPosition === 'right';
+                            if (useVertical) {
+                                // 2 columns x 3 rows (taller layout)
+                                const colOffset = shapeSize * 1.05;
+                                const rowOffset = shapeSize * 0.95;
+                                const columns = [-colOffset * 0.5, colOffset * 0.5];
+                                const rows = [-rowOffset, 0, rowOffset];
+                                columns.forEach(x => {
+                                    rows.forEach(y => {
+                                        relativePositions.push({ x, y });
+                                    });
+                                });
+                            } else {
+                                // 3 columns x 2 rows (wider layout)
+                                const colOffset = shapeSize * 1.0;
+                                const rowOffset = shapeSize * 0.9;
+                                const columns = [-colOffset, 0, colOffset];
+                                const rows = [-rowOffset, rowOffset];
+                                columns.forEach(x => {
+                                    rows.forEach(y => {
+                                        relativePositions.push({ x, y });
+                                    });
+                                });
+                            }
+                            break;
+                        }
+                        default:
+                            // Fallback: distribute in simple grid
+                            const cols = Math.ceil(Math.sqrt(count));
+                            const rows = Math.ceil(count / cols);
+                            const colSpacing = spacing;
+                            const rowSpacing = spacing;
+                            for (let i = 0; i < count; i++) {
+                                const col = i % cols;
+                                const row = Math.floor(i / cols);
+                                const offsetX = (col - (cols - 1) / 2) * colSpacing;
+                                const offsetY = (row - (rows - 1) / 2) * rowSpacing;
+                                relativePositions.push({ x: offsetX, y: offsetY });
+                            }
+                    }
+                    
+                    // Now shift the ENTIRE group based on groupPosition
+                    const offset = boxSize * 0.22;
+                    let groupOffsetX = 0, groupOffsetY = 0;
+                    
+                    switch(groupPosition) {
+                        case 'top':
+                            groupOffsetY = -offset;
+                            break;
+                        case 'bottom':
+                            groupOffsetY = offset;
+                            break;
+                        case 'left':
+                            groupOffsetX = -offset;
+                            break;
+                        case 'right':
+                            groupOffsetX = offset;
+                            break;
+                        case 'center':
+                        default:
+                            // No offset
+                            break;
+                    }
+                    
+                    // Apply group offset to all fruits
+                    relativePositions.forEach(pos => {
+                        positions.push({
+                            x: centerX + pos.x + groupOffsetX,
+                            y: centerY + pos.y + groupOffsetY
+                        });
+                    });
+                    
+                    return positions;
+                };
+
+                // Draw target
+                const targetX = margin;
+                drawBox(targetX, boxY, boxSize, '目标');
+                const targetCenterX = targetX + boxSize / 2;
+                const targetCenterY = boxY + boxSize / 2;
+                const targetPositions = getPositionsForCount(targetCount, targetCenterX, targetCenterY, boxSize, targetGroupPosition);
+                targetPositions.forEach(pos => {
+                    drawFruit(pos.x, pos.y, shapeSize, targetFruit, targetPatternValue, 'center');
+                });
+
+                // Draw choices with positioned fruits
+                for(let i = 0; i < 4; i++) {
+                    const x = margin + (boxSize + margin) * (i + 1);
+                    drawBox(x, boxY, boxSize, `${i + 1}`);
+                    const centerX = x + boxSize / 2;
+                    const centerY = boxY + boxSize / 2;
+                    
+                    const fruitPositions = getPositionsForCount(choices[i].count, centerX, centerY, boxSize, choices[i].position);
+                    fruitPositions.forEach(pos => {
+                        drawFruit(pos.x, pos.y, shapeSize, choices[i].fruit, choices[i].pattern, 'center');
+                    });
+                }
+
+                console.log(`Correct answer: ${correctIndex + 1}`);
+                if (targetPattern === 'fullrandom') {
+                    console.log(`Full Random Mode - Target: ${targetPatternValue}`);
+                    console.log('Choice patterns:', choices.map((c, i) => `${i+1}: ${c.pattern}`).join(', '));
+                } else {
+                    console.log(`All fruits use pattern: ${targetPattern}`);
+                }
+            }
+        }
+
+        function downloadTest() {
+            const link = document.createElement('a');
+            link.download = `attention-to-number-test-${Date.now()}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // Preview update functions
+        function updateShapePreview() {
+            const previewCanvas = document.getElementById('shapePreview');
+            const previewCtx = previewCanvas.getContext('2d');
+            const shape = document.getElementById('targetShape').value;
+            const color = document.getElementById('targetColor').value;
+            
+            previewCtx.clearRect(0, 0, 35, 35);
+            drawShape(17.5, 17.5, 28, shape, color, 'solid', 0);
+        }
+
+        function updateColorPreview() {
+            const previewCanvas = document.getElementById('colorPreview');
+            const previewCtx = previewCanvas.getContext('2d');
+            const color = document.getElementById('targetColor').value;
+            
+            previewCtx.clearRect(0, 0, 35, 35);
+            previewCtx.fillStyle = color;
+            previewCtx.fillRect(2, 2, 31, 31);
+            previewCtx.strokeStyle = '#333';
+            previewCtx.lineWidth = 2;
+            previewCtx.strokeRect(2, 2, 31, 31);
+        }
+
+        function updatePatternPreview() {
+            const previewCanvas = document.getElementById('patternPreview');
+            const previewCtx = previewCanvas.getContext('2d');
+            const pattern = document.getElementById('targetPattern').value;
+            const color = document.getElementById('targetColor').value;
+            
+            previewCtx.clearRect(0, 0, 35, 35);
+            
+            if (pattern === 'fullrandom') {
+                // Show mixed pattern preview
+                previewCtx.fillStyle = '#888';
+                previewCtx.font = '20px Arial';
+                previewCtx.textAlign = 'center';
+                previewCtx.textBaseline = 'middle';
+                previewCtx.fillText('🎲', 17.5, 17.5);
+            } else {
+                drawShape(17.5, 17.5, 28, 'square', color, pattern, 0);
+            }
+        }
+
+        function updateFruitPreview() {
+            const previewCanvas = document.getElementById('fruitPreview');
+            const previewCtx = previewCanvas.getContext('2d');
+            const fruit = document.getElementById('targetFruit').value;
+            let pattern = document.getElementById('targetPattern').value;
+            
+            previewCtx.clearRect(0, 0, 35, 35);
+            
+            // For fullrandom, show solid as preview
+            if (pattern === 'fullrandom') {
+                pattern = 'solid';
+            }
+            
+            // Draw fruit directly with previewCtx
+            const savedCtx = ctx;
+            window.ctx = previewCtx; // Temporarily set global ctx
+            drawFruit(17.5, 17.5, 24, fruit, pattern, 'center');
+            window.ctx = savedCtx; // Restore
+        }
+
+        function toggleTargetType() {
+            const targetType = document.getElementById('targetType').value;
+            const shapeGroup = document.getElementById('shapeGroup');
+            const fruitGroup = document.getElementById('fruitGroup');
+            const colorGroup = document.getElementById('colorGroup');
+            const fullrandomOption = document.getElementById('fullrandomOption');
+            const targetPattern = document.getElementById('targetPattern');
+            
+            if (targetType === 'shape') {
+                shapeGroup.classList.remove('hidden');
+                fruitGroup.classList.add('hidden');
+                colorGroup.classList.remove('hidden');
+                fullrandomOption.classList.add('hidden');
+                // Reset to solid if it was fullrandom
+                if (targetPattern.value === 'fullrandom') {
+                    targetPattern.value = 'solid';
+                    updatePatternPreview();
+                }
+            } else {
+                shapeGroup.classList.add('hidden');
+                fruitGroup.classList.remove('hidden');
+                colorGroup.classList.add('hidden'); // Hide color for fruits
+                fullrandomOption.classList.remove('hidden');
+                // Set default to fullrandom for fruits
+                targetPattern.value = 'fullrandom';
+                updatePatternPreview();
+                updateFruitPreview();
+            }
+        }
+
+        // Add event listeners for preview updates
+        document.getElementById('targetType').addEventListener('change', () => {
+            toggleTargetType();
+            generateTest();
+        });
+        
+        document.getElementById('targetShape').addEventListener('change', () => {
+            updateShapePreview();
+            updatePatternPreview();
+        });
+        document.getElementById('targetColor').addEventListener('change', () => {
+            updateShapePreview();
+            updateColorPreview();
+            updatePatternPreview();
+        });
+        document.getElementById('targetPattern').addEventListener('change', () => {
+            updatePatternPreview();
+            if (document.getElementById('targetType').value === 'fruit') {
+                updateFruitPreview();
+            }
+        });
+        
+        document.getElementById('targetFruit').addEventListener('change', updateFruitPreview);
+
+        document.getElementById('generateBtn').addEventListener('click', generateTest);
+        document.getElementById('downloadBtn').addEventListener('click', downloadTest);
+
+        // Generate initial test and previews
+        toggleTargetType();
+        updateShapePreview();
+        updateColorPreview();
+        updatePatternPreview();
+        updateFruitPreview();
+        generateTest();
+    </script>
+</body>
+</html>
