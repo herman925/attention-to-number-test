@@ -342,6 +342,52 @@
             border-right-color: #333;
             z-index: 1001;
         }
+
+        /* Tab Styles */
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            border: none;
+            border-top: 2px solid transparent;
+            border-left: 2px solid transparent;
+            border-right: 2px solid transparent;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .tab-button:hover {
+            background-color: #e8e8e8;
+            color: #333;
+        }
+
+        .tab-button.active {
+            background-color: white;
+            color: #333;
+            border-top-color: #4CAF50;
+            border-left-color: #ddd;
+            border-right-color: #ddd;
+            border-bottom: 2px solid white;
+            margin-bottom: -2px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -430,9 +476,9 @@
         </div>
 
         <div class="action-buttons">
-            <button id="configBtn" class="config-button">⚙️ Spacing Configuration</button>
             <button id="generateBtn">Generate Test</button>
             <button id="downloadBtn">Download as PNG</button>
+            <button id="configBtn" class="config-button">⚙️ Spacing Configuration</button>
         </div>
 
         <canvas id="testCanvas" width="1600" height="900"></canvas>
@@ -450,8 +496,17 @@
                 <span class="close">&times;</span>
             </div>
             
-            <div class="config-section">
-                <h3>Shape Spacing (by shape type)</h3>
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-button active" data-tab="shapes">Shape Spacing</button>
+                <button class="tab-button" data-tab="fruits">Fruit Spacing</button>
+                <button class="tab-button" data-tab="layouts">Layout Multipliers</button>
+            </div>
+            
+            <!-- Tab Content: Shape Spacing -->
+            <div id="shapes-tab" class="tab-content active">
+                <div class="config-section">
+                    <h3>Shape Spacing (by shape type)</h3>
                 
                 <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">⚫ Circle</h4>
                 <div class="config-item">
@@ -537,10 +592,13 @@
                     <input type="number" id="star_padding" min="0" max="100" step="5" value="45">
                     <span class="unit">px</span>
                 </div>
+                </div>
             </div>
 
-            <div class="config-section">
-                <h3>Fruit Spacing (by fruit type)</h3>
+            <!-- Tab Content: Fruit Spacing -->
+            <div id="fruits-tab" class="tab-content">
+                <div class="config-section">
+                    <h3>Fruit Spacing (by fruit type)</h3>
                 
                 <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">🍎 Apple</h4>
                 <div class="config-item">
@@ -626,6 +684,72 @@
                     <input type="number" id="cherry_offset" min="0" max="200" step="5" value="84">
                     <span class="unit">px</span>
                 </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Layout Multipliers -->
+            <div id="layouts-tab" class="tab-content">
+                <div class="config-section">
+                    <h3>Layout-Specific Gap Multipliers</h3>
+                    <p style="color: #666; font-size: 13px; margin-bottom: 15px;">Multipliers adjust gaps based on grid arrangement (e.g., 3×2 vs 2×3 for 6 items). Values > 1.0 increase gaps, < 1.0 decrease them.</p>
+                
+                <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">2 Items Layouts</h4>
+                <div class="config-item">
+                    <label>1×2 (horizontal):<span class="info-icon" data-tooltip="Multiplier for 1 row, 2 columns arrangement">ℹ</span></label>
+                    <input type="number" id="layout_1x2_gapH" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">H gap</span>
+                    <input type="number" id="layout_1x2_gapV" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">V gap</span>
+                </div>
+                <div class="config-item">
+                    <label>2×1 (vertical):<span class="info-icon" data-tooltip="Multiplier for 2 rows, 1 column arrangement">ℹ</span></label>
+                    <input type="number" id="layout_2x1_gapH" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">H gap</span>
+                    <input type="number" id="layout_2x1_gapV" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">V gap</span>
+                </div>
+                
+                <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">3 Items Layouts</h4>
+                <div class="config-item">
+                    <label>1×3 (horizontal):<span class="info-icon" data-tooltip="Multiplier for 1 row, 3 columns arrangement">ℹ</span></label>
+                    <input type="number" id="layout_1x3_gapH" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">H gap</span>
+                    <input type="number" id="layout_1x3_gapV" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">V gap</span>
+                </div>
+                <div class="config-item">
+                    <label>3×1 (vertical):<span class="info-icon" data-tooltip="Multiplier for 3 rows, 1 column arrangement">ℹ</span></label>
+                    <input type="number" id="layout_3x1_gapH" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">H gap</span>
+                    <input type="number" id="layout_3x1_gapV" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">V gap</span>
+                </div>
+                
+                <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">4 Items Layouts</h4>
+                <div class="config-item">
+                    <label>2×2 (square):<span class="info-icon" data-tooltip="Multiplier for 2 rows, 2 columns arrangement">ℹ</span></label>
+                    <input type="number" id="layout_2x2_gapH" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">H gap</span>
+                    <input type="number" id="layout_2x2_gapV" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">V gap</span>
+                </div>
+                
+                <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">6 Items Layouts</h4>
+                <div class="config-item">
+                    <label>3×2 (wider):<span class="info-icon" data-tooltip="Multiplier for 2 rows, 3 columns arrangement (horizontal)">ℹ</span></label>
+                    <input type="number" id="layout_3x2_gapH" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">H gap</span>
+                    <input type="number" id="layout_3x2_gapV" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">V gap</span>
+                </div>
+                <div class="config-item">
+                    <label>2×3 (taller):<span class="info-icon" data-tooltip="Multiplier for 3 rows, 2 columns arrangement (vertical)">ℹ</span></label>
+                    <input type="number" id="layout_2x3_gapH" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">H gap</span>
+                    <input type="number" id="layout_2x3_gapV" min="0" max="3" step="0.1" value="1.0">
+                    <span class="unit" style="width: 50px;">V gap</span>
+                </div>
+                </div>
             </div>
 
             <div class="modal-actions">
@@ -641,6 +765,9 @@
         const canvas = document.getElementById('testCanvas');
         const ctx = canvas.getContext('2d');
         let currentTestType = 'number-vs-features';
+        
+        // Store current test state for redrawing with updated spacing
+        let currentTestState = null;
 
         // Default spacing configuration - now per shape/fruit type
         const DEFAULT_CONFIG = {
@@ -657,6 +784,15 @@
                 orange: { gapH: 77, gapV: 77, offset: 84 },
                 banana: { gapH: 77, gapV: 77, offset: 84 },
                 cherry: { gapH: 77, gapV: 77, offset: 84 }
+            },
+            layoutMultipliers: {
+                '1x2': { gapH: 1.0, gapV: 1.0 },
+                '2x1': { gapH: 1.0, gapV: 1.0 },
+                '2x2': { gapH: 1.0, gapV: 1.0 },
+                '1x3': { gapH: 1.0, gapV: 1.0 },
+                '3x1': { gapH: 1.0, gapV: 1.0 },
+                '3x2': { gapH: 1.0, gapV: 1.0 },
+                '2x3': { gapH: 1.0, gapV: 1.0 }
             }
         };
 
@@ -683,6 +819,14 @@
                         Object.keys(parsed.fruits).forEach(fruit => {
                             if (spacingConfig.fruits[fruit]) {
                                 Object.assign(spacingConfig.fruits[fruit], parsed.fruits[fruit]);
+                            }
+                        });
+                    }
+                    // Deep merge for layout multipliers
+                    if (parsed.layoutMultipliers) {
+                        Object.keys(parsed.layoutMultipliers).forEach(layout => {
+                            if (spacingConfig.layoutMultipliers[layout]) {
+                                Object.assign(spacingConfig.layoutMultipliers[layout], parsed.layoutMultipliers[layout]);
                             }
                         });
                     }
@@ -716,13 +860,21 @@
                 document.getElementById(`${fruit}_gapV`).value = config.gapV;
                 document.getElementById(`${fruit}_offset`).value = config.offset;
             });
+            
+            // Update layout multiplier configs
+            ['1x2', '2x1', '2x2', '1x3', '3x1', '3x2', '2x3'].forEach(layout => {
+                const config = spacingConfig.layoutMultipliers[layout];
+                document.getElementById(`layout_${layout}_gapH`).value = config.gapH;
+                document.getElementById(`layout_${layout}_gapV`).value = config.gapV;
+            });
         }
 
         // Read config from inputs
         function readConfigFromInputs() {
             spacingConfig = {
                 shapes: {},
-                fruits: {}
+                fruits: {},
+                layoutMultipliers: {}
             };
             
             // Read shape configs
@@ -740,6 +892,14 @@
                     gapH: parseFloat(document.getElementById(`${fruit}_gapH`).value),
                     gapV: parseFloat(document.getElementById(`${fruit}_gapV`).value),
                     offset: parseFloat(document.getElementById(`${fruit}_offset`).value)
+                };
+            });
+            
+            // Read layout multiplier configs
+            ['1x2', '2x1', '2x2', '1x3', '3x1', '3x2', '2x3'].forEach(layout => {
+                spacingConfig.layoutMultipliers[layout] = {
+                    gapH: parseFloat(document.getElementById(`layout_${layout}_gapH`).value),
+                    gapV: parseFloat(document.getElementById(`layout_${layout}_gapV`).value)
                 };
             });
         }
@@ -817,7 +977,7 @@
         saveConfigBtn.onclick = () => {
             readConfigFromInputs();
             saveConfig();
-            generateTest();
+            generateTest(true); // redrawOnly = true, keeps same shapes/fruits/colors
             modal.classList.remove('show');
         };
 
@@ -829,6 +989,20 @@
 
         exportConfigBtn.onclick = exportConfig;
         importConfigBtn.onclick = importConfig;
+
+        // Tab switching
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                button.classList.add('active');
+                const tabName = button.dataset.tab;
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+            });
+        });
 
         // Test type selection
         document.querySelectorAll('.test-type-btn').forEach(btn => {
@@ -1313,6 +1487,14 @@
                 rows = Math.ceil(count / cols);
             }
             
+            // Get layout multiplier
+            const layoutKey = `${cols}x${rows}`;
+            const layoutMultiplier = spacingConfig.layoutMultipliers[layoutKey] || { gapH: 1.0, gapV: 1.0 };
+            
+            // Apply multipliers to gaps
+            const effectiveGapH = shapeConfig.gapH * layoutMultiplier.gapH;
+            const effectiveGapV = shapeConfig.gapV * layoutMultiplier.gapV;
+            
             // Base position starts at padding boundary
             const baseX = boxX + safePadding;
             const baseY = boxY + safePadding;
@@ -1329,22 +1511,22 @@
                     rotation: 0
                 });
                 // Bottom row: 2 shapes
-                const bottomRowWidth = size * 2 + shapeConfig.gapH;
+                const bottomRowWidth = size * 2 + effectiveGapH;
                 const bottomCenterX = baseX + (usableWidth - bottomRowWidth) / 2;
                 positions.push({
                     x: bottomCenterX + size / 2,
-                    y: baseY + size + shapeConfig.gapV + size / 2,
+                    y: baseY + size + effectiveGapV + size / 2,
                     rotation: 0
                 });
                 positions.push({
-                    x: bottomCenterX + size + shapeConfig.gapH + size / 2,
-                    y: baseY + size + shapeConfig.gapV + size / 2,
+                    x: bottomCenterX + size + effectiveGapH + size / 2,
+                    y: baseY + size + effectiveGapV + size / 2,
                     rotation: 0
                 });
             } else if (count === 5) {
                 // 2 on top, 3 on bottom
                 // Top row: 2 shapes
-                const topRowWidth = size * 2 + shapeConfig.gapH;
+                const topRowWidth = size * 2 + effectiveGapH;
                 const topCenterX = baseX + (usableWidth - topRowWidth) / 2;
                 positions.push({
                     x: topCenterX + size / 2,
@@ -1352,24 +1534,24 @@
                     rotation: 0
                 });
                 positions.push({
-                    x: topCenterX + size + shapeConfig.gapH + size / 2,
+                    x: topCenterX + size + effectiveGapH + size / 2,
                     y: baseY + size / 2,
                     rotation: 0
                 });
                 // Bottom row: 3 shapes
-                const bottomRowWidth = size * 3 + shapeConfig.gapH * 2;
+                const bottomRowWidth = size * 3 + effectiveGapH * 2;
                 const bottomCenterX = baseX + (usableWidth - bottomRowWidth) / 2;
                 for(let i = 0; i < 3; i++) {
                     positions.push({
-                        x: bottomCenterX + (size + shapeConfig.gapH) * i + size / 2,
-                        y: baseY + size + shapeConfig.gapV + size / 2,
+                        x: bottomCenterX + (size + effectiveGapH) * i + size / 2,
+                        y: baseY + size + effectiveGapV + size / 2,
                         rotation: 0
                     });
                 }
             } else {
                 // Standard grid for even numbers (2, 4, 6)
                 // Center the grid horizontally only, start from top padding
-                const gridWidth = size * cols + shapeConfig.gapH * (cols - 1);
+                const gridWidth = size * cols + effectiveGapH * (cols - 1);
                 const startX = baseX + (usableWidth - gridWidth) / 2;
                 const startY = baseY;
                 
@@ -1377,8 +1559,8 @@
                     const col = i % cols;
                     const row = Math.floor(i / cols);
                     
-                    const x = startX + (size + shapeConfig.gapH) * col + size / 2;
-                    const y = startY + (size + shapeConfig.gapV) * row + size / 2;
+                    const x = startX + (size + effectiveGapH) * col + size / 2;
+                    const y = startY + (size + effectiveGapV) * row + size / 2;
                     
                     positions.push({
                         x: x,
@@ -1437,7 +1619,7 @@
             return randomChoice(fruits);
         }
 
-        function generateTest() {
+        function generateTest(redrawOnly = false) {
             // Always use horizontal layout
             canvas.width = 2400;
             canvas.height = 800;
@@ -1458,6 +1640,16 @@
             const targetPattern = document.getElementById('targetPattern').value;
             
             const boxY = 200;
+            
+            // If redrawOnly and we have a saved state, use it
+            if (redrawOnly && currentTestState && 
+                currentTestState.targetType === targetType &&
+                currentTestState.targetCount === targetCount &&
+                currentTestState.targetPattern === targetPattern) {
+                // Redraw using saved state
+                redrawTestFromState(currentTestState, boxSize, margin, shapeSize, boxY);
+                return;
+            }
 
             if (targetType === 'shape') {
                 // Original shape-based logic
@@ -1547,6 +1739,17 @@
                 }
 
                 console.log(`Correct answer: ${correctIndex + 1}`);
+                
+                // Save test state for redrawing
+                currentTestState = {
+                    targetType: 'shape',
+                    targetCount,
+                    targetPattern,
+                    targetShape,
+                    targetColor,
+                    choices,
+                    correctIndex
+                };
                 
             } else if (targetType === 'fruit') {
                 // Fruit-based logic with B2 positioning requirements
@@ -1641,8 +1844,36 @@
                     const positions = [];
                     // Get fruit-specific configuration
                     const fruitConfig = spacingConfig.fruits[fruitType] || spacingConfig.fruits.apple;
-                    const spacingH = fruitConfig.gapH; // Horizontal gap between fruits
-                    const spacingV = fruitConfig.gapV; // Vertical gap between fruits
+                    
+                    // Determine layout for multiplier selection
+                    let layoutKey = '1x1';
+                    let cols = 1, rows = 1;
+                    
+                    if (count === 2) {
+                        layoutKey = '1x2';
+                        cols = 2; rows = 1;
+                    } else if (count === 3) {
+                        layoutKey = '2x2'; // Triangle arrangement uses 2x2 space
+                        cols = 2; rows = 2;
+                    } else if (count === 4) {
+                        layoutKey = '2x2';
+                        cols = 2; rows = 2;
+                    } else if (count === 5) {
+                        layoutKey = '3x2';
+                        cols = 3; rows = 2;
+                    } else if (count === 6) {
+                        const useVertical = groupPosition === 'left' || groupPosition === 'right';
+                        layoutKey = useVertical ? '2x3' : '3x2';
+                        cols = useVertical ? 2 : 3;
+                        rows = useVertical ? 3 : 2;
+                    }
+                    
+                    // Get layout multiplier
+                    const layoutMultiplier = spacingConfig.layoutMultipliers[layoutKey] || { gapH: 1.0, gapV: 1.0 };
+                    
+                    // Apply multipliers to base gaps
+                    const spacingH = fruitConfig.gapH * layoutMultiplier.gapH;
+                    const spacingV = fruitConfig.gapV * layoutMultiplier.gapV;
                     
                     // First, arrange fruits in a compact group around origin (0,0)
                     let relativePositions = [];
@@ -1791,6 +2022,217 @@
                     console.log('Choice patterns:', choices.map((c, i) => `${i+1}: ${c.pattern}`).join(', '));
                 } else {
                     console.log(`All fruits use pattern: ${targetPattern}`);
+                }
+                
+                // Save test state for redrawing
+                currentTestState = {
+                    targetType: 'fruit',
+                    targetCount,
+                    targetPattern,
+                    targetFruit,
+                    targetPatternValue,
+                    targetGroupPosition,
+                    choices,
+                    correctIndex
+                };
+            }
+        }
+        
+        function redrawTestFromState(state, boxSize, margin, shapeSize, boxY) {
+            // Redraw the test using saved state with updated spacing configuration
+            if (state.targetType === 'shape') {
+                // Draw target
+                const targetX = margin;
+                drawBox(targetX, boxY, boxSize, '目标');
+                const targetPositions = arrangeShapes(state.targetCount, targetX, boxY, boxSize, shapeSize, state.targetShape);
+                targetPositions.forEach(pos => {
+                    drawShape(pos.x, pos.y, shapeSize, state.targetShape, state.targetColor, state.targetPattern, pos.rotation);
+                });
+
+                // Draw choices
+                for(let i = 0; i < 4; i++) {
+                    const x = margin + (boxSize + margin) * (i + 1);
+                    drawBox(x, boxY, boxSize, `${i + 1}`);
+                    const positions = arrangeShapes(state.choices[i].count, x, boxY, boxSize, shapeSize, state.choices[i].shape);
+                    positions.forEach(pos => {
+                        drawShape(pos.x, pos.y, shapeSize, state.choices[i].shape, state.choices[i].color, state.choices[i].pattern, pos.rotation);
+                    });
+                }
+            } else if (state.targetType === 'fruit') {
+                const getPositionsForCount = (count, centerX, centerY, boxSize, groupPosition, fruitType) => {
+                    const positions = [];
+                    // Get fruit-specific configuration
+                    const fruitConfig = spacingConfig.fruits[fruitType] || spacingConfig.fruits.apple;
+                    
+                    // Determine layout for multiplier selection
+                    let layoutKey = '1x1';
+                    let cols = 1, rows = 1;
+                    
+                    if (count === 2) {
+                        layoutKey = '1x2';
+                        cols = 2; rows = 1;
+                    } else if (count === 3) {
+                        layoutKey = '2x2'; // Triangle arrangement uses 2x2 space
+                        cols = 2; rows = 2;
+                    } else if (count === 4) {
+                        layoutKey = '2x2';
+                        cols = 2; rows = 2;
+                    } else if (count === 5) {
+                        layoutKey = '3x2';
+                        cols = 3; rows = 2;
+                    } else if (count === 6) {
+                        const useVertical = groupPosition === 'left' || groupPosition === 'right';
+                        layoutKey = useVertical ? '2x3' : '3x2';
+                        cols = useVertical ? 2 : 3;
+                        rows = useVertical ? 3 : 2;
+                    }
+                    
+                    // Get layout multiplier
+                    const layoutMultiplier = spacingConfig.layoutMultipliers[layoutKey] || { gapH: 1.0, gapV: 1.0 };
+                    
+                    // Apply multipliers to base gaps
+                    const spacingH = fruitConfig.gapH * layoutMultiplier.gapH;
+                    const spacingV = fruitConfig.gapV * layoutMultiplier.gapV;
+                    
+                    // First, arrange fruits in a compact group around origin (0,0)
+                    let relativePositions = [];
+                    switch (count) {
+                        case 1:
+                            relativePositions.push({ x: 0, y: 0 });
+                            break;
+                        case 2:
+                            relativePositions.push({ x: -spacingH * 0.6, y: 0 });
+                            relativePositions.push({ x: spacingH * 0.6, y: 0 });
+                            break;
+                        case 3:
+                            relativePositions.push({ x: 0, y: -spacingV * 0.6 });
+                            relativePositions.push({ x: -spacingH * 0.6, y: spacingV * 0.6 });
+                            relativePositions.push({ x: spacingH * 0.6, y: spacingV * 0.6 });
+                            break;
+                        case 4:
+                            relativePositions.push({ x: -spacingH * 0.6, y: -spacingV * 0.6 });
+                            relativePositions.push({ x: spacingH * 0.6, y: -spacingV * 0.6 });
+                            relativePositions.push({ x: -spacingH * 0.6, y: spacingV * 0.6 });
+                            relativePositions.push({ x: spacingH * 0.6, y: spacingV * 0.6 });
+                            break;
+                        case 5: {
+                            const twoTop = Math.random() < 0.5;
+                            const rowOffset = spacingV * 0.9;
+                            const colOffset = spacingH * 1.0;
+                            if (twoTop) {
+                                // Top row: 2
+                                relativePositions.push({ x: -colOffset * 0.5, y: -rowOffset });
+                                relativePositions.push({ x: colOffset * 0.5, y: -rowOffset });
+                                // Bottom row: 3
+                                relativePositions.push({ x: -colOffset, y: rowOffset });
+                                relativePositions.push({ x: 0, y: rowOffset });
+                                relativePositions.push({ x: colOffset, y: rowOffset });
+                            } else {
+                                // Top row: 3
+                                relativePositions.push({ x: -colOffset, y: -rowOffset });
+                                relativePositions.push({ x: 0, y: -rowOffset });
+                                relativePositions.push({ x: colOffset, y: -rowOffset });
+                                // Bottom row: 2
+                                relativePositions.push({ x: -colOffset * 0.5, y: rowOffset });
+                                relativePositions.push({ x: colOffset * 0.5, y: rowOffset });
+                            }
+                            break;
+                        }
+                        case 6: {
+                            const useVertical = groupPosition === 'left' || groupPosition === 'right';
+                            if (useVertical) {
+                                // 2 columns x 3 rows (taller layout)
+                                const colOffset = spacingH * 1.05;
+                                const rowOffset = spacingV * 0.95;
+                                const columns = [-colOffset * 0.5, colOffset * 0.5];
+                                const rows = [-rowOffset, 0, rowOffset];
+                                columns.forEach(x => {
+                                    rows.forEach(y => {
+                                        relativePositions.push({ x, y });
+                                    });
+                                });
+                            } else {
+                                // 3 columns x 2 rows (wider layout)
+                                const colOffset = spacingH * 1.0;
+                                const rowOffset = spacingV * 0.9;
+                                const columns = [-colOffset, 0, colOffset];
+                                const rows = [-rowOffset, rowOffset];
+                                columns.forEach(x => {
+                                    rows.forEach(y => {
+                                        relativePositions.push({ x, y });
+                                    });
+                                });
+                            }
+                            break;
+                        }
+                        default:
+                            // Fallback: distribute in simple grid
+                            const cols = Math.ceil(Math.sqrt(count));
+                            const rows = Math.ceil(count / cols);
+                            for (let i = 0; i < count; i++) {
+                                const col = i % cols;
+                                const row = Math.floor(i / cols);
+                                const offsetX = (col - (cols - 1) / 2) * spacingH;
+                                const offsetY = (row - (rows - 1) / 2) * spacingV;
+                                relativePositions.push({ x: offsetX, y: offsetY });
+                            }
+                    }
+                    
+                    // Now shift the ENTIRE group based on groupPosition
+                    const offset = fruitConfig.offset;
+                    let groupOffsetX = 0, groupOffsetY = 0;
+                    
+                    switch(groupPosition) {
+                        case 'top':
+                            groupOffsetY = -offset;
+                            break;
+                        case 'bottom':
+                            groupOffsetY = offset;
+                            break;
+                        case 'left':
+                            groupOffsetX = -offset;
+                            break;
+                        case 'right':
+                            groupOffsetX = offset;
+                            break;
+                        case 'center':
+                        default:
+                            // No offset
+                            break;
+                    }
+                    
+                    // Apply group offset to all fruits
+                    relativePositions.forEach(pos => {
+                        positions.push({
+                            x: centerX + pos.x + groupOffsetX,
+                            y: centerY + pos.y + groupOffsetY
+                        });
+                    });
+                    
+                    return positions;
+                };
+                
+                // Draw target
+                const targetX = margin;
+                drawBox(targetX, boxY, boxSize, '目标');
+                const targetCenterX = targetX + boxSize / 2;
+                const targetCenterY = boxY + boxSize / 2;
+                const targetPositions = getPositionsForCount(state.targetCount, targetCenterX, targetCenterY, boxSize, state.targetGroupPosition, state.targetFruit);
+                targetPositions.forEach(pos => {
+                    drawFruit(pos.x, pos.y, shapeSize, state.targetFruit, state.targetPatternValue, 'center');
+                });
+
+                // Draw choices with positioned fruits
+                for(let i = 0; i < 4; i++) {
+                    const x = margin + (boxSize + margin) * (i + 1);
+                    drawBox(x, boxY, boxSize, `${i + 1}`);
+                    const centerX = x + boxSize / 2;
+                    const centerY = boxY + boxSize / 2;
+                    
+                    const fruitPositions = getPositionsForCount(state.choices[i].count, centerX, centerY, boxSize, state.choices[i].position, state.choices[i].fruit);
+                    fruitPositions.forEach(pos => {
+                        drawFruit(pos.x, pos.y, shapeSize, state.choices[i].fruit, state.choices[i].pattern, 'center');
+                    });
                 }
             }
         }
