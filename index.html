@@ -1368,11 +1368,10 @@
                 }
             } else {
                 // Standard grid for even numbers (2, 4, 6)
-                // Center the entire grid horizontally and vertically
+                // Center the grid horizontally only, start from top padding
                 const gridWidth = size * cols + shapeConfig.gapH * (cols - 1);
-                const gridHeight = size * rows + shapeConfig.gapV * (rows - 1);
                 const startX = baseX + (usableWidth - gridWidth) / 2;
-                const startY = baseY + (usableHeight - gridHeight) / 2;
+                const startY = baseY;
                 
                 for(let i = 0; i < count; i++) {
                     const col = i % cols;
