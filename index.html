@@ -1280,56 +1280,48 @@
     const radius = size * 0.32 * scale;
     const offsetX = radius * 1.0;
     const offsetY = size * 0.05 * scale;
-    const cherries = [
-        { cx: -offsetX, cy: offsetY },
-        { cx: offsetX, cy: offsetY }
-    ];
+    // Single cherry
+    const cx = 0;
+    const cy = offsetY;
 
-    cherries.forEach(({ cx, cy }) => {
+    ctx.save();
+    ctx.translate(cx, cy);
+
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+    ctx.fillStyle = fruitColor;
+    ctx.fill();
+
+    if (pattern !== 'solid') {
         ctx.save();
-        ctx.translate(cx, cy);
-
         ctx.beginPath();
         ctx.arc(0, 0, radius, 0, Math.PI * 2);
-        ctx.fillStyle = fruitColor;
-        ctx.fill();
-
-        if (pattern !== 'solid') {
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(0, 0, radius, 0, Math.PI * 2);
-            ctx.clip();
-            applyPattern(pattern, radius * 2.1);
-            ctx.restore();
-        }
-
-        ctx.strokeStyle = outlineColor;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(0, 0, radius, 0, Math.PI * 2);
-        ctx.stroke();
-
-        // Highlight
-        ctx.fillStyle = highlightColor;
-        ctx.beginPath();
-        ctx.ellipse(-radius * 0.25, -radius * 0.35, radius * 0.18, radius * 0.1, -Math.PI / 6, 0, Math.PI * 2);
-        ctx.fill();
-
+        ctx.clip();
+        applyPattern(pattern, radius * 2.1);
         ctx.restore();
-    });
+    }
 
-    // Stems
+    ctx.strokeStyle = outlineColor;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Highlight
+    ctx.fillStyle = highlightColor;
+    ctx.beginPath();
+    ctx.ellipse(-radius * 0.25, -radius * 0.35, radius * 0.18, radius * 0.1, -Math.PI / 6, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+
+    // Stem
     ctx.strokeStyle = stemColor;
     ctx.lineCap = 'round';
     ctx.lineWidth = size * 0.08 * scale;
     ctx.beginPath();
-    ctx.moveTo(-offsetX * 0.9, offsetY - radius * 0.9);
-    ctx.bezierCurveTo(-offsetX * 0.4, -size * 0.2, -size * 0.1, -size * 0.25, 0, -size * 0.3);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(offsetX * 0.9, offsetY - radius * 0.9);
-    ctx.bezierCurveTo(offsetX * 0.4, -size * 0.2, size * 0.1, -size * 0.25, 0, -size * 0.3);
+    ctx.moveTo(0, offsetY - radius * 0.9);
+    ctx.bezierCurveTo(0, -size * 0.1, 0, -size * 0.2, 0, -size * 0.3);
     ctx.stroke();
 
     // Leaf at top junction
