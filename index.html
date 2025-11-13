@@ -407,34 +407,154 @@
             </div>
             
             <div class="config-section">
-                <h3>Shape Spacing</h3>
+                <h3>Shape Spacing (by shape type)</h3>
+                
+                <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">⚫ Circle</h4>
                 <div class="config-item">
-                    <label>Gap between shapes (horizontal):</label>
-                    <input type="number" id="shapeGapHorizontal" min="0" max="200" step="5" value="60">
+                    <label>Gap horizontal:</label>
+                    <input type="number" id="circle_gapH" min="0" max="200" step="5" value="60">
                     <span class="unit">px</span>
                 </div>
                 <div class="config-item">
-                    <label>Gap between shapes (vertical):</label>
-                    <input type="number" id="shapeGapVertical" min="0" max="200" step="5" value="60">
+                    <label>Gap vertical:</label>
+                    <input type="number" id="circle_gapV" min="0" max="200" step="5" value="60">
                     <span class="unit">px</span>
                 </div>
                 <div class="config-item">
-                    <label>Padding from box edges:</label>
-                    <input type="number" id="shapePadding" min="0" max="100" step="5" value="45">
+                    <label>Padding:</label>
+                    <input type="number" id="circle_padding" min="0" max="100" step="5" value="45">
+                    <span class="unit">px</span>
+                </div>
+                
+                <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">⬛ Square</h4>
+                <div class="config-item">
+                    <label>Gap horizontal:</label>
+                    <input type="number" id="square_gapH" min="0" max="200" step="5" value="60">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Gap vertical:</label>
+                    <input type="number" id="square_gapV" min="0" max="200" step="5" value="60">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Padding:</label>
+                    <input type="number" id="square_padding" min="0" max="100" step="5" value="45">
+                    <span class="unit">px</span>
+                </div>
+                
+                <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">▲ Triangle</h4>
+                <div class="config-item">
+                    <label>Gap horizontal:</label>
+                    <input type="number" id="triangle_gapH" min="0" max="200" step="5" value="60">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Gap vertical:</label>
+                    <input type="number" id="triangle_gapV" min="0" max="200" step="5" value="60">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Padding:</label>
+                    <input type="number" id="triangle_padding" min="0" max="100" step="5" value="45">
+                    <span class="unit">px</span>
+                </div>
+                
+                <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">▬ Rectangle</h4>
+                <div class="config-item">
+                    <label>Gap horizontal:</label>
+                    <input type="number" id="rectangle_gapH" min="0" max="200" step="5" value="60">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Gap vertical:</label>
+                    <input type="number" id="rectangle_gapV" min="0" max="200" step="5" value="60">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Padding:</label>
+                    <input type="number" id="rectangle_padding" min="0" max="100" step="5" value="45">
+                    <span class="unit">px</span>
+                </div>
+                
+                <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">★ Star</h4>
+                <div class="config-item">
+                    <label>Gap horizontal:</label>
+                    <input type="number" id="star_gapH" min="0" max="200" step="5" value="60">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Gap vertical:</label>
+                    <input type="number" id="star_gapV" min="0" max="200" step="5" value="60">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Padding:</label>
+                    <input type="number" id="star_padding" min="0" max="100" step="5" value="45">
                     <span class="unit">px</span>
                 </div>
             </div>
 
             <div class="config-section">
-                <h3>Fruit Spacing</h3>
+                <h3>Fruit Spacing (by fruit type)</h3>
+                
+                <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">🍎 Apple</h4>
                 <div class="config-item">
-                    <label>Gap between fruits (within group):</label>
-                    <input type="number" id="fruitGap" min="0" max="200" step="5" value="77">
+                    <label>Gap between fruits:</label>
+                    <input type="number" id="apple_gap" min="0" max="200" step="5" value="77">
                     <span class="unit">px</span>
                 </div>
                 <div class="config-item">
-                    <label>Fruit group position offset:</label>
-                    <input type="number" id="fruitGroupOffset" min="0" max="200" step="5" value="84">
+                    <label>Group offset:</label>
+                    <input type="number" id="apple_offset" min="0" max="200" step="5" value="84">
+                    <span class="unit">px</span>
+                </div>
+                
+                <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">🍐 Pear</h4>
+                <div class="config-item">
+                    <label>Gap between fruits:</label>
+                    <input type="number" id="pear_gap" min="0" max="200" step="5" value="77">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Group offset:</label>
+                    <input type="number" id="pear_offset" min="0" max="200" step="5" value="84">
+                    <span class="unit">px</span>
+                </div>
+                
+                <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">🍊 Orange</h4>
+                <div class="config-item">
+                    <label>Gap between fruits:</label>
+                    <input type="number" id="orange_gap" min="0" max="200" step="5" value="77">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Group offset:</label>
+                    <input type="number" id="orange_offset" min="0" max="200" step="5" value="84">
+                    <span class="unit">px</span>
+                </div>
+                
+                <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">🍌 Banana</h4>
+                <div class="config-item">
+                    <label>Gap between fruits:</label>
+                    <input type="number" id="banana_gap" min="0" max="200" step="5" value="77">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Group offset:</label>
+                    <input type="number" id="banana_offset" min="0" max="200" step="5" value="84">
+                    <span class="unit">px</span>
+                </div>
+                
+                <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">🍒 Cherry</h4>
+                <div class="config-item">
+                    <label>Gap between fruits:</label>
+                    <input type="number" id="cherry_gap" min="0" max="200" step="5" value="77">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Group offset:</label>
+                    <input type="number" id="cherry_offset" min="0" max="200" step="5" value="84">
                     <span class="unit">px</span>
                 </div>
             </div>
@@ -453,27 +573,53 @@
         const ctx = canvas.getContext('2d');
         let currentTestType = 'number-vs-features';
 
-        // Default spacing configuration
+        // Default spacing configuration - now per shape/fruit type
         const DEFAULT_CONFIG = {
-            shapeGapHorizontal: 60,
-            shapeGapVertical: 60,
-            shapePadding: 45,
-            fruitGap: 77,
-            fruitGroupOffset: 84
+            shapes: {
+                circle: { gapH: 60, gapV: 60, padding: 45 },
+                square: { gapH: 60, gapV: 60, padding: 45 },
+                triangle: { gapH: 60, gapV: 60, padding: 45 },
+                rectangle: { gapH: 60, gapV: 60, padding: 45 },
+                star: { gapH: 60, gapV: 60, padding: 45 }
+            },
+            fruits: {
+                apple: { gap: 77, offset: 84 },
+                pear: { gap: 77, offset: 84 },
+                orange: { gap: 77, offset: 84 },
+                banana: { gap: 77, offset: 84 },
+                cherry: { gap: 77, offset: 84 }
+            }
         };
 
         // Current spacing configuration
-        let spacingConfig = { ...DEFAULT_CONFIG };
+        let spacingConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
 
         // Load configuration from localStorage
         function loadConfig() {
             const saved = localStorage.getItem('spacingConfig');
             if (saved) {
                 try {
-                    spacingConfig = { ...DEFAULT_CONFIG, ...JSON.parse(saved) };
+                    const parsed = JSON.parse(saved);
+                    spacingConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+                    // Deep merge for shapes
+                    if (parsed.shapes) {
+                        Object.keys(parsed.shapes).forEach(shape => {
+                            if (spacingConfig.shapes[shape]) {
+                                Object.assign(spacingConfig.shapes[shape], parsed.shapes[shape]);
+                            }
+                        });
+                    }
+                    // Deep merge for fruits
+                    if (parsed.fruits) {
+                        Object.keys(parsed.fruits).forEach(fruit => {
+                            if (spacingConfig.fruits[fruit]) {
+                                Object.assign(spacingConfig.fruits[fruit], parsed.fruits[fruit]);
+                            }
+                        });
+                    }
                 } catch (e) {
                     console.error('Failed to load config:', e);
-                    spacingConfig = { ...DEFAULT_CONFIG };
+                    spacingConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
                 }
             }
             updateConfigInputs();
@@ -486,27 +632,50 @@
 
         // Update config input values
         function updateConfigInputs() {
-            document.getElementById('shapeGapHorizontal').value = spacingConfig.shapeGapHorizontal;
-            document.getElementById('shapeGapVertical').value = spacingConfig.shapeGapVertical;
-            document.getElementById('shapePadding').value = spacingConfig.shapePadding;
-            document.getElementById('fruitGap').value = spacingConfig.fruitGap;
-            document.getElementById('fruitGroupOffset').value = spacingConfig.fruitGroupOffset;
+            // Update shape configs
+            ['circle', 'square', 'triangle', 'rectangle', 'star'].forEach(shape => {
+                const config = spacingConfig.shapes[shape];
+                document.getElementById(`${shape}_gapH`).value = config.gapH;
+                document.getElementById(`${shape}_gapV`).value = config.gapV;
+                document.getElementById(`${shape}_padding`).value = config.padding;
+            });
+            
+            // Update fruit configs
+            ['apple', 'pear', 'orange', 'banana', 'cherry'].forEach(fruit => {
+                const config = spacingConfig.fruits[fruit];
+                document.getElementById(`${fruit}_gap`).value = config.gap;
+                document.getElementById(`${fruit}_offset`).value = config.offset;
+            });
         }
 
         // Read config from inputs
         function readConfigFromInputs() {
             spacingConfig = {
-                shapeGapHorizontal: parseFloat(document.getElementById('shapeGapHorizontal').value),
-                shapeGapVertical: parseFloat(document.getElementById('shapeGapVertical').value),
-                shapePadding: parseFloat(document.getElementById('shapePadding').value),
-                fruitGap: parseFloat(document.getElementById('fruitGap').value),
-                fruitGroupOffset: parseFloat(document.getElementById('fruitGroupOffset').value)
+                shapes: {},
+                fruits: {}
             };
+            
+            // Read shape configs
+            ['circle', 'square', 'triangle', 'rectangle', 'star'].forEach(shape => {
+                spacingConfig.shapes[shape] = {
+                    gapH: parseFloat(document.getElementById(`${shape}_gapH`).value),
+                    gapV: parseFloat(document.getElementById(`${shape}_gapV`).value),
+                    padding: parseFloat(document.getElementById(`${shape}_padding`).value)
+                };
+            });
+            
+            // Read fruit configs
+            ['apple', 'pear', 'orange', 'banana', 'cherry'].forEach(fruit => {
+                spacingConfig.fruits[fruit] = {
+                    gap: parseFloat(document.getElementById(`${fruit}_gap`).value),
+                    offset: parseFloat(document.getElementById(`${fruit}_offset`).value)
+                };
+            });
         }
 
         // Reset configuration to defaults
         function resetConfig() {
-            spacingConfig = { ...DEFAULT_CONFIG };
+            spacingConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
             updateConfigInputs();
             saveConfig();
             generateTest();
@@ -1037,12 +1206,15 @@
             ctx.restore();
         }
 
-        function arrangeShapes(count, boxX, boxY, boxSize, size) {
+        function arrangeShapes(count, boxX, boxY, boxSize, size, shapeType) {
             const positions = [];
+            
+            // Get shape-specific configuration
+            const shapeConfig = spacingConfig.shapes[shapeType] || spacingConfig.shapes.circle;
             
             // Calculate safe margins - shapes must fit completely within the box
             const shapeRadius = size / 2;
-            const safePadding = shapeRadius + spacingConfig.shapePadding;
+            const safePadding = shapeRadius + shapeConfig.padding;
             const usableWidth = boxSize - (safePadding * 2);
             const usableHeight = boxSize - (safePadding * 2);
 
@@ -1071,10 +1243,10 @@
             }
             
             // Calculate spacing with configurable gaps
-            const totalGapWidth = spacingConfig.shapeGapHorizontal * (cols - 1);
-            const totalGapHeight = spacingConfig.shapeGapVertical * (rows - 1);
-            const cellWidth = (usableWidth - totalGapWidth) / cols + spacingConfig.shapeGapHorizontal;
-            const cellHeight = (usableHeight - totalGapHeight) / rows + spacingConfig.shapeGapVertical;
+            const totalGapWidth = shapeConfig.gapH * (cols - 1);
+            const totalGapHeight = shapeConfig.gapV * (rows - 1);
+            const cellWidth = (usableWidth - totalGapWidth) / cols + shapeConfig.gapH;
+            const cellHeight = (usableHeight - totalGapHeight) / rows + shapeConfig.gapV;
             
             // Special arrangements for odd numbers
             if (count === 3) {
@@ -1275,7 +1447,7 @@
                 // Draw target
                 const targetX = margin;
                 drawBox(targetX, boxY, boxSize, '目标');
-                const targetPositions = arrangeShapes(targetCount, targetX, boxY, boxSize, shapeSize);
+                const targetPositions = arrangeShapes(targetCount, targetX, boxY, boxSize, shapeSize, targetShape);
                 targetPositions.forEach(pos => {
                     drawShape(pos.x, pos.y, shapeSize, targetShape, targetColor, targetPattern, pos.rotation);
                 });
@@ -1284,7 +1456,7 @@
                 for(let i = 0; i < 4; i++) {
                     const x = margin + (boxSize + margin) * (i + 1);
                     drawBox(x, boxY, boxSize, `${i + 1}`);
-                    const positions = arrangeShapes(choices[i].count, x, boxY, boxSize, shapeSize);
+                    const positions = arrangeShapes(choices[i].count, x, boxY, boxSize, shapeSize, choices[i].shape);
                     positions.forEach(pos => {
                         drawShape(pos.x, pos.y, shapeSize, choices[i].shape, choices[i].color, choices[i].pattern, pos.rotation);
                     });
@@ -1381,9 +1553,11 @@
                 }
 
                 // Arrange fruits in a compact group, then shift entire group based on position
-                const getPositionsForCount = (count, centerX, centerY, boxSize, groupPosition) => {
+                const getPositionsForCount = (count, centerX, centerY, boxSize, groupPosition, fruitType) => {
                     const positions = [];
-                    const spacing = spacingConfig.fruitGap; // Configurable spacing between fruits
+                    // Get fruit-specific configuration
+                    const fruitConfig = spacingConfig.fruits[fruitType] || spacingConfig.fruits.apple;
+                    const spacing = fruitConfig.gap; // Configurable spacing between fruits
                     
                     // First, arrange fruits in a compact group around origin (0,0)
                     let relativePositions = [];
@@ -1472,7 +1646,7 @@
                     }
                     
                     // Now shift the ENTIRE group based on groupPosition
-                    const offset = spacingConfig.fruitGroupOffset; // Configurable group offset
+                    const offset = fruitConfig.offset; // Configurable group offset
                     let groupOffsetX = 0, groupOffsetY = 0;
                     
                     switch(groupPosition) {
@@ -1510,7 +1684,7 @@
                 drawBox(targetX, boxY, boxSize, '目标');
                 const targetCenterX = targetX + boxSize / 2;
                 const targetCenterY = boxY + boxSize / 2;
-                const targetPositions = getPositionsForCount(targetCount, targetCenterX, targetCenterY, boxSize, targetGroupPosition);
+                const targetPositions = getPositionsForCount(targetCount, targetCenterX, targetCenterY, boxSize, targetGroupPosition, targetFruit);
                 targetPositions.forEach(pos => {
                     drawFruit(pos.x, pos.y, shapeSize, targetFruit, targetPatternValue, 'center');
                 });
@@ -1522,7 +1696,7 @@
                     const centerX = x + boxSize / 2;
                     const centerY = boxY + boxSize / 2;
                     
-                    const fruitPositions = getPositionsForCount(choices[i].count, centerX, centerY, boxSize, choices[i].position);
+                    const fruitPositions = getPositionsForCount(choices[i].count, centerX, centerY, boxSize, choices[i].position, choices[i].fruit);
                     fruitPositions.forEach(pos => {
                         drawFruit(pos.x, pos.y, shapeSize, choices[i].fruit, choices[i].pattern, 'center');
                     });
