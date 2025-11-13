@@ -703,6 +703,9 @@
         const canvas = document.getElementById('testCanvas');
         const ctx = canvas.getContext('2d');
         let currentTestType = 'number-vs-features';
+        
+        // Store current test state for redrawing with updated spacing
+        let currentTestState = null;
 
         // Default spacing configuration - now per shape/fruit type
         const DEFAULT_CONFIG = {
@@ -912,7 +915,7 @@
         saveConfigBtn.onclick = () => {
             readConfigFromInputs();
             saveConfig();
-            generateTest();
+            generateTest(true); // redrawOnly = true, keeps same shapes/fruits/colors
             modal.classList.remove('show');
         };
 
@@ -1540,7 +1543,7 @@
             return randomChoice(fruits);
         }
 
-        function generateTest() {
+        function generateTest(redrawOnly = false) {
             // Always use horizontal layout
             canvas.width = 2400;
             canvas.height = 800;
@@ -1561,6 +1564,16 @@
             const targetPattern = document.getElementById('targetPattern').value;
             
             const boxY = 200;
+            
+            // If redrawOnly and we have a saved state, use it
+            if (redrawOnly && currentTestState && 
+                currentTestState.targetType === targetType &&
+                currentTestState.targetCount === targetCount &&
+                currentTestState.targetPattern === targetPattern) {
+                // Redraw using saved state
+                redrawTestFromState(currentTestState, boxSize, margin, shapeSize, boxY);
+                return;
+            }
 
             if (targetType === 'shape') {
                 // Original shape-based logic
@@ -1650,6 +1663,17 @@
                 }
 
                 console.log(`Correct answer: ${correctIndex + 1}`);
+                
+                // Save test state for redrawing
+                currentTestState = {
+                    targetType: 'shape',
+                    targetCount,
+                    targetPattern,
+                    targetShape,
+                    targetColor,
+                    choices,
+                    correctIndex
+                };
                 
             } else if (targetType === 'fruit') {
                 // Fruit-based logic with B2 positioning requirements
@@ -1922,6 +1946,217 @@
                     console.log('Choice patterns:', choices.map((c, i) => `${i+1}: ${c.pattern}`).join(', '));
                 } else {
                     console.log(`All fruits use pattern: ${targetPattern}`);
+                }
+                
+                // Save test state for redrawing
+                currentTestState = {
+                    targetType: 'fruit',
+                    targetCount,
+                    targetPattern,
+                    targetFruit,
+                    targetPatternValue,
+                    targetGroupPosition,
+                    choices,
+                    correctIndex
+                };
+            }
+        }
+        
+        function redrawTestFromState(state, boxSize, margin, shapeSize, boxY) {
+            // Redraw the test using saved state with updated spacing configuration
+            if (state.targetType === 'shape') {
+                // Draw target
+                const targetX = margin;
+                drawBox(targetX, boxY, boxSize, '目标');
+                const targetPositions = arrangeShapes(state.targetCount, targetX, boxY, boxSize, shapeSize, state.targetShape);
+                targetPositions.forEach(pos => {
+                    drawShape(pos.x, pos.y, shapeSize, state.targetShape, state.targetColor, state.targetPattern, pos.rotation);
+                });
+
+                // Draw choices
+                for(let i = 0; i < 4; i++) {
+                    const x = margin + (boxSize + margin) * (i + 1);
+                    drawBox(x, boxY, boxSize, `${i + 1}`);
+                    const positions = arrangeShapes(state.choices[i].count, x, boxY, boxSize, shapeSize, state.choices[i].shape);
+                    positions.forEach(pos => {
+                        drawShape(pos.x, pos.y, shapeSize, state.choices[i].shape, state.choices[i].color, state.choices[i].pattern, pos.rotation);
+                    });
+                }
+            } else if (state.targetType === 'fruit') {
+                const getPositionsForCount = (count, centerX, centerY, boxSize, groupPosition, fruitType) => {
+                    const positions = [];
+                    // Get fruit-specific configuration
+                    const fruitConfig = spacingConfig.fruits[fruitType] || spacingConfig.fruits.apple;
+                    
+                    // Determine layout for multiplier selection
+                    let layoutKey = '1x1';
+                    let cols = 1, rows = 1;
+                    
+                    if (count === 2) {
+                        layoutKey = '1x2';
+                        cols = 2; rows = 1;
+                    } else if (count === 3) {
+                        layoutKey = '2x2'; // Triangle arrangement uses 2x2 space
+                        cols = 2; rows = 2;
+                    } else if (count === 4) {
+                        layoutKey = '2x2';
+                        cols = 2; rows = 2;
+                    } else if (count === 5) {
+                        layoutKey = '3x2';
+                        cols = 3; rows = 2;
+                    } else if (count === 6) {
+                        const useVertical = groupPosition === 'left' || groupPosition === 'right';
+                        layoutKey = useVertical ? '2x3' : '3x2';
+                        cols = useVertical ? 2 : 3;
+                        rows = useVertical ? 3 : 2;
+                    }
+                    
+                    // Get layout multiplier
+                    const layoutMultiplier = spacingConfig.layoutMultipliers[layoutKey] || { gapH: 1.0, gapV: 1.0 };
+                    
+                    // Apply multipliers to base gaps
+                    const spacingH = fruitConfig.gapH * layoutMultiplier.gapH;
+                    const spacingV = fruitConfig.gapV * layoutMultiplier.gapV;
+                    
+                    // First, arrange fruits in a compact group around origin (0,0)
+                    let relativePositions = [];
+                    switch (count) {
+                        case 1:
+                            relativePositions.push({ x: 0, y: 0 });
+                            break;
+                        case 2:
+                            relativePositions.push({ x: -spacingH * 0.6, y: 0 });
+                            relativePositions.push({ x: spacingH * 0.6, y: 0 });
+                            break;
+                        case 3:
+                            relativePositions.push({ x: 0, y: -spacingV * 0.6 });
+                            relativePositions.push({ x: -spacingH * 0.6, y: spacingV * 0.6 });
+                            relativePositions.push({ x: spacingH * 0.6, y: spacingV * 0.6 });
+                            break;
+                        case 4:
+                            relativePositions.push({ x: -spacingH * 0.6, y: -spacingV * 0.6 });
+                            relativePositions.push({ x: spacingH * 0.6, y: -spacingV * 0.6 });
+                            relativePositions.push({ x: -spacingH * 0.6, y: spacingV * 0.6 });
+                            relativePositions.push({ x: spacingH * 0.6, y: spacingV * 0.6 });
+                            break;
+                        case 5: {
+                            const twoTop = Math.random() < 0.5;
+                            const rowOffset = spacingV * 0.9;
+                            const colOffset = spacingH * 1.0;
+                            if (twoTop) {
+                                // Top row: 2
+                                relativePositions.push({ x: -colOffset * 0.5, y: -rowOffset });
+                                relativePositions.push({ x: colOffset * 0.5, y: -rowOffset });
+                                // Bottom row: 3
+                                relativePositions.push({ x: -colOffset, y: rowOffset });
+                                relativePositions.push({ x: 0, y: rowOffset });
+                                relativePositions.push({ x: colOffset, y: rowOffset });
+                            } else {
+                                // Top row: 3
+                                relativePositions.push({ x: -colOffset, y: -rowOffset });
+                                relativePositions.push({ x: 0, y: -rowOffset });
+                                relativePositions.push({ x: colOffset, y: -rowOffset });
+                                // Bottom row: 2
+                                relativePositions.push({ x: -colOffset * 0.5, y: rowOffset });
+                                relativePositions.push({ x: colOffset * 0.5, y: rowOffset });
+                            }
+                            break;
+                        }
+                        case 6: {
+                            const useVertical = groupPosition === 'left' || groupPosition === 'right';
+                            if (useVertical) {
+                                // 2 columns x 3 rows (taller layout)
+                                const colOffset = spacingH * 1.05;
+                                const rowOffset = spacingV * 0.95;
+                                const columns = [-colOffset * 0.5, colOffset * 0.5];
+                                const rows = [-rowOffset, 0, rowOffset];
+                                columns.forEach(x => {
+                                    rows.forEach(y => {
+                                        relativePositions.push({ x, y });
+                                    });
+                                });
+                            } else {
+                                // 3 columns x 2 rows (wider layout)
+                                const colOffset = spacingH * 1.0;
+                                const rowOffset = spacingV * 0.9;
+                                const columns = [-colOffset, 0, colOffset];
+                                const rows = [-rowOffset, rowOffset];
+                                columns.forEach(x => {
+                                    rows.forEach(y => {
+                                        relativePositions.push({ x, y });
+                                    });
+                                });
+                            }
+                            break;
+                        }
+                        default:
+                            // Fallback: distribute in simple grid
+                            const cols = Math.ceil(Math.sqrt(count));
+                            const rows = Math.ceil(count / cols);
+                            for (let i = 0; i < count; i++) {
+                                const col = i % cols;
+                                const row = Math.floor(i / cols);
+                                const offsetX = (col - (cols - 1) / 2) * spacingH;
+                                const offsetY = (row - (rows - 1) / 2) * spacingV;
+                                relativePositions.push({ x: offsetX, y: offsetY });
+                            }
+                    }
+                    
+                    // Now shift the ENTIRE group based on groupPosition
+                    const offset = fruitConfig.offset;
+                    let groupOffsetX = 0, groupOffsetY = 0;
+                    
+                    switch(groupPosition) {
+                        case 'top':
+                            groupOffsetY = -offset;
+                            break;
+                        case 'bottom':
+                            groupOffsetY = offset;
+                            break;
+                        case 'left':
+                            groupOffsetX = -offset;
+                            break;
+                        case 'right':
+                            groupOffsetX = offset;
+                            break;
+                        case 'center':
+                        default:
+                            // No offset
+                            break;
+                    }
+                    
+                    // Apply group offset to all fruits
+                    relativePositions.forEach(pos => {
+                        positions.push({
+                            x: centerX + pos.x + groupOffsetX,
+                            y: centerY + pos.y + groupOffsetY
+                        });
+                    });
+                    
+                    return positions;
+                };
+                
+                // Draw target
+                const targetX = margin;
+                drawBox(targetX, boxY, boxSize, '目标');
+                const targetCenterX = targetX + boxSize / 2;
+                const targetCenterY = boxY + boxSize / 2;
+                const targetPositions = getPositionsForCount(state.targetCount, targetCenterX, targetCenterY, boxSize, state.targetGroupPosition, state.targetFruit);
+                targetPositions.forEach(pos => {
+                    drawFruit(pos.x, pos.y, shapeSize, state.targetFruit, state.targetPatternValue, 'center');
+                });
+
+                // Draw choices with positioned fruits
+                for(let i = 0; i < 4; i++) {
+                    const x = margin + (boxSize + margin) * (i + 1);
+                    drawBox(x, boxY, boxSize, `${i + 1}`);
+                    const centerX = x + boxSize / 2;
+                    const centerY = boxY + boxSize / 2;
+                    
+                    const fruitPositions = getPositionsForCount(state.choices[i].count, centerX, centerY, boxSize, state.choices[i].position, state.choices[i].fruit);
+                    fruitPositions.forEach(pos => {
+                        drawFruit(pos.x, pos.y, shapeSize, state.choices[i].fruit, state.choices[i].pattern, 'center');
+                    });
                 }
             }
         }
