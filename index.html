@@ -342,6 +342,52 @@
             border-right-color: #333;
             z-index: 1001;
         }
+
+        /* Tab Styles */
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            border: none;
+            border-top: 2px solid transparent;
+            border-left: 2px solid transparent;
+            border-right: 2px solid transparent;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .tab-button:hover {
+            background-color: #e8e8e8;
+            color: #333;
+        }
+
+        .tab-button.active {
+            background-color: white;
+            color: #333;
+            border-top-color: #4CAF50;
+            border-left-color: #ddd;
+            border-right-color: #ddd;
+            border-bottom: 2px solid white;
+            margin-bottom: -2px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -430,9 +476,9 @@
         </div>
 
         <div class="action-buttons">
-            <button id="configBtn" class="config-button">⚙️ Spacing Configuration</button>
             <button id="generateBtn">Generate Test</button>
             <button id="downloadBtn">Download as PNG</button>
+            <button id="configBtn" class="config-button">⚙️ Spacing Configuration</button>
         </div>
 
         <canvas id="testCanvas" width="1600" height="900"></canvas>
@@ -450,8 +496,17 @@
                 <span class="close">&times;</span>
             </div>
             
-            <div class="config-section">
-                <h3>Shape Spacing (by shape type)</h3>
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-button active" data-tab="shapes">Shape Spacing</button>
+                <button class="tab-button" data-tab="fruits">Fruit Spacing</button>
+                <button class="tab-button" data-tab="layouts">Layout Multipliers</button>
+            </div>
+            
+            <!-- Tab Content: Shape Spacing -->
+            <div id="shapes-tab" class="tab-content active">
+                <div class="config-section">
+                    <h3>Shape Spacing (by shape type)</h3>
                 
                 <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">⚫ Circle</h4>
                 <div class="config-item">
@@ -537,10 +592,13 @@
                     <input type="number" id="star_padding" min="0" max="100" step="5" value="45">
                     <span class="unit">px</span>
                 </div>
+                </div>
             </div>
 
-            <div class="config-section">
-                <h3>Fruit Spacing (by fruit type)</h3>
+            <!-- Tab Content: Fruit Spacing -->
+            <div id="fruits-tab" class="tab-content">
+                <div class="config-section">
+                    <h3>Fruit Spacing (by fruit type)</h3>
                 
                 <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">🍎 Apple</h4>
                 <div class="config-item">
@@ -626,11 +684,14 @@
                     <input type="number" id="cherry_offset" min="0" max="200" step="5" value="84">
                     <span class="unit">px</span>
                 </div>
+                </div>
             </div>
 
-            <div class="config-section">
-                <h3>Layout-Specific Gap Multipliers</h3>
-                <p style="color: #666; font-size: 13px; margin-bottom: 15px;">Multipliers adjust gaps based on grid arrangement (e.g., 3×2 vs 2×3 for 6 items). Values > 1.0 increase gaps, < 1.0 decrease them.</p>
+            <!-- Tab Content: Layout Multipliers -->
+            <div id="layouts-tab" class="tab-content">
+                <div class="config-section">
+                    <h3>Layout-Specific Gap Multipliers</h3>
+                    <p style="color: #666; font-size: 13px; margin-bottom: 15px;">Multipliers adjust gaps based on grid arrangement (e.g., 3×2 vs 2×3 for 6 items). Values > 1.0 increase gaps, < 1.0 decrease them.</p>
                 
                 <h4 style="color: #777; font-size: 15px; margin-top: 15px; margin-bottom: 10px;">2 Items Layouts</h4>
                 <div class="config-item">
@@ -687,6 +748,7 @@
                     <span class="unit" style="width: 50px;">H gap</span>
                     <input type="number" id="layout_2x3_gapV" min="0" max="3" step="0.1" value="1.0">
                     <span class="unit" style="width: 50px;">V gap</span>
+                </div>
                 </div>
             </div>
 
@@ -927,6 +989,20 @@
 
         exportConfigBtn.onclick = exportConfig;
         importConfigBtn.onclick = importConfig;
+
+        // Tab switching
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                button.classList.add('active');
+                const tabName = button.dataset.tab;
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+            });
+        });
 
         // Test type selection
         document.querySelectorAll('.test-type-btn').forEach(btn => {
