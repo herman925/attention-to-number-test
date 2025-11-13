@@ -2362,7 +2362,7 @@
         
         document.getElementById('targetFruit').addEventListener('change', updateFruitPreview);
 
-        document.getElementById('generateBtn').addEventListener('click', generateTest);
+        document.getElementById('generateBtn').addEventListener('click', () => generateTest());
         document.getElementById('downloadBtn').addEventListener('click', downloadTest);
 
         // Load configuration and generate initial test
