@@ -165,6 +165,139 @@
         .hidden {
             display: none;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+        }
+
+        .config-section {
+            margin-bottom: 25px;
+        }
+
+        .config-section h3 {
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .config-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+
+        .config-item label {
+            flex: 1;
+            font-weight: normal;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .config-item input[type="number"] {
+            width: 100px;
+            padding: 6px 10px;
+        }
+
+        .config-item .unit {
+            color: #999;
+            font-size: 13px;
+            width: 40px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+        }
+
+        .modal-actions button {
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .config-button {
+            background-color: #6c757d;
+            margin-right: 10px;
+        }
+
+        .config-button:hover {
+            background-color: #5a6268;
+        }
     </style>
 </head>
 <body>
@@ -253,6 +386,7 @@
         </div>
 
         <div class="action-buttons">
+            <button id="configBtn" class="config-button">⚙️ Spacing Configuration</button>
             <button id="generateBtn">Generate Test</button>
             <button id="downloadBtn">Download as PNG</button>
         </div>
@@ -264,10 +398,197 @@
         </div>
     </div>
 
+    <!-- Spacing Configuration Modal -->
+    <div id="configModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Spacing Configuration</h2>
+                <span class="close">&times;</span>
+            </div>
+            
+            <div class="config-section">
+                <h3>Shape Spacing</h3>
+                <div class="config-item">
+                    <label>Gap between shapes (horizontal):</label>
+                    <input type="number" id="shapeGapHorizontal" min="0" max="200" step="5" value="60">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Gap between shapes (vertical):</label>
+                    <input type="number" id="shapeGapVertical" min="0" max="200" step="5" value="60">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Padding from box edges:</label>
+                    <input type="number" id="shapePadding" min="0" max="100" step="5" value="45">
+                    <span class="unit">px</span>
+                </div>
+            </div>
+
+            <div class="config-section">
+                <h3>Fruit Spacing</h3>
+                <div class="config-item">
+                    <label>Gap between fruits (within group):</label>
+                    <input type="number" id="fruitGap" min="0" max="200" step="5" value="77">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Fruit group position offset:</label>
+                    <input type="number" id="fruitGroupOffset" min="0" max="200" step="5" value="84">
+                    <span class="unit">px</span>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button id="resetConfigBtn" class="btn-danger">Reset to Default</button>
+                <button id="exportConfigBtn" class="btn-secondary">Export Config</button>
+                <button id="importConfigBtn" class="btn-secondary">Import Config</button>
+                <button id="saveConfigBtn">Save & Apply</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const canvas = document.getElementById('testCanvas');
         const ctx = canvas.getContext('2d');
         let currentTestType = 'number-vs-features';
+
+        // Default spacing configuration
+        const DEFAULT_CONFIG = {
+            shapeGapHorizontal: 60,
+            shapeGapVertical: 60,
+            shapePadding: 45,
+            fruitGap: 77,
+            fruitGroupOffset: 84
+        };
+
+        // Current spacing configuration
+        let spacingConfig = { ...DEFAULT_CONFIG };
+
+        // Load configuration from localStorage
+        function loadConfig() {
+            const saved = localStorage.getItem('spacingConfig');
+            if (saved) {
+                try {
+                    spacingConfig = { ...DEFAULT_CONFIG, ...JSON.parse(saved) };
+                } catch (e) {
+                    console.error('Failed to load config:', e);
+                    spacingConfig = { ...DEFAULT_CONFIG };
+                }
+            }
+            updateConfigInputs();
+        }
+
+        // Save configuration to localStorage
+        function saveConfig() {
+            localStorage.setItem('spacingConfig', JSON.stringify(spacingConfig));
+        }
+
+        // Update config input values
+        function updateConfigInputs() {
+            document.getElementById('shapeGapHorizontal').value = spacingConfig.shapeGapHorizontal;
+            document.getElementById('shapeGapVertical').value = spacingConfig.shapeGapVertical;
+            document.getElementById('shapePadding').value = spacingConfig.shapePadding;
+            document.getElementById('fruitGap').value = spacingConfig.fruitGap;
+            document.getElementById('fruitGroupOffset').value = spacingConfig.fruitGroupOffset;
+        }
+
+        // Read config from inputs
+        function readConfigFromInputs() {
+            spacingConfig = {
+                shapeGapHorizontal: parseFloat(document.getElementById('shapeGapHorizontal').value),
+                shapeGapVertical: parseFloat(document.getElementById('shapeGapVertical').value),
+                shapePadding: parseFloat(document.getElementById('shapePadding').value),
+                fruitGap: parseFloat(document.getElementById('fruitGap').value),
+                fruitGroupOffset: parseFloat(document.getElementById('fruitGroupOffset').value)
+            };
+        }
+
+        // Reset configuration to defaults
+        function resetConfig() {
+            spacingConfig = { ...DEFAULT_CONFIG };
+            updateConfigInputs();
+            saveConfig();
+            generateTest();
+        }
+
+        // Export configuration as JSON
+        function exportConfig() {
+            const dataStr = JSON.stringify(spacingConfig, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `spacing-config-${Date.now()}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Import configuration from JSON
+        function importConfig() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        try {
+                            const imported = JSON.parse(event.target.result);
+                            spacingConfig = { ...DEFAULT_CONFIG, ...imported };
+                            updateConfigInputs();
+                            saveConfig();
+                            generateTest();
+                            alert('Configuration imported successfully!');
+                        } catch (error) {
+                            alert('Failed to import configuration: ' + error.message);
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+
+        // Modal control
+        const modal = document.getElementById('configModal');
+        const configBtn = document.getElementById('configBtn');
+        const closeBtn = document.querySelector('.close');
+        const saveConfigBtn = document.getElementById('saveConfigBtn');
+        const resetConfigBtn = document.getElementById('resetConfigBtn');
+        const exportConfigBtn = document.getElementById('exportConfigBtn');
+        const importConfigBtn = document.getElementById('importConfigBtn');
+
+        configBtn.onclick = () => {
+            modal.classList.add('show');
+        };
+
+        closeBtn.onclick = () => {
+            modal.classList.remove('show');
+        };
+
+        window.onclick = (event) => {
+            if (event.target === modal) {
+                modal.classList.remove('show');
+            }
+        };
+
+        saveConfigBtn.onclick = () => {
+            readConfigFromInputs();
+            saveConfig();
+            generateTest();
+            modal.classList.remove('show');
+        };
+
+        resetConfigBtn.onclick = () => {
+            if (confirm('Are you sure you want to reset to default spacing values?')) {
+                resetConfig();
+            }
+        };
+
+        exportConfigBtn.onclick = exportConfig;
+        importConfigBtn.onclick = importConfig;
 
         // Test type selection
         document.querySelectorAll('.test-type-btn').forEach(btn => {
@@ -721,7 +1042,7 @@
             
             // Calculate safe margins - shapes must fit completely within the box
             const shapeRadius = size / 2;
-            const safePadding = shapeRadius + 8; // Extra padding from edges
+            const safePadding = shapeRadius + spacingConfig.shapePadding;
             const usableWidth = boxSize - (safePadding * 2);
             const usableHeight = boxSize - (safePadding * 2);
 
@@ -749,9 +1070,11 @@
                 rows = Math.ceil(count / cols);
             }
             
-            // Calculate spacing
-            const cellWidth = usableWidth / cols;
-            const cellHeight = usableHeight / rows;
+            // Calculate spacing with configurable gaps
+            const totalGapWidth = spacingConfig.shapeGapHorizontal * (cols - 1);
+            const totalGapHeight = spacingConfig.shapeGapVertical * (rows - 1);
+            const cellWidth = (usableWidth - totalGapWidth) / cols + spacingConfig.shapeGapHorizontal;
+            const cellHeight = (usableHeight - totalGapHeight) / rows + spacingConfig.shapeGapVertical;
             
             // Special arrangements for odd numbers
             if (count === 3) {
@@ -1060,7 +1383,7 @@
                 // Arrange fruits in a compact group, then shift entire group based on position
                 const getPositionsForCount = (count, centerX, centerY, boxSize, groupPosition) => {
                     const positions = [];
-                    const spacing = shapeSize * 1.1; // Base spacing between fruits
+                    const spacing = spacingConfig.fruitGap; // Configurable spacing between fruits
                     
                     // First, arrange fruits in a compact group around origin (0,0)
                     let relativePositions = [];
@@ -1149,7 +1472,7 @@
                     }
                     
                     // Now shift the ENTIRE group based on groupPosition
-                    const offset = boxSize * 0.22;
+                    const offset = spacingConfig.fruitGroupOffset; // Configurable group offset
                     let groupOffsetX = 0, groupOffsetY = 0;
                     
                     switch(groupPosition) {
@@ -1343,7 +1666,8 @@
         document.getElementById('generateBtn').addEventListener('click', generateTest);
         document.getElementById('downloadBtn').addEventListener('click', downloadTest);
 
-        // Generate initial test and previews
+        // Load configuration and generate initial test
+        loadConfig();
         toggleTargetType();
         updateShapePreview();
         updateColorPreview();
