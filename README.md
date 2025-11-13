@@ -1,10 +1,45 @@
 # Attention to Number Test Generator
 
-A web-based cognitive assessment tool for investigating the interplay between numerical attention (subitizing) and visual feature processing in human perception.
+A web-based stimulus generator for designing cognitive assessment materials that investigate the interplay between numerical attention (subitizing) and visual feature processing in human perception. The application produces standardized image stimuli for deployment in external experimental platforms; it does not administer participant-facing tasks or record behavioural data.
+
+## Table of Contents
+
+- [Attention to Number Test Generator](#attention-to-number-test-generator)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Academic Background](#academic-background)
+    - [Subitizing and Numerical Cognition](#subitizing-and-numerical-cognition)
+    - [Theoretical Framework](#theoretical-framework)
+  - [Experiment Methodology](#experiment-methodology)
+    - [Test Structure](#test-structure)
+    - [Experimental Conditions](#experimental-conditions)
+      - [1. Shape-Based Tests](#1-shape-based-tests)
+      - [2. Fruit-Based Tests](#2-fruit-based-tests)
+    - [Visual Arrangement Algorithm](#visual-arrangement-algorithm)
+  - [Web Application Features](#web-application-features)
+    - [User Interface](#user-interface)
+    - [Implementation Details](#implementation-details)
+  - [Usage Instructions](#usage-instructions)
+    - [For Researchers](#for-researchers)
+    - [Experimental Design Recommendations](#experimental-design-recommendations)
+  - [Research Applications](#research-applications)
+  - [Technical Specifications](#technical-specifications)
+    - [Output Format](#output-format)
+    - [Browser Compatibility](#browser-compatibility)
+    - [Performance](#performance)
+  - [Theoretical Considerations](#theoretical-considerations)
+    - [Why This Test Design?](#why-this-test-design)
+    - [Limitations and Considerations](#limitations-and-considerations)
+  - [Future Research Directions](#future-research-directions)
+  - [References](#references)
+  - [Citation](#citation)
+  - [License](#license)
+  - [Contributing](#contributing)
+  - [Contact](#contact)
 
 ## Overview
 
-This application generates standardized visual tests designed to explore how humans attend to numerical quantities versus visual features (shape, color, pattern) when processing sets of objects. The tool is particularly useful for researchers studying numerical cognition, subitizing, visual attention, and perceptual decision-making.
+This application generates standardized visual stimulus sets designed to support experiments on how humans attend to numerical quantities versus visual features (shape, color, pattern) when processing sets of objects. Researchers can export stimuli for integration into their own timing, presentation, and data-collection pipelines (e.g., PsychoPy, jsPsych, online survey platforms).
 
 ## Academic Background
 
@@ -12,23 +47,11 @@ This application generates standardized visual tests designed to explore how hum
 
 Subitizing refers to the rapid, accurate, and confident enumeration of small quantities (typically 1-4 items) without conscious counting. This cognitive phenomenon has been extensively studied in cognitive psychology and neuroscience as a fundamental aspect of numerical cognition.
 
-**Key Research Areas:**
-- **Numerical vs. Feature Attention**: Research has shown that numerical quantity can be processed as a primary perceptual feature, similar to color or shape (Burr & Ross, 2008; Anobile et al., 2016)
-- **Subitizing Range**: The classical subitizing range is typically limited to 3-4 items, after which enumeration becomes slower and less accurate (Kaufman et al., 1949)
-- **Parallel Processing**: Subitizing is believed to involve parallel processing mechanisms in the visual system, distinguishing it from serial counting
-- **Cross-Modal Integration**: Numerical processing interacts with other visual features, providing insights into multidimensional perceptual integration
+Research on numerosity demonstrates that numerical quantity can function as a primary perceptual feature, similar to color or shape, reinforcing the need for stimuli that isolate number from other attributes (Anobile et al., 2016; Burr & Ross, 2008). Attentional manipulations further show that directing spatial or object-based attention to target arrays improves estimation accuracy and speed, indicating that well-crafted cues can amplify numerical sensitivity (Pomè et al., 2020). Structured configurations, including shape templates and grid-based layouts, have been linked to enhanced subitizing performance and distinctive neural signatures, underscoring the value of controlling spatial composition in experimental materials (Gheorghiu & Dering, 2020; Gheorghiu & Goldschmitt, 2022). In parallel, studies reveal that color diversity and other contextual variations can bias magnitude perception, necessitating deliberate management of feature contrasts when designing research stimuli (Li et al., 2018, 2025). Broader investigations highlight how spatial information transfers across sensory modalities and how individual differences shape numerosity attention, situating subitizing within a complex network of parallel processing and cross-modal integration mechanisms (Feigenson et al., 2004; Kaufman et al., 1949; Ziegler et al., 2023).
 
 ### Theoretical Framework
 
-This test generator is designed to investigate two primary cognitive mechanisms:
-
-1. **Quantity Discrimination**: The ability to rapidly distinguish between different numerosities
-2. **Feature Integration**: How numerical information competes with or integrates with other visual features (shape, color, pattern)
-
-The experimental paradigm creates a controlled environment where:
-- **Target stimuli** are defined by multiple visual dimensions (shape/fruit type, color, pattern, and quantity)
-- **Choice stimuli** systematically vary specific dimensions while keeping others constant
-- **Correct responses** require attending to numerical quantity while potentially ignoring salient visual features
+The generator is structured to illuminate two interconnected mechanisms—rapid quantity discrimination and the integration of numerical and non-numerical features—by allowing researchers to manipulate which attributes align or conflict within a single stimulus. Target arrays can combine shape, fruit type, color, pattern, and quantity, while comparison arrays selectively vary these attributes to reveal whether participants prioritise number or are captured by competing visual features. Because correct responses emerge only when observers privilege numerosity over salient distractors, the resulting image sets offer a controlled platform for probing how attention, perceptual grouping, and feature-based competition interact during subitizing and related cognitive processes.
 
 ## Experiment Methodology
 
@@ -60,7 +83,7 @@ Tests using geometric shapes to investigate number vs. shape/color attention.
 - All counts across choices are unique
 - All colors across choices are unique
 
-**Cognitive Focus**: This condition tests whether participants can focus on numerical quantity while ignoring shape identity and color—features that are typically more salient in visual processing.
+**Cognitive Focus**: This condition tests whether participants can focus on numerical quantity while ignoring shape identity and color—features that are typically more salient in visual processing. Structured shapes have been shown to prime numerosity estimates when spatial layouts reinforce shape templates (Gheorghiu & Dering, 2020; Gheorghiu & Goldschmitt, 2022).
 
 #### 2. Fruit-Based Tests
 Tests using fruit imagery to examine ecological validity and pattern processing.
@@ -82,9 +105,9 @@ Tests using fruit imagery to examine ecological validity and pattern processing.
 
 **Pattern Modes:**
 - **Fixed Pattern**: All stimuli use the same pattern (solid, striped, dotted, or grid)
-- **Full Random**: Each choice box uses a different pattern from a pool of all four patterns, testing pattern discrimination alongside numerical attention
+- **Full Random**: Each choice box uses a different pattern from a pool of all four patterns, testing pattern discrimination alongside numerical attention and preventing color-driven numerosity biases observed in high-variety displays (Li et al., 2025).
 
-**Cognitive Focus**: Fruit stimuli provide more ecologically valid, real-world objects, allowing investigation of whether numerical processing differs for familiar vs. abstract objects.
+**Cognitive Focus**: Fruit stimuli provide more ecologically valid, real-world objects, allowing investigation of whether numerical processing differs for familiar vs. abstract objects. The condition also enables examination of how individual differences in spontaneous attention to numerosity manifest across task contexts (Mazzocco et al., 2020) and how spatial organisation or cross-modal cues influence enumeration strategies (Li et al., 2018; Ziegler et al., 2023).
 
 ### Visual Arrangement Algorithm
 
@@ -99,6 +122,7 @@ The application uses intelligent spatial arrangement algorithms:
 - Compact grouping of fruits within each box
 - Entire groups can be offset to different positions (spatial attention manipulation)
 - Layout adapts based on count and position (e.g., 6 fruits arranged as 3×2 horizontally or 2×3 vertically)
+- Optional spatial offsets and symmetry manipulations align with evidence that contextual arrangement alters perceived numerosity and response dynamics (Gheorghiu & Goldschmitt, 2022; Li et al., 2018).
 
 ## Web Application Features
 
@@ -166,13 +190,17 @@ The generator provides an intuitive interface with real-time preview:
 
 3. **Generate Tests**
    - Click "Generate Test" button
-   - New test is created with randomized correct answer position
-   - Console logs indicate correct answer number
+   - New test image is created with randomized correct answer position
+   - Console logs indicate correct answer number for experimenter reference
 
 4. **Export for Study**
    - Click "Download as PNG" to save the test image
-   - Use images in your experimental software or print for paper-based testing
+   - Import images into your experimental software or print for paper-based testing
    - Organize files by timestamp
+
+5. **Integrate with Experimental Platform**
+   - Present images within your preferred data-collection environment (e.g., PsychoPy, jsPsych, Gorilla)
+   - Implement timing, response capture, and analytics externally; the generator supplies stimuli only
 
 ### Experimental Design Recommendations
 
@@ -193,7 +221,7 @@ The generator provides an intuitive interface with real-time preview:
 
 ## Research Applications
 
-This tool is suitable for investigating:
+This stimulus generator supports investigations of:
 
 1. **Development of Numerical Cognition**
    - Test children at different ages to track subitizing development
@@ -202,10 +230,11 @@ This tool is suitable for investigating:
 2. **Individual Differences**
    - Examine whether some individuals have stronger number vs. feature attention
    - Correlate with other cognitive measures (working memory, math ability)
+   - Leverage task contexts to study variability in spontaneous numerosity focus across populations (Mazzocco et al., 2020)
 
 3. **Perceptual Load Effects**
-   - Manipulate visual complexity through pattern variations
-   - Study how increased perceptual load affects numerical processing
+   - Manipulate visual complexity through pattern variations.
+   - Study how increased perceptual load affects numerical processing, including color-driven biases and grouping effects (Li et al., 2018; Li et al., 2025).
 
 4. **Cross-Cultural Studies**
    - Test whether numerical attention patterns are universal or culturally influenced
@@ -217,7 +246,7 @@ This tool is suitable for investigating:
 
 6. **Neuroimaging Research**
    - Use as stimulus material in fMRI or EEG studies
-   - Identify neural correlates of numerical vs. feature attention
+   - Identify neural correlates of numerical vs. feature attention while maintaining precise control over spatial context (Gheorghiu & Dering, 2020; Pomè et al., 2020).
 
 ## Technical Specifications
 
@@ -247,7 +276,7 @@ The experimental paradigm implemented here addresses several methodological chal
 
 2. **Unique Foils**: Ensuring all choices have unique counts prevents confusion and makes the numerical discrimination task clearer
 
-3. **Varied Arrangements**: Spatial arrangement variations prevent participants from using position or configuration as a cue (must truly enumerate)
+3. **Varied Arrangements**: Spatial arrangement variations prevent participants from using position or configuration as a cue (must truly enumerate) and enable controlled investigations of grouping effects on perceived numerosity (Gheorghiu & Goldschmitt, 2022; Li et al., 2018).
 
 4. **Pattern Variation**: Pattern overlays add complexity without changing object identity, allowing study of how texture/pattern affects enumeration
 
@@ -268,32 +297,30 @@ Potential extensions of this paradigm:
 4. **Ratio Effects**: Systematically vary the ratio between correct and foil counts to study Weber's law for numerosity
 5. **Interference Effects**: Add distractor elements that don't count toward the total
 
-## References and Further Reading
+## References
 
-### Key Papers on Subitizing:
-- Kaufman, E. L., Lord, M. W., Reese, T. W., & Volkmann, J. (1949). The discrimination of visual number. *American Journal of Psychology, 62*(4), 498-525.
-- Trick, L. M., & Pylyshyn, Z. W. (1994). Why are small and large numbers enumerated differently? A limited-capacity preattentive stage in vision. *Psychological Review, 101*(1), 80-102.
-
-### Numerical Cognition:
-- Dehaene, S. (2011). *The Number Sense: How the Mind Creates Mathematics*. Oxford University Press.
-- Feigenson, L., Dehaene, S., & Spelke, E. (2004). Core systems of number. *Trends in Cognitive Sciences, 8*(7), 307-314.
-
-### Numerosity as a Perceptual Feature:
-- Burr, D., & Ross, J. (2008). A visual sense of number. *Current Biology, 18*(6), 425-428.
-- Anobile, G., Cicchini, G. M., & Burr, D. C. (2016). Number as a primary perceptual attribute: A review. *Perception, 45*(1-2), 5-31.
-
-### Visual Attention and Features:
-- Treisman, A. M., & Gelade, G. (1980). A feature-integration theory of attention. *Cognitive Psychology, 12*(1), 97-136.
-- Wolfe, J. M., & Horowitz, T. S. (2004). What attributes guide the deployment of visual attention and how do they do it? *Nature Reviews Neuroscience, 5*(6), 495-501.
+<p style="margin-left:0.5in; text-indent:-0.5in;">Anobile, G., Cicchini, G. M., &amp; Burr, D. C. (2016). Number as a primary perceptual attribute: A review. <em>Perception, 45</em>(1–2), 5–31. https://doi.org/10.1177/0301006615614461</p>
+<p style="margin-left:0.5in; text-indent:-0.5in;">Burr, D., &amp; Ross, J. (2008). A visual sense of number. <em>Current Biology, 18</em>(6), 425–428. https://doi.org/10.1016/j.cub.2008.02.052</p>
+<p style="margin-left:0.5in; text-indent:-0.5in;">Dehaene, S. (2011). <em>The number sense: How the mind creates mathematics</em> (Revised and expanded ed.). Oxford University Press.</p>
+<p style="margin-left:0.5in; text-indent:-0.5in;">Feigenson, L., Dehaene, S., &amp; Spelke, E. (2004). Core systems of number. <em>Trends in Cognitive Sciences, 8</em>(7), 307–314. https://doi.org/10.1016/j.tics.2004.05.002</p>
+<p style="margin-left:0.5in; text-indent:-0.5in;">Gheorghiu, E., &amp; Dering, B. R. (2020). Shape facilitates number: Brain potentials and microstates reveal the interplay between shape and numerosity in human vision. <em>Scientific Reports, 10</em>, 12413. https://doi.org/10.1038/s41598-020-68788-4</p>
+<p style="margin-left:0.5in; text-indent:-0.5in;">Gheorghiu, E., &amp; Goldschmitt, D. (2022). Spatial and chromatic properties of numerosity estimation in isolation and context. <em>PLOS ONE, 17</em>(9), e0274564. https://doi.org/10.1371/journal.pone.0274564</p>
+<p style="margin-left:0.5in; text-indent:-0.5in;">Kaufman, E. L., Lord, M. W., Reese, T. W., &amp; Volkmann, J. (1949). The discrimination of visual number. <em>American Journal of Psychology, 62</em>(4), 498–525. https://doi.org/10.2307/1418567</p>
+<p style="margin-left:0.5in; text-indent:-0.5in;">Li, Q., Nakashima, R., &amp; Yokosawa, K. (2018). Task-irrelevant spatial dividers facilitate counting and numerosity estimation. <em>Scientific Reports, 8</em>, 15424. https://doi.org/10.1038/s41598-018-33877-y</p>
+<p style="margin-left:0.5in; text-indent:-0.5in;">Li, Q., Ting, G., Kikuno, Y., &amp; Yokosawa, K. (2025). The influence of increasing color variety on numerosity estimation and counting. <em>Psychonomic Bulletin &amp; Review</em>. Advance online publication. https://doi.org/10.3758/s13423-024-02625-x</p>
+<p style="margin-left:0.5in; text-indent:-0.5in;">Mazzocco, M. M. M., Chan, J. Y.-C., Bye, J. K., Padrutt, E. R., Praus-Singh, T., Lukowski, S., Brown, E., &amp; Olson, R. E. (2020). Attention to numerosity varies across individuals and task contexts. <em>Mathematical Thinking and Learning, 22</em>(4), 258–280. https://doi.org/10.1080/10986065.2020.1818467</p>
+<p style="margin-left:0.5in; text-indent:-0.5in;">Pomè, A., Thompson, D., Burr, D. C., &amp; Halberda, J. (2020). Location- and object-based attention enhance number estimation. <em>Attention, Perception, &amp; Psychophysics, 82</em>(8), 4181–4196. https://doi.org/10.3758/s13414-020-02178-w</p>
+<p style="margin-left:0.5in; text-indent:-0.5in;">Trick, L. M., &amp; Pylyshyn, Z. W. (1994). Why are small and large numbers enumerated differently? A limited-capacity preattentive stage in vision. <em>Psychological Review, 101</em>(1), 80–102. https://doi.org/10.1037/0033-295X.101.1.80</p>
+<p style="margin-left:0.5in; text-indent:-0.5in;">Wolfe, J. M., &amp; Horowitz, T. S. (2004). What attributes guide the deployment of visual attention and how do they do it? <em>Nature Reviews Neuroscience, 5</em>(6), 495–501. https://doi.org/10.1038/nrn1411</p>
+<p style="margin-left:0.5in; text-indent:-0.5in;">Ziegler, M. C., Stricker, L. K., &amp; Drewing, K. (2023). The role of spatial information in an approximate cross-modal number matching task. <em>Attention, Perception, &amp; Psychophysics, 85</em>(4), 1253–1266. https://doi.org/10.3758/s13414-023-02658-9</p>
 
 ## Citation
 
-If you use this tool in your research, please cite:
+If you use this tool in your research and require APA 7th edition formatting, cite it as:
 
-```
-Attention to Number Test Generator [Computer software]. (2024). 
-Retrieved from https://github.com/herman925/attention-to-number-test
-```
+<p style="margin-left:0.5in; text-indent:-0.5in;">herman925. (2025). <em>Attention to number test generator</em> [Computer software]. https://github.com/herman925/attention-to-number-test</p>
+
+*Update the year and add a version identifier if your study uses a different release.*
 
 ## License
 
