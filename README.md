@@ -318,7 +318,7 @@ Potential extensions of this paradigm:
 
 If you use this tool in your research and require APA 7th edition formatting, cite it as:
 
-<p style="margin-left:0.5in; text-indent:-0.5in;">herman925. (2025). <em>Attention to number test generator</em> [Computer software]. https://github.com/herman925/attention-to-number-test</p>
+<p style="margin-left:0.5in; text-indent:-0.5in;">Chan, H. K. K. (2025). <em>Attention to number test generator</em> [Computer software]. https://github.com/herman925/attention-to-number-test</p>
 
 *Update the year and add a version identifier if your study uses a different release.*
 
