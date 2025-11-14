@@ -1805,13 +1805,13 @@ function applyPattern(pattern, size) {
                 location: countRoleLocation
             });
 
-            // 4. Full distractor: same fruit, different pattern, location, and count
+            // 4. Full distractor: different fruit, pattern, location, and count
             const distractorPattern = takeRandomValue(otherPatterns, overlayPatterns);
             const distractorCount = takeRandomValue(countPool, otherCounts);
             const distractorLocation = takeRandomValue(otherPositions, allPositions);
             choices.push({
                 role: 'distractor',
-                fruit: targetFruit,
+                fruit: takeRandomValue(fruitPool, otherFruits),
                 pattern: distractorPattern,
                 count: distractorCount,
                 location: distractorLocation

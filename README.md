@@ -102,7 +102,7 @@ Tests using fruit imagery to examine ecological validity and pattern processing.
 | **Pattern-only foil**         | Different fruit               | **Same pattern**                     | Different spatial location          | Different count           |
 | **Location-only foil**        | Different fruit               | Different pattern                    | **Same spatial location**           | Different count           |
 | **Count-only option (correct)** | Different fruit             | Different pattern                    | Different spatial location          | **Same count**            |
-| **Full distractor (same fruit)** | **Same fruit**            | Different pattern                    | Different spatial location          | Different count           |
+| **Full distractor**              | Different fruit               | Different pattern                    | Different spatial location          | Different count           |
 
 Here, "spatial location" refers to the group position within a choice box (top, bottom, left, right, or center), and "pattern" refers to the white-on-color overlay (horizontal stripes, vertical stripes, checkered, or white dots).
 
