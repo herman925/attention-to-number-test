@@ -74,14 +74,16 @@ Tests using geometric shapes to investigate number vs. shape/color attention.
 **Target Parameters:**
 - **Target Shape**: Circle, square, triangle, rectangle, or star
 - **Target Color**: Six distinct colors (orange, teal, yellow, purple, blue, red)
-- **Target Pattern**: Solid, striped, dotted, or grid
+- **Target Pattern**: Solid fill, horizontal stripes, vertical stripes, checkered, or white dots
 - **Target Count**: 2-6 objects
 
-**Choice Generation Rules:**
-- **Correct choice**: Same count as target, different shape and color
-- **Foil choices**: Different counts, varied shapes and colors
-- All counts across choices are unique
-- All colors across choices are unique
+**Choice Generation Rules (Four-Role Structure):**
+- **Color-only foil**: Shares the target color but uses a different shape and a different count
+- **Shape-only foil**: Shares the target shape but uses a different color and a different count
+- **Count-only option (correct answer)**: Shares the target count but differs in both shape and color
+- **Full distractor**: Differs from the target in shape, color, and count
+- All counts and colors across the four choices remain unique to preserve diagnostic clarity
+- Patterns mirror the target selection so that texture never signals the answer; in other words, pattern is held constant across all four shape choices unless you explicitly vary it for the target
 
 **Cognitive Focus**: This condition tests whether participants can focus on numerical quantity while ignoring shape identity and color—features that are typically more salient in visual processing. Structured shapes have been shown to prime numerosity estimates when spatial layouts reinforce shape templates (Gheorghiu & Dering, 2020; Gheorghiu & Goldschmitt, 2022).
 
@@ -90,22 +92,24 @@ Tests using fruit imagery to examine ecological validity and pattern processing.
 
 **Target Parameters:**
 - **Target Fruit**: Apple, pear, orange, banana, or cherry
-- **Target Pattern**: Solid, striped, dotted, grid, or "Full Random"
+- **Target Pattern**: Horizontal stripes, vertical stripes, checkered, white dots, or "Full Random"
 - **Target Count**: 2-6 objects
 
-**Choice Generation Rules:**
-- **Correct choice**: Same count as target, different fruit type
-- **Foil choices**: Different counts, all different fruit types
-- Each choice uses a unique fruit type
-- All counts across choices are unique
+**Choice Generation Rules (Four-Role Structure, with pattern as the "color" dimension):**
+- **Pattern-only foil**: Shares the target’s overlay pattern (e.g., horizontal stripes) but uses a different fruit type and a different count
+- **Fruit-only foil**: Shares the target fruit type (e.g., apple) but uses a different overlay pattern and a different count
+- **Count-only option (correct answer)**: Shares the target count but uses a different fruit type and typically a different overlay pattern
+- **Full distractor**: Differs from the target in fruit type, overlay pattern, and count
+- Each choice uses a unique fruit type and a unique count to maximize diagnostic clarity
 
 **Spatial Arrangement Feature:**
 - Fruit groups can be positioned at different locations within boxes (top, bottom, left, right, center)
+- Per-fruit X/Y offset controls shift whole clusters independently along horizontal and vertical axes, yielding symmetric centering by default while enabling intentional spatial cues
 - This adds spatial attention as an additional dimension
 
 **Pattern Modes:**
-- **Fixed Pattern**: All stimuli use the same pattern (solid, striped, dotted, or grid)
-- **Full Random**: Each choice box uses a different pattern from a pool of all four patterns, testing pattern discrimination alongside numerical attention and preventing color-driven numerosity biases observed in high-variety displays (Li et al., 2025).
+- **Fixed Pattern**: All fruit stimuli in a given test use the same selected white-on-color overlay (horizontal stripes, vertical stripes, checkered, or white dots) for the target, and the four comparison choices are then constructed according to the four-role rule above (pattern-only, fruit-only, count-only, distractor).
+- **Full Random**: The target uses a single concrete overlay pattern drawn from the four-pattern pool, and the four comparison choices are again constructed according to the four-role rule, with their overlays sampled from the same pool. This mode tests pattern discrimination alongside numerical attention and prevents color-driven numerosity biases observed in high-variety displays (Li et al., 2025).
 
 **Cognitive Focus**: Fruit stimuli provide more ecologically valid, real-world objects, allowing investigation of whether numerical processing differs for familiar vs. abstract objects. The condition also enables examination of how individual differences in spontaneous attention to numerosity manifest across task contexts (Mazzocco et al., 2020) and how spatial organisation or cross-modal cues influence enumeration strategies (Li et al., 2018; Ziegler et al., 2023).
 
@@ -122,7 +126,7 @@ The application uses intelligent spatial arrangement algorithms:
 - Compact grouping of fruits within each box
 - Entire groups can be offset to different positions (spatial attention manipulation)
 - Layout adapts based on count and position (e.g., 6 fruits arranged as 3×2 horizontally or 2×3 vertically)
-- Optional spatial offsets and symmetry manipulations align with evidence that contextual arrangement alters perceived numerosity and response dynamics (Gheorghiu & Goldschmitt, 2022; Li et al., 2018).
+- Independent X/Y offset controls per fruit type keep clusters centered by default while allowing systematic shifts that mirror evidence on contextual numerosity cues (Gheorghiu & Goldschmitt, 2022; Li et al., 2018).
 
 ## Web Application Features
 
@@ -138,7 +142,7 @@ The generator provides an intuitive interface with real-time preview:
    - **Target Count**: Select 2-6 objects
    - **Shape/Fruit Selection**: Choose from 5 shape types or 5 fruit types
    - **Color Selection**: (Shape mode only) Six predefined colors
-   - **Pattern Selection**: Solid, striped, dotted, grid, or full random
+   - **Pattern Selection**: Shape mode offers solid fill plus the four overlays; fruit mode uses the overlay set with optional Full Random cycling
 
 3. **Visual Previews**
    - Real-time preview of selected shape/fruit

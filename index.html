@@ -464,10 +464,11 @@
                 <div class="select-wrapper">
                     <canvas id="patternPreview" width="35" height="35" class="select-preview"></canvas>
                     <select id="targetPattern">
-                        <option value="solid">█ Solid</option>
-                        <option value="striped">▒ Striped</option>
-                        <option value="dotted">⨿ Dotted</option>
-                        <option value="grid">▦ Grid</option>
+                        <option value="solid" id="solidPatternOption">■ Solid Fill</option>
+                        <option value="horizontal-stripes">≋ Horizontal Stripes</option>
+                        <option value="vertical-stripes">║ Vertical Stripes</option>
+                        <option value="checkered">▦ Checkered</option>
+                        <option value="white-dots">◌ White Dots</option>
                         <option value="fullrandom" id="fullrandomOption" class="hidden">🎲 Full Random</option>
                     </select>
                 </div>
@@ -612,8 +613,13 @@
                     <span class="unit">px</span>
                 </div>
                 <div class="config-item">
-                    <label>Group offset:<span class="info-icon" data-tooltip="Moves the entire fruit group to different positions (top/bottom/left/right)">ℹ</span></label>
-                    <input type="number" id="apple_offset" min="0" max="200" step="5" value="84">
+                    <label>Group offset X:<span class="info-icon" data-tooltip="Moves the fruit group left/right when positioned on the sides">ℹ</span></label>
+                    <input type="number" id="apple_offsetX" min="0" max="200" step="5" value="84">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Group offset Y:<span class="info-icon" data-tooltip="Moves the fruit group up/down when positioned top or bottom">ℹ</span></label>
+                    <input type="number" id="apple_offsetY" min="0" max="200" step="5" value="84">
                     <span class="unit">px</span>
                 </div>
                 
@@ -629,8 +635,13 @@
                     <span class="unit">px</span>
                 </div>
                 <div class="config-item">
-                    <label>Group offset:<span class="info-icon" data-tooltip="Moves the entire fruit group to different positions (top/bottom/left/right)">ℹ</span></label>
-                    <input type="number" id="pear_offset" min="0" max="200" step="5" value="84">
+                    <label>Group offset X:<span class="info-icon" data-tooltip="Moves the fruit group left/right when positioned on the sides">ℹ</span></label>
+                    <input type="number" id="pear_offsetX" min="0" max="200" step="5" value="84">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Group offset Y:<span class="info-icon" data-tooltip="Moves the fruit group up/down when positioned top or bottom">ℹ</span></label>
+                    <input type="number" id="pear_offsetY" min="0" max="200" step="5" value="84">
                     <span class="unit">px</span>
                 </div>
                 
@@ -646,8 +657,13 @@
                     <span class="unit">px</span>
                 </div>
                 <div class="config-item">
-                    <label>Group offset:<span class="info-icon" data-tooltip="Moves the entire fruit group to different positions (top/bottom/left/right)">ℹ</span></label>
-                    <input type="number" id="orange_offset" min="0" max="200" step="5" value="84">
+                    <label>Group offset X:<span class="info-icon" data-tooltip="Moves the fruit group left/right when positioned on the sides">ℹ</span></label>
+                    <input type="number" id="orange_offsetX" min="0" max="200" step="5" value="84">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Group offset Y:<span class="info-icon" data-tooltip="Moves the fruit group up/down when positioned top or bottom">ℹ</span></label>
+                    <input type="number" id="orange_offsetY" min="0" max="200" step="5" value="84">
                     <span class="unit">px</span>
                 </div>
                 
@@ -663,8 +679,13 @@
                     <span class="unit">px</span>
                 </div>
                 <div class="config-item">
-                    <label>Group offset:<span class="info-icon" data-tooltip="Moves the entire fruit group to different positions (top/bottom/left/right)">ℹ</span></label>
-                    <input type="number" id="banana_offset" min="0" max="200" step="5" value="84">
+                    <label>Group offset X:<span class="info-icon" data-tooltip="Moves the fruit group left/right when positioned on the sides">ℹ</span></label>
+                    <input type="number" id="banana_offsetX" min="0" max="200" step="5" value="84">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Group offset Y:<span class="info-icon" data-tooltip="Moves the fruit group up/down when positioned top or bottom">ℹ</span></label>
+                    <input type="number" id="banana_offsetY" min="0" max="200" step="5" value="84">
                     <span class="unit">px</span>
                 </div>
                 
@@ -680,8 +701,13 @@
                     <span class="unit">px</span>
                 </div>
                 <div class="config-item">
-                    <label>Group offset:<span class="info-icon" data-tooltip="Moves the entire fruit group to different positions (top/bottom/left/right)">ℹ</span></label>
-                    <input type="number" id="cherry_offset" min="0" max="200" step="5" value="84">
+                    <label>Group offset X:<span class="info-icon" data-tooltip="Moves the fruit group left/right when positioned on the sides">ℹ</span></label>
+                    <input type="number" id="cherry_offsetX" min="0" max="200" step="5" value="84">
+                    <span class="unit">px</span>
+                </div>
+                <div class="config-item">
+                    <label>Group offset Y:<span class="info-icon" data-tooltip="Moves the fruit group up/down when positioned top or bottom">ℹ</span></label>
+                    <input type="number" id="cherry_offsetY" min="0" max="200" step="5" value="84">
                     <span class="unit">px</span>
                 </div>
                 </div>
@@ -778,12 +804,19 @@
     </div>
 
     <script>
-        const canvas = document.getElementById('testCanvas');
-        const ctx = canvas.getContext('2d');
-        let currentTestType = 'number-vs-features';
+    const canvas = document.getElementById('testCanvas');
+    const ctx = canvas.getContext('2d');
+    let currentTestType = 'number-vs-features';
         
-        // Store current test state for redrawing with updated spacing
-        let currentTestState = null;
+    // Store current test state for redrawing with updated spacing
+    let currentTestState = null;
+
+    const SHAPE_TYPES = ['circle', 'square', 'triangle', 'rectangle', 'star'];
+    const FRUIT_TYPES = ['apple', 'pear', 'orange', 'banana', 'cherry'];
+    const COLOR_OPTIONS = ['#FF6B35', '#4ECDC4', '#FFD93D', '#A855F7', '#3B82F6', '#EF4444'];
+    const COUNT_OPTIONS = [2, 3, 4, 5, 6];
+    const SHAPE_PATTERN_TYPES = ['solid', 'horizontal-stripes', 'vertical-stripes', 'checkered', 'white-dots'];
+    const FRUIT_PATTERN_TYPES = ['horizontal-stripes', 'vertical-stripes', 'checkered', 'white-dots'];
 
         // Default spacing configuration - now per shape/fruit type
         const DEFAULT_CONFIG = {
@@ -795,11 +828,11 @@
                 star: { gapH: 60, gapV: 60, padding: 45 }
             },
             fruits: {
-                apple: { gapH: 77, gapV: 77, offset: 84 },
-                pear: { gapH: 77, gapV: 77, offset: 84 },
-                orange: { gapH: 70, gapV: 70, offset: 84 },
-                banana: { gapH: 90, gapV: 30, offset: 90 },
-                cherry: { gapH: 70, gapV: 50, offset: 84 }
+                apple: { gapH: 77, gapV: 77, offsetX: 84, offsetY: 84 },
+                pear: { gapH: 77, gapV: 77, offsetX: 84, offsetY: 84 },
+                orange: { gapH: 70, gapV: 70, offsetX: 84, offsetY: 84 },
+                banana: { gapH: 90, gapV: 30, offsetX: 90, offsetY: 90 },
+                cherry: { gapH: 70, gapV: 50, offsetX: 84, offsetY: 84 }
             },
             layoutMultipliers: {
                 '1x2': { gapH: 1.0, gapV: 1.0 },
@@ -814,8 +847,50 @@
             }
         };
 
-        // Current spacing configuration
-        let spacingConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+        const cloneDefaultConfig = () => JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+
+        let spacingConfig = cloneDefaultConfig();
+
+        function ensureFruitOffsetDefaults(fruitKey) {
+            const fruitConfig = spacingConfig.fruits[fruitKey];
+            if (!fruitConfig) return;
+            const defaultFruit = DEFAULT_CONFIG.fruits[fruitKey] || { offsetX: 0, offsetY: 0 };
+            const legacyOffset = typeof fruitConfig.offset === 'number' ? fruitConfig.offset : undefined;
+            if (typeof fruitConfig.offsetX !== 'number') {
+                fruitConfig.offsetX = typeof legacyOffset === 'number' ? legacyOffset : defaultFruit.offsetX;
+            }
+            if (typeof fruitConfig.offsetY !== 'number') {
+                fruitConfig.offsetY = typeof legacyOffset === 'number' ? legacyOffset : defaultFruit.offsetY;
+            }
+            delete fruitConfig.offset;
+        }
+
+        function applyConfigOverrides(overrides = {}) {
+            spacingConfig = cloneDefaultConfig();
+            if (overrides.shapes) {
+                Object.keys(overrides.shapes).forEach(shape => {
+                    if (spacingConfig.shapes[shape]) {
+                        Object.assign(spacingConfig.shapes[shape], overrides.shapes[shape]);
+                    }
+                });
+            }
+            if (overrides.fruits) {
+                Object.keys(overrides.fruits).forEach(fruit => {
+                    if (spacingConfig.fruits[fruit]) {
+                        Object.assign(spacingConfig.fruits[fruit], overrides.fruits[fruit]);
+                        ensureFruitOffsetDefaults(fruit);
+                    }
+                });
+            }
+            if (overrides.layoutMultipliers) {
+                Object.keys(overrides.layoutMultipliers).forEach(layout => {
+                    if (spacingConfig.layoutMultipliers[layout]) {
+                        Object.assign(spacingConfig.layoutMultipliers[layout], overrides.layoutMultipliers[layout]);
+                    }
+                });
+            }
+            Object.keys(spacingConfig.fruits).forEach(ensureFruitOffsetDefaults);
+        }
 
         // Load configuration from localStorage
         function loadConfig() {
@@ -823,35 +898,13 @@
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
-                    spacingConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
-                    // Deep merge for shapes
-                    if (parsed.shapes) {
-                        Object.keys(parsed.shapes).forEach(shape => {
-                            if (spacingConfig.shapes[shape]) {
-                                Object.assign(spacingConfig.shapes[shape], parsed.shapes[shape]);
-                            }
-                        });
-                    }
-                    // Deep merge for fruits
-                    if (parsed.fruits) {
-                        Object.keys(parsed.fruits).forEach(fruit => {
-                            if (spacingConfig.fruits[fruit]) {
-                                Object.assign(spacingConfig.fruits[fruit], parsed.fruits[fruit]);
-                            }
-                        });
-                    }
-                    // Deep merge for layout multipliers
-                    if (parsed.layoutMultipliers) {
-                        Object.keys(parsed.layoutMultipliers).forEach(layout => {
-                            if (spacingConfig.layoutMultipliers[layout]) {
-                                Object.assign(spacingConfig.layoutMultipliers[layout], parsed.layoutMultipliers[layout]);
-                            }
-                        });
-                    }
+                    applyConfigOverrides(parsed);
                 } catch (e) {
                     console.error('Failed to load config:', e);
-                    spacingConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+                    spacingConfig = cloneDefaultConfig();
                 }
+            } else {
+                spacingConfig = cloneDefaultConfig();
             }
             updateConfigInputs();
         }
@@ -872,11 +925,12 @@
             });
             
             // Update fruit configs
-            ['apple', 'pear', 'orange', 'banana', 'cherry'].forEach(fruit => {
+            FRUIT_TYPES.forEach(fruit => {
                 const config = spacingConfig.fruits[fruit];
                 document.getElementById(`${fruit}_gapH`).value = config.gapH;
                 document.getElementById(`${fruit}_gapV`).value = config.gapV;
-                document.getElementById(`${fruit}_offset`).value = config.offset;
+                document.getElementById(`${fruit}_offsetX`).value = config.offsetX;
+                document.getElementById(`${fruit}_offsetY`).value = config.offsetY;
             });
             
             // Update layout multiplier configs
@@ -905,11 +959,12 @@
             });
             
             // Read fruit configs
-            ['apple', 'pear', 'orange', 'banana', 'cherry'].forEach(fruit => {
+            FRUIT_TYPES.forEach(fruit => {
                 spacingConfig.fruits[fruit] = {
                     gapH: parseFloat(document.getElementById(`${fruit}_gapH`).value),
                     gapV: parseFloat(document.getElementById(`${fruit}_gapV`).value),
-                    offset: parseFloat(document.getElementById(`${fruit}_offset`).value)
+                    offsetX: parseFloat(document.getElementById(`${fruit}_offsetX`).value),
+                    offsetY: parseFloat(document.getElementById(`${fruit}_offsetY`).value)
                 };
             });
             
@@ -924,7 +979,7 @@
 
         // Reset configuration to defaults
         function resetConfig() {
-            spacingConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+            spacingConfig = cloneDefaultConfig();
             updateConfigInputs();
             saveConfig();
             generateTest();
@@ -954,7 +1009,7 @@
                     reader.onload = (event) => {
                         try {
                             const imported = JSON.parse(event.target.result);
-                            spacingConfig = { ...DEFAULT_CONFIG, ...imported };
+                            applyConfigOverrides(imported);
                             updateConfigInputs();
                             saveConfig();
                             generateTest();
@@ -1085,7 +1140,7 @@
             ctx.fill();
             
             // Apply pattern with proper clipping
-            if (pattern !== 'solid') {
+            if (pattern) {
                 ctx.save();
                 ctx.beginPath();
                 ctx.ellipse(0, size * 0.1, size * 0.4, size * 0.45, 0, 0, Math.PI * 2);
@@ -1137,7 +1192,7 @@
             ctx.fillStyle = baseColor;
             ctx.fill();
 
-            if (pattern !== 'solid') {
+            if (pattern) {
                 ctx.save();
                 tracePearBody();
                 ctx.clip();
@@ -1180,7 +1235,7 @@
             ctx.fill();
             
             // Apply pattern with proper clipping
-            if (pattern !== 'solid') {
+            if (pattern) {
                 ctx.save();
                 ctx.beginPath();
                 ctx.arc(0, 0, size * 0.45, 0, Math.PI * 2);
@@ -1195,20 +1250,16 @@
             ctx.arc(0, 0, size * 0.45, 0, Math.PI * 2);
             ctx.stroke();
             
-            // Texture dots - only show for solid pattern to maintain fruit identity
-            if (pattern === 'solid') {
-                ctx.fillStyle = '#CC7000';
-                // Fixed seed positions for consistency
-                const dotPositions = [
-                    [0.2, 0.1], [-0.15, 0.15], [0.1, -0.2], [-0.2, -0.1],
-                    [0.25, -0.05], [-0.1, -0.25], [0, 0.25], [-0.25, 0.05]
-                ];
-                dotPositions.forEach(([dx, dy]) => {
-                    ctx.beginPath();
-                    ctx.arc(dx * size, dy * size, size * 0.02, 0, Math.PI * 2);
-                    ctx.fill();
-                });
-            }
+            ctx.fillStyle = '#CC7000';
+            const dotPositions = [
+                [0.2, 0.1], [-0.15, 0.15], [0.1, -0.2], [-0.2, -0.1],
+                [0.25, -0.05], [-0.1, -0.25], [0, 0.25], [-0.25, 0.05]
+            ];
+            dotPositions.forEach(([dx, dy]) => {
+                ctx.beginPath();
+                ctx.arc(dx * size, dy * size, size * 0.02, 0, Math.PI * 2);
+                ctx.fill();
+            });
             
             ctx.restore();
         }
@@ -1232,7 +1283,7 @@
             ctx.fill();
             
             // Apply pattern with proper clipping
-            if (pattern !== 'solid') {
+            if (pattern) {
                 ctx.save();
                 ctx.beginPath();
                 ctx.moveTo(-size * 0.5, -size * 0.1);
@@ -1292,7 +1343,7 @@
     ctx.fillStyle = fruitColor;
     ctx.fill();
 
-    if (pattern !== 'solid') {
+    if (pattern) {
         ctx.save();
         ctx.beginPath();
         ctx.arc(0, 0, radius, 0, Math.PI * 2);
@@ -1336,50 +1387,51 @@
 }
 
 function applyPattern(pattern, size) {
-    if (pattern === 'solid') return;
-            if (pattern === 'solid') return;
-            
-            // Pattern uses white background for better contrast
-            // This creates white vs fruit color (e.g., white vs red for strawberry)
-            switch(pattern) {
-                case 'striped':
-                    // Thicker, less dense stripes with white color
-                    ctx.fillStyle = 'white';
-                    for(let i = -size; i < size; i += 20) {
-                        ctx.fillRect(i, -size, 10, size * 2);
-                    }
-                    break;
-                case 'dotted':
-                    // Bigger, more visible dots with white color
-                    ctx.fillStyle = 'white';
-                    for(let dx = -size/2; dx < size/2; dx += 18) {
-                        for(let dy = -size/2; dy < size/2; dy += 18) {
-                            ctx.beginPath();
-                            ctx.arc(dx, dy, 4, 0, Math.PI * 2);
-                            ctx.fill();
-                        }
-                    }
-                    break;
-                case 'grid':
-                    // Checkerboard pattern with white
-                    ctx.fillStyle = 'white';
-                    const squareSize = 12;
-                    for(let x = -size; x < size; x += squareSize) {
-                        for(let y = -size; y < size; y += squareSize) {
-                            // Checkerboard logic
-                            const col = Math.floor((x + size) / squareSize);
-                            const row = Math.floor((y + size) / squareSize);
-                            if ((col + row) % 2 === 0) {
-                                ctx.fillRect(x, y, squareSize, squareSize);
-                            }
-                        }
-                    }
-                    break;
+    if (!pattern || pattern === 'fullrandom' || pattern === 'solid') return;
+
+    // Pattern uses white strokes for high contrast on colored fill
+    switch(pattern) {
+        case 'horizontal-stripes':
+            ctx.fillStyle = 'white';
+            for (let y = -size; y < size * 2; y += 20) {
+                ctx.fillRect(-size * 2, y, size * 4, 8);
             }
-        }
+            break;
+        case 'vertical-stripes':
+            ctx.fillStyle = 'white';
+            for (let x = -size; x < size * 2; x += 20) {
+                ctx.fillRect(x, -size * 2, 8, size * 4);
+            }
+            break;
+        case 'white-dots':
+            ctx.fillStyle = 'white';
+            const dotSpacing = 18;
+            for (let dx = -size; dx < size; dx += dotSpacing) {
+                for (let dy = -size; dy < size; dy += dotSpacing) {
+                    ctx.beginPath();
+                    ctx.arc(dx, dy, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            break;
+        case 'checkered':
+            ctx.fillStyle = 'white';
+            const squareSize = 14;
+            for (let x = -size * 2; x < size * 2; x += squareSize) {
+                for (let y = -size * 2; y < size * 2; y += squareSize) {
+                    const col = Math.floor((x + size * 2) / squareSize);
+                    const row = Math.floor((y + size * 2) / squareSize);
+                    if ((col + row) % 2 === 0) {
+                        ctx.fillRect(x, y, squareSize, squareSize);
+                    }
+                }
+            }
+            break;
+    }
+}
 
         // Shape drawing functions
-        function drawShape(x, y, size, shape, color, pattern, rotation = 0) {
+    function drawShape(x, y, size, shape, color, pattern = null, rotation = 0) {
             ctx.save();
             ctx.translate(x, y);
             ctx.rotate(rotation);
@@ -1436,8 +1488,8 @@ function applyPattern(pattern, size) {
             ctx.fillStyle = color;
             ctx.fill();
             
-            // Apply pattern if not solid
-            if(pattern !== 'solid') {
+            // Apply pattern overlays (solid means fill only)
+            if(pattern && pattern !== 'fullrandom' && pattern !== 'solid') {
                 ctx.save();
                 ctx.clip();
                 applyPattern(pattern, size);
@@ -1571,6 +1623,26 @@ function applyPattern(pattern, size) {
                 }
             }
             
+            if (positions.length) {
+                const centerX = boxX + boxSize / 2;
+                const centerY = boxY + boxSize / 2;
+                let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+                positions.forEach(pos => {
+                    minX = Math.min(minX, pos.x - size / 2);
+                    maxX = Math.max(maxX, pos.x + size / 2);
+                    minY = Math.min(minY, pos.y - size / 2);
+                    maxY = Math.max(maxY, pos.y + size / 2);
+                });
+                const currentCenterX = (minX + maxX) / 2;
+                const currentCenterY = (minY + maxY) / 2;
+                const offsetX = centerX - currentCenterX;
+                const offsetY = centerY - currentCenterY;
+                positions.forEach(pos => {
+                    pos.x += offsetX;
+                    pos.y += offsetY;
+                });
+            }
+            
             return positions;
         }
         
@@ -1600,24 +1672,144 @@ function applyPattern(pattern, size) {
             return arr[Math.floor(Math.random() * arr.length)];
         }
 
+        function takeRandomValue(pool, fallbackCandidates) {
+            if (pool.length > 0) {
+                const index = Math.floor(Math.random() * pool.length);
+                return pool.splice(index, 1)[0];
+            }
+            if (fallbackCandidates && fallbackCandidates.length > 0) {
+                return randomChoice(fallbackCandidates);
+            }
+            return null;
+        }
+
+        function shuffleArray(arr) {
+            const copy = [...arr];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        function buildShapeChoices(targetShape, targetColor, targetCount, targetPattern) {
+            const otherShapes = SHAPE_TYPES.filter(shape => shape !== targetShape);
+            const otherColors = COLOR_OPTIONS.filter(color => color !== targetColor);
+            const otherCounts = COUNT_OPTIONS.filter(count => count !== targetCount);
+
+            const shapePool = [...otherShapes];
+            const colorPool = [...otherColors];
+            const countPool = [...otherCounts];
+
+            const choices = [];
+
+            choices.push({
+                role: 'color',
+                shape: takeRandomValue(shapePool, otherShapes),
+                color: targetColor,
+                count: takeRandomValue(countPool, otherCounts),
+                pattern: targetPattern
+            });
+
+            choices.push({
+                role: 'shape',
+                shape: targetShape,
+                color: takeRandomValue(colorPool, otherColors),
+                count: takeRandomValue(countPool, otherCounts),
+                pattern: targetPattern
+            });
+
+            choices.push({
+                role: 'count',
+                shape: takeRandomValue(shapePool, otherShapes),
+                color: takeRandomValue(colorPool, otherColors),
+                count: targetCount,
+                pattern: targetPattern
+            });
+
+            choices.push({
+                role: 'distractor',
+                shape: takeRandomValue(shapePool, otherShapes),
+                color: takeRandomValue(colorPool, otherColors),
+                count: takeRandomValue(countPool, otherCounts),
+                pattern: targetPattern
+            });
+
+            return shuffleArray(choices);
+        }
+
         function randomColor() {
-            const colors = ['#FF6B35', '#4ECDC4', '#FFD93D', '#A855F7', '#3B82F6', '#EF4444'];
-            return randomChoice(colors);
+            return randomChoice(COLOR_OPTIONS);
         }
 
         function randomShape() {
-            const shapes = ['circle', 'square', 'triangle', 'rectangle', 'star'];
-            return randomChoice(shapes);
+            return randomChoice(SHAPE_TYPES);
         }
 
         function randomPattern() {
-            const patterns = ['solid', 'striped', 'dotted', 'grid'];
-            return randomChoice(patterns);
+            return randomChoice(SHAPE_PATTERN_TYPES);
         }
 
         function randomFruit() {
-            const fruits = ['apple', 'pear', 'orange', 'banana', 'cherry'];
-            return randomChoice(fruits);
+            return randomChoice(FRUIT_TYPES);
+        }
+
+        function buildFruitChoices(targetFruit, targetPattern, targetCount) {
+            // Map "color" role to pattern-only match for fruits
+            const otherFruits = FRUIT_TYPES.filter(fruit => fruit !== targetFruit);
+            const otherCounts = COUNT_OPTIONS.filter(count => count !== targetCount);
+
+            const fruitPool = [...otherFruits];
+            const countPool = [...otherCounts];
+
+            // For pattern role, we need a distinct pattern from the target when not in fullrandom
+            const overlayPatterns = FRUIT_PATTERN_TYPES;
+            const otherPatterns = overlayPatterns.filter(p => p !== targetPattern);
+
+            const choices = [];
+
+            // 1. Color-equivalent role → pattern-only match
+            //    Same pattern as target, different fruit, different count
+            choices.push({
+                role: 'pattern',
+                fruit: takeRandomValue(fruitPool, otherFruits),
+                pattern: targetPattern,
+                count: takeRandomValue(countPool, otherCounts)
+            });
+
+            // 2. Shape-equivalent role → same fruit only
+            //    Same fruit type, different pattern and count
+            const shapeRolePattern = takeRandomValue(otherPatterns, overlayPatterns);
+            choices.push({
+                role: 'fruit',
+                fruit: targetFruit,
+                pattern: shapeRolePattern,
+                count: takeRandomValue(countPool, otherCounts)
+            });
+
+            // 3. Count role → same count only
+            //    Same count, different fruit and (if possible) different pattern
+            const countRoleFruit = takeRandomValue(fruitPool, otherFruits);
+            const countRolePattern = takeRandomValue(otherPatterns, overlayPatterns);
+            choices.push({
+                role: 'count',
+                fruit: countRoleFruit,
+                pattern: countRolePattern,
+                count: targetCount
+            });
+
+            // 4. Distractor → different in fruit, pattern, and count
+            const distractorFruit = takeRandomValue(fruitPool, otherFruits);
+            const distractorPattern = takeRandomValue(otherPatterns, overlayPatterns);
+            const distractorCount = takeRandomValue(countPool, otherCounts);
+            choices.push({
+                role: 'distractor',
+                fruit: distractorFruit,
+                pattern: distractorPattern,
+                count: distractorCount
+            });
+
+            return shuffleArray(choices);
         }
 
         function generateTest(redrawOnly = false) {
@@ -1657,68 +1849,10 @@ function applyPattern(pattern, size) {
                 const targetShape = document.getElementById('targetShape').value;
                 const targetColor = document.getElementById('targetColor').value;
 
-                // Generate choices
-                const choices = [];
-                const correctIndex = Math.floor(Math.random() * 4);
-                const usedCounts = new Set([targetCount]);
-                const usedColors = new Set([targetColor]);
-
-                for(let i = 0; i < 4; i++) {
-                    let choice;
-                    if(i === correctIndex) {
-                        // Correct answer - same count, different shape and color
-                        let choiceColor;
-                        let colorAttempts = 0;
-                        do {
-                            choiceColor = randomColor();
-                            colorAttempts++;
-                        } while(usedColors.has(choiceColor) && colorAttempts < 20);
-                        
-                        usedColors.add(choiceColor);
-                        
-                        choice = {
-                            count: targetCount,
-                            shape: randomShape(),
-                            color: choiceColor,
-                            pattern: targetPattern
-                        };
-                    } else {
-                        // Foil answers - different count (must be unique)
-                        let count;
-                        let attempts = 0;
-                        do {
-                            count = Math.floor(Math.random() * 5) + 2;
-                            attempts++;
-                            if (attempts > 20) {
-                                for (let c = 2; c <= 6; c++) {
-                                    if (!usedCounts.has(c)) {
-                                        count = c;
-                                        break;
-                                    }
-                                }
-                                break;
-                            }
-                        } while(usedCounts.has(count));
-                        
-                        usedCounts.add(count);
-                        
-                        let choiceColor;
-                        let colorAttempts = 0;
-                        do {
-                            choiceColor = randomColor();
-                            colorAttempts++;
-                        } while(usedColors.has(choiceColor) && colorAttempts < 20);
-                        
-                        usedColors.add(choiceColor);
-                        
-                        choice = {
-                            count: count,
-                            shape: randomShape(),
-                            color: choiceColor,
-                            pattern: targetPattern
-                        };
-                    }
-                    choices.push(choice);
+                const choices = buildShapeChoices(targetShape, targetColor, targetCount, targetPattern);
+                let correctIndex = choices.findIndex(choice => choice.role === 'shape');
+                if (correctIndex === -1) {
+                    correctIndex = 0;
                 }
 
                 // Draw target
@@ -1739,7 +1873,8 @@ function applyPattern(pattern, size) {
                     });
                 }
 
-                console.log(`Correct answer: ${correctIndex + 1}`);
+                console.log(`Same-shape option: ${correctIndex + 1}`);
+                console.log('Option roles:', choices.map((choice, idx) => `${idx + 1}: ${choice.role}`).join(', '));
                 
                 // Save test state for redrawing
                 currentTestState = {
@@ -1753,19 +1888,10 @@ function applyPattern(pattern, size) {
                 };
                 
             } else if (targetType === 'fruit') {
-                // Fruit-based logic with B2 positioning requirements
+                // Fruit-based logic with pattern/fruit/count/distractor roles
                 const targetFruit = document.getElementById('targetFruit').value;
-                const usedFruits = new Set([targetFruit]);
 
-                // Generate choices according to requirements:
-                // 1. Different fruit types for each choice
-                // 2. Pattern handling based on mode
-                // 3. One option with same count as target (correct answer)
-                // 4. Each choice's fruit group positioned at different locations (top, bottom, left, right)
-                
-                const choices = [];
-                const correctIndex = Math.floor(Math.random() * 4); // Correct answer has same count
-                const usedCounts = new Set([targetCount]);
+                // Positions for spatial manipulation
                 const positions = ['top', 'bottom', 'left', 'right'];
                 const targetGroupPosition = randomChoice(['top', 'bottom', 'left', 'right', 'center']);
                 // Shuffle positions array
@@ -1776,69 +1902,26 @@ function applyPattern(pattern, size) {
 
                 // Handle fullrandom pattern - ensure all 4 patterns appear
                 let targetPatternValue = targetPattern;
-                let choicePatterns = [];
-                
+                let choices;
+
                 if (targetPattern === 'fullrandom') {
-                    const allPatterns = ['solid', 'striped', 'dotted', 'grid'];
-                    // Shuffle patterns to randomize assignment
-                    const shuffledPatterns = [...allPatterns].sort(() => Math.random() - 0.5);
-                    // Target uses the first pattern
-                    targetPatternValue = shuffledPatterns[0];
-                    // Remaining unique patterns for other choices
-                    const remainingPatterns = shuffledPatterns.slice(1);
-                    const otherPatterns = remainingPatterns.sort(() => Math.random() - 0.5);
-                    // Ensure exactly one choice matches the target pattern
-                    const samePatternChoiceIndex = Math.floor(Math.random() * 4);
-                    choicePatterns = new Array(4);
-                    choicePatterns[samePatternChoiceIndex] = targetPatternValue;
-                    let otherIndex = 0;
-                    for (let i = 0; i < 4; i++) {
-                        if (i === samePatternChoiceIndex) continue;
-                        choicePatterns[i] = otherPatterns[otherIndex % otherPatterns.length];
-                        otherIndex++;
-                    }
+                    // In fullrandom, choose a concrete target pattern first
+                    targetPatternValue = randomChoice(FRUIT_PATTERN_TYPES);
+                    choices = buildFruitChoices(targetFruit, targetPatternValue, targetCount);
+                } else {
+                    // Fixed overlay pattern
+                    targetPatternValue = targetPattern;
+                    choices = buildFruitChoices(targetFruit, targetPatternValue, targetCount);
                 }
 
-                for(let i = 0; i < 4; i++) {
-                    // Get unique fruit type
-                    let fruit;
-                    let attempts = 0;
-                    do {
-                        fruit = randomFruit();
-                        attempts++;
-                    } while(usedFruits.has(fruit) && attempts < 20);
-                    usedFruits.add(fruit);
+                // Randomize which role is in which option slot and assign positions
+                choices = shuffleArray(choices).map((choice, idx) => ({
+                    ...choice,
+                    position: positions[idx]
+                }));
 
-                    let choice;
-                    const choicePattern = targetPattern === 'fullrandom' ? choicePatterns[i] : targetPattern;
-                    
-                    if(i === correctIndex) {
-                        // Correct answer - same count as target
-                        choice = {
-                            count: targetCount,
-                            fruit: fruit,
-                            pattern: choicePattern,
-                            position: positions[i]
-                        };
-                    } else {
-                        // Other options - different count
-                        let count;
-                        let countAttempts = 0;
-                        do {
-                            count = Math.floor(Math.random() * 5) + 2;
-                            countAttempts++;
-                        } while(usedCounts.has(count) && countAttempts < 20);
-                        usedCounts.add(count);
-                        
-                        choice = {
-                            count: count,
-                            fruit: fruit,
-                            pattern: choicePattern,
-                            position: positions[i]
-                        };
-                    }
-                    choices.push(choice);
-                }
+                // Identify the same-count role as the correct answer
+                const correctIndex = choices.findIndex(c => c.role === 'count');
 
                 // Arrange fruits in a compact group, then shift entire group based on position
                 const getPositionsForCount = (count, centerX, centerY, boxSize, groupPosition, fruitType) => {
@@ -1989,21 +2072,22 @@ function applyPattern(pattern, size) {
                     }
                     
                     // Now shift the ENTIRE group based on groupPosition
-                    const offset = fruitConfig.offset; // Configurable group offset
+                    const offsetX = typeof fruitConfig.offsetX === 'number' ? fruitConfig.offsetX : 0;
+                    const offsetY = typeof fruitConfig.offsetY === 'number' ? fruitConfig.offsetY : 0;
                     let groupOffsetX = 0, groupOffsetY = 0;
                     
                     switch(groupPosition) {
                         case 'top':
-                            groupOffsetY = -offset;
+                            groupOffsetY = -offsetY;
                             break;
                         case 'bottom':
-                            groupOffsetY = offset;
+                            groupOffsetY = offsetY;
                             break;
                         case 'left':
-                            groupOffsetX = -offset;
+                            groupOffsetX = -offsetX;
                             break;
                         case 'right':
-                            groupOffsetX = offset;
+                            groupOffsetX = offsetX;
                             break;
                         case 'center':
                         default:
@@ -2038,21 +2122,21 @@ function applyPattern(pattern, size) {
                     drawBox(x, boxY, boxSize, `${i + 1}`);
                     const centerX = x + boxSize / 2;
                     const centerY = boxY + boxSize / 2;
-                    
                     const fruitPositions = getPositionsForCount(choices[i].count, centerX, centerY, boxSize, choices[i].position, choices[i].fruit);
                     fruitPositions.forEach(pos => {
                         drawFruit(pos.x, pos.y, shapeSize, choices[i].fruit, choices[i].pattern, 'center');
                     });
                 }
 
-                console.log(`Correct answer: ${correctIndex + 1}`);
+                console.log(`Same-count option (fruit): ${correctIndex + 1}`);
+                console.log('Fruit option roles:', choices.map((choice, idx) => `${idx + 1}: ${choice.role}`).join(', '));
                 if (targetPattern === 'fullrandom') {
                     console.log(`Full Random Mode - Target: ${targetPatternValue}`);
                     console.log('Choice patterns:', choices.map((c, i) => `${i+1}: ${c.pattern}`).join(', '));
                 } else {
-                    console.log(`All fruits use pattern: ${targetPattern}`);
+                    console.log(`All fruits use pattern: ${targetPatternValue}`);
                 }
-                
+
                 // Save test state for redrawing
                 currentTestState = {
                     targetType: 'fruit',
@@ -2236,21 +2320,22 @@ function applyPattern(pattern, size) {
                     }
                     
                     // Now shift the ENTIRE group based on groupPosition
-                    const offset = fruitConfig.offset;
+                    const offsetX = typeof fruitConfig.offsetX === 'number' ? fruitConfig.offsetX : 0;
+                    const offsetY = typeof fruitConfig.offsetY === 'number' ? fruitConfig.offsetY : 0;
                     let groupOffsetX = 0, groupOffsetY = 0;
                     
                     switch(groupPosition) {
                         case 'top':
-                            groupOffsetY = -offset;
+                            groupOffsetY = -offsetY;
                             break;
                         case 'bottom':
-                            groupOffsetY = offset;
+                            groupOffsetY = offsetY;
                             break;
                         case 'left':
-                            groupOffsetX = -offset;
+                            groupOffsetX = -offsetX;
                             break;
                         case 'right':
-                            groupOffsetX = offset;
+                            groupOffsetX = offsetX;
                             break;
                         case 'center':
                         default:
@@ -2309,7 +2394,7 @@ function applyPattern(pattern, size) {
             const color = document.getElementById('targetColor').value;
             
             previewCtx.clearRect(0, 0, 35, 35);
-            drawShape(17.5, 17.5, 28, shape, color, 'solid', 0);
+            drawShape(17.5, 17.5, 28, shape, color, null, 0);
         }
 
         function updateColorPreview() {
@@ -2353,9 +2438,9 @@ function applyPattern(pattern, size) {
             
             previewCtx.clearRect(0, 0, 35, 35);
             
-            // For fullrandom, show solid as preview
+            // For fullrandom, show the first overlay as preview
             if (pattern === 'fullrandom') {
-                pattern = 'solid';
+                pattern = FRUIT_PATTERN_TYPES[0];
             }
             
             // Draw fruit directly with previewCtx
@@ -2371,6 +2456,7 @@ function applyPattern(pattern, size) {
             const fruitGroup = document.getElementById('fruitGroup');
             const colorGroup = document.getElementById('colorGroup');
             const fullrandomOption = document.getElementById('fullrandomOption');
+            const solidPatternOption = document.getElementById('solidPatternOption');
             const targetPattern = document.getElementById('targetPattern');
             
             if (targetType === 'shape') {
@@ -2378,16 +2464,20 @@ function applyPattern(pattern, size) {
                 fruitGroup.classList.add('hidden');
                 colorGroup.classList.remove('hidden');
                 fullrandomOption.classList.add('hidden');
+                solidPatternOption.classList.remove('hidden');
+                solidPatternOption.disabled = false;
                 // Reset to solid if it was fullrandom
                 if (targetPattern.value === 'fullrandom') {
                     targetPattern.value = 'solid';
-                    updatePatternPreview();
                 }
+                updatePatternPreview();
             } else {
                 shapeGroup.classList.add('hidden');
                 fruitGroup.classList.remove('hidden');
                 colorGroup.classList.add('hidden'); // Hide color for fruits
                 fullrandomOption.classList.remove('hidden');
+                solidPatternOption.classList.add('hidden');
+                solidPatternOption.disabled = true;
                 // Set default to fullrandom for fruits
                 targetPattern.value = 'fullrandom';
                 updatePatternPreview();

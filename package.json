@@ -1,0 +1,21 @@
+{
+  "name": "attention-to-number-test",
+  "version": "1.0.0",
+  "description": "A web-based stimulus generator for designing cognitive assessment materials that investigate the interplay between numerical attention (subitizing) and visual feature processing in human perception. The application produces standardized image stimuli for deployment in external experimental platforms; it does not administer participant-facing tasks or record behavioural data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/herman925/attention-to-number-test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/herman925/attention-to-number-test/issues"
+  },
+  "homepage": "https://github.com/herman925/attention-to-number-test#readme"
+}
