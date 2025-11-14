@@ -1754,7 +1754,7 @@ function applyPattern(pattern, size) {
             return randomChoice(FRUIT_TYPES);
         }
 
-        function buildFruitChoices(targetFruit, targetPattern, targetCount, targetGroupPosition) {
+    function buildFruitChoices(targetFruit, targetPattern, targetCount, targetGroupPosition, remainingPositions) {
             // Fruit roles with explicit constraints:
             // - pattern: same pattern only → same pattern, different fruit, different location, different count
             // - location: same location only → same location, different fruit, different count, different pattern
@@ -1767,24 +1767,32 @@ function applyPattern(pattern, size) {
             const overlayPatterns = FRUIT_PATTERN_TYPES;
             const otherPatterns = overlayPatterns.filter(p => p !== targetPattern);
 
-            const allPositions = ['top', 'bottom', 'left', 'right', 'center'];
-            const otherPositions = allPositions.filter(p => p !== targetGroupPosition);
+            // Fruit spatial locations: only use the four edge positions.
+            // We receive the three non-target positions for this trial and
+            // assign them one-to-one to pattern/count/distractor so that
+            // each trial uses all four locations exactly once.
+            const allPositions = ['top', 'bottom', 'left', 'right'];
+            const baseRemaining = Array.isArray(remainingPositions) && remainingPositions.length === 3
+                ? remainingPositions
+                : allPositions.filter(p => p !== targetGroupPosition);
+            const positionPool = [...baseRemaining];
 
             const otherFruits = FRUIT_TYPES.filter(fruit => fruit !== targetFruit);
             const fruitPool = [...otherFruits];
 
             const choices = [];
 
-            // 1. Pattern-only match
+            // 1. Pattern-only match: same pattern, different fruit/count/location
+            const patternLocation = takeRandomValue(positionPool, baseRemaining);
             choices.push({
                 role: 'pattern',
                 fruit: takeRandomValue(fruitPool, otherFruits),
                 pattern: targetPattern,
                 count: takeRandomValue(countPool, otherCounts),
-                location: takeRandomValue(otherPositions, allPositions)
+                location: patternLocation
             });
 
-            // 2. Location-only match
+            // 2. Location-only match: same location, different fruit/pattern/count
             const locationRolePattern = takeRandomValue(otherPatterns, overlayPatterns);
             choices.push({
                 role: 'location',
@@ -1794,9 +1802,9 @@ function applyPattern(pattern, size) {
                 location: targetGroupPosition
             });
 
-            // 3. Count-only match
+            // 3. Count-only match: same count, different fruit/pattern/location
             const countRolePattern = takeRandomValue(otherPatterns, overlayPatterns);
-            const countRoleLocation = takeRandomValue(otherPositions, allPositions);
+            const countRoleLocation = takeRandomValue(positionPool, baseRemaining);
             choices.push({
                 role: 'count',
                 fruit: takeRandomValue(fruitPool, otherFruits),
@@ -1808,7 +1816,7 @@ function applyPattern(pattern, size) {
             // 4. Full distractor: different fruit, pattern, location, and count
             const distractorPattern = takeRandomValue(otherPatterns, overlayPatterns);
             const distractorCount = takeRandomValue(countPool, otherCounts);
-            const distractorLocation = takeRandomValue(otherPositions, allPositions);
+            const distractorLocation = takeRandomValue(positionPool, baseRemaining);
             choices.push({
                 role: 'distractor',
                 fruit: takeRandomValue(fruitPool, otherFruits),
@@ -1899,9 +1907,10 @@ function applyPattern(pattern, size) {
                 // Fruit-based logic with pattern/location/count/distractor roles and explicit fruit constraints
                 const targetFruit = document.getElementById('targetFruit').value;
 
-                // Positions for spatial manipulation
-                const allPositions = ['top', 'bottom', 'left', 'right', 'center'];
+                // Positions for spatial manipulation (exclude center for fruit tests)
+                const allPositions = ['top', 'bottom', 'left', 'right'];
                 const targetGroupPosition = randomChoice(allPositions);
+                const remainingPositions = allPositions.filter(p => p !== targetGroupPosition);
 
                 // Handle fullrandom pattern - ensure all 4 patterns appear
                 let targetPatternValue = targetPattern;
@@ -1910,11 +1919,11 @@ function applyPattern(pattern, size) {
                 if (targetPattern === 'fullrandom') {
                     // In fullrandom, choose a concrete target pattern first
                     targetPatternValue = randomChoice(FRUIT_PATTERN_TYPES);
-                    choices = buildFruitChoices(targetFruit, targetPatternValue, targetCount, targetGroupPosition);
+                    choices = buildFruitChoices(targetFruit, targetPatternValue, targetCount, targetGroupPosition, remainingPositions);
                 } else {
                     // Fixed overlay pattern
                     targetPatternValue = targetPattern;
-                    choices = buildFruitChoices(targetFruit, targetPatternValue, targetCount, targetGroupPosition);
+                    choices = buildFruitChoices(targetFruit, targetPatternValue, targetCount, targetGroupPosition, remainingPositions);
                 }
 
                 // Identify the same-count role as the correct answer

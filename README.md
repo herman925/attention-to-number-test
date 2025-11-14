@@ -97,14 +97,14 @@ Tests using fruit imagery to examine ecological validity and pattern processing.
 
 **Choice Generation Rules (Four-Role Structure, with fruit, pattern, and location as key dimensions):**
 
-| Role                          | Fruit vs Target               | Pattern vs Target                    | Location vs Target                  | Count vs Target           |
-|-------------------------------|-------------------------------|--------------------------------------|-------------------------------------|---------------------------|
-| **Pattern-only foil**         | Different fruit               | **Same pattern**                     | Different spatial location          | Different count           |
-| **Location-only foil**        | Different fruit               | Different pattern                    | **Same spatial location**           | Different count           |
-| **Count-only option (correct)** | Different fruit             | Different pattern                    | Different spatial location          | **Same count**            |
-| **Full distractor**              | Different fruit               | Different pattern                    | Different spatial location          | Different count           |
+| Role                            | Fruit vs Target               | Pattern vs Target                    | Location vs Target                                  | Count vs Target           |
+|---------------------------------|-------------------------------|--------------------------------------|-----------------------------------------------------|---------------------------|
+| **Pattern-only foil**           | Different fruit               | **Same pattern**                     | Different spatial location (one of the other edges) | Different count           |
+| **Location-only foil**          | Different fruit               | Different pattern                    | **Same spatial location**                           | Different count           |
+| **Count-only option (correct)** | Different fruit               | Different pattern                    | Different spatial location (one of the other edges) | **Same count**            |
+| **Full distractor**             | Different fruit               | Different pattern                    | Different spatial location (one of the other edges) | Different count           |
 
-Here, "spatial location" refers to the group position within a choice box (top, bottom, left, right, or center), and "pattern" refers to the white-on-color overlay (horizontal stripes, vertical stripes, checkered, or white dots).
+Here, "spatial location" refers to the group position within a choice box (restricted to the four edge positions: top, bottom, left, right). For each generated fruit trial, **all four edge locations are used exactly once**: the target group and the location-only foil share one location, and the remaining three roles (pattern-only, count-only, full distractor) each occupy one of the other three edge locations. "Pattern" refers to the white-on-color overlay (horizontal stripes, vertical stripes, checkered, or white dots).
 
 **Spatial Arrangement Feature:**
 - Fruit groups can be positioned at different locations within boxes (top, bottom, left, right, center)
