@@ -8,9 +8,10 @@ A web-based stimulus generator for designing cognitive assessment materials that
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Academic Background](#academic-background)
+    - [Relation to Chan \& Mazzocco (2017)](#relation-to-chan--mazzocco-2017)
     - [Subitizing and Numerical Cognition](#subitizing-and-numerical-cognition)
     - [Theoretical Framework](#theoretical-framework)
-  - [Experiment Methodology](#experiment-methodology)
+  - [Methodology](#methodology)
     - [Test Structure](#test-structure)
     - [Experimental Conditions](#experimental-conditions)
       - [1. Shape-Based Tests](#1-shape-based-tests)
@@ -43,28 +44,46 @@ This application generates standardized visual stimulus sets designed to support
 
 ## Academic Background
 
+### Relation to Chan & Mazzocco (2017)
+
+The stimulus logic implemented in this generator is intentionally aligned with the picture-matching paradigm introduced by Chan and Mazzocco (2017), in which children view a target picture and must select which of several alternatives “goes with” the target. In their work, the critical question was whether children spontaneously attend to numerosity when other, often more salient, features such as object identity, size, or configuration provide competing bases for matching. The present tool adopts this logic while making the numerical rule fully explicit and programmable: for every generated trial, exactly one comparison array matches the target in object count, whereas the remaining foils selectively match only non-numerical attributes or differ on all controlled dimensions. This design enables direct examination of “competing features” in a Chan and Mazzocco–style task, while providing experimenters with fine-grained control over which features compete on each trial.
+
+Beyond this direct correspondence, the generator offers a flexible platform for extending Chan and Mazzocco’s findings. The inclusion of both abstract geometric shapes and more ecologically valid fruit stimuli within a common four-choice picture-matching framework allows systematic comparison of performance across stimulus classes while holding task structure constant. The capacity to parametrically manipulate the salience of non-numerical features—via colour, pattern, and spatial location—further enables precise tests of how strongly these attributes draw attention away from numerosity under different task demands, age ranges, or individual-difference profiles. Finally, because the tool outputs static images that can be embedded in diverse experimental environments, it supports cross-study and cross-laboratory replication efforts in which the core logic of the original paradigm is preserved but the specific visual realisation can be adapted, localised, or systematically diversified.
+
+Taken together, these features allow researchers to operationalise SFON—understood as spontaneous focus on number within tasks that do not explicitly require numerical processing—within a tightly controlled yet ecologically flexible picture-matching framework.
+
 ### Subitizing and Numerical Cognition
 
-Subitizing refers to the rapid, accurate, and confident enumeration of small quantities (typically 1-4 items) without conscious counting. This cognitive phenomenon has been extensively studied in cognitive psychology and neuroscience as a fundamental aspect of numerical cognition.
+Subitizing refers to the rapid, accurate, and confident apprehension of small numerosities (typically 1–4 items) without recourse to serial counting. Classic and contemporary work positions subitizing as a core component of human numerical cognition, supported by limited-capacity perceptual mechanisms that differ qualitatively from those involved in estimating larger sets (Feigenson et al., 2004; Kaufman et al., 1949; Trick & Pylyshyn, 1994). In this view, numerosity is not merely inferred from other stimulus properties (e.g., total area or density) but can function as a quasi-“primary” attribute of visual scenes, available to attention in much the same way as color, orientation, or motion (Anobile et al., 2016; Burr & Ross, 2008).
 
-Research on numerosity demonstrates that numerical quantity can function as a primary perceptual feature, similar to color or shape, reinforcing the need for stimuli that isolate number from other attributes (Anobile et al., 2016; Burr & Ross, 2008). Attentional manipulations further show that directing spatial or object-based attention to target arrays improves estimation accuracy and speed, indicating that well-crafted cues can amplify numerical sensitivity (Pomè et al., 2020). Structured configurations, including shape templates and grid-based layouts, have been linked to enhanced subitizing performance and distinctive neural signatures, underscoring the value of controlling spatial composition in experimental materials (Gheorghiu & Dering, 2020; Gheorghiu & Goldschmitt, 2022). Foundational picture-matching experiments also demonstrated that salient competing features can suppress children’s focus on numerosity unless those distractors are carefully managed, motivating the generator’s systematic feature controls (Chan & Mazzocco, 2017). In parallel, studies reveal that color diversity and other contextual variations can bias magnitude perception, necessitating deliberate management of feature contrasts when designing research stimuli (Li et al., 2018, 2025). Broader investigations highlight how spatial information transfers across sensory modalities and how individual differences shape numerosity attention, situating subitizing within a complex network of parallel processing and cross-modal integration mechanisms (Feigenson et al., 2004; Kaufman et al., 1949; Ziegler et al., 2023).
+At the same time, a large body of evidence shows that access to numerosity is constrained by how attention is deployed across space and objects. Studies manipulating spatial and object-based attention demonstrate that directing attention to target arrays can sharpen numerical estimates and reduce variability, whereas dividing attention or increasing perceptual load tends to impair performance (Pomè et al., 2020; Wolfe & Horowitz, 2004). Related work on structured configurations indicates that the spatial organisation of items—such as whether they conform to familiar geometric templates or grid-like layouts—modulates both behavioural subitizing performance and associated neural signatures (Gheorghiu & Dering, 2020; Gheorghiu & Goldschmitt, 2022). These findings motivate the use of carefully controlled spatial arrangements and feature contrasts when designing stimuli intended to probe “pure” numerical processing.
+
+Crucially, numerosity judgments unfold in the presence of multiple, potentially competing visual features. Foundational picture-matching experiments with children have shown that when several attributes (e.g., object identity, colour, size, or spatial arrangement) are simultaneously available, participants do not invariably prioritise number; instead, attention can be captured by highly salient non-numerical features, leading to systematic deviations from number-based matching (Chan & Mazzocco, 2017). This line of work has been developed under the construct of spontaneous focus on number (SFON), which denotes the tendency to attend to and use numerosity spontaneously in situations that do not explicitly demand numerical processing, and which varies across individuals, task demands, and display properties (Feigenson et al., 2004; Mazzocco et al., 2020).
+
+Contextual manipulations further reveal how low-level visual features can bias magnitude perception. For example, spatial dividers and grouping cues can facilitate counting and numerosity estimation by segmenting arrays into subgroups (Li et al., 2018; Ziegler et al., 2023), whereas increasing colour variety or other forms of feature heterogeneity can distort perceived numerosity or alter enumeration strategies (Li et al., 2025). Together, these findings situate subitizing and approximate number processing within a broader framework of attentionally mediated, feature-rich perception in which numerical information is continuously integrated—and sometimes competes—with other dimensions of the visual scene.
 
 ### Theoretical Framework
 
-The generator is structured to illuminate two interconnected mechanisms—rapid quantity discrimination and the integration of numerical and non-numerical features—by allowing researchers to manipulate which attributes align or conflict within a single stimulus. Target arrays can combine shape, fruit type, color, pattern, and quantity, while comparison arrays selectively vary these attributes to reveal whether participants prioritise number or are captured by competing visual features. Because correct responses emerge only when observers privilege numerosity over salient distractors, the resulting image sets offer a controlled platform for probing how attention, perceptual grouping, and feature-based competition interact during subitizing and related cognitive processes.
+The present generator is designed to operationalise these insights by offering a controlled yet flexible platform for constructing picture-matching stimuli in which numerical and non-numerical attributes can be systematically aligned or placed in conflict. Each trial presents a target array and four comparison arrays that vary along several dimensions: numerosity (object count), object identity (geometric shape or fruit type), surface colour (shape mode), texture or overlay pattern, and spatial location of object clusters within each box. By manipulating which features match the target and which features differ, researchers can induce situations in which the numerically correct choice is also the most visually distinctive, or conversely, in which numerosity is pitted against salient competing features.
 
-## Experiment Methodology
+In the shape-based condition, the correct alternative is defined solely by matching the target’s numerosity while differing in both shape and colour, whereas the remaining foils selectively share colour, share shape, or differ on all three dimensions. In the fruit-based condition, the design extends this logic by treating the spatial location of clustered fruits within each box, and their overlay pattern, as additional feature dimensions. The four comparison options are constructed so that exactly one matches the target in numerosity alone, one shares only the spatial location, one shares only the pattern, and one is a full distractor differing on all controlled dimensions. Across trials, all four edge locations (top, bottom, left, right) are used in a fully specified manner, mirroring the emphasis in the literature on spatial attention, grouping, and the salience of competing features (Chan & Mazzocco, 2017; Gheorghiu & Goldschmitt, 2022; Li et al., 2018; Pomè et al., 2020).
+
+Conceptually, this architecture aligns with SFON-inspired picture-matching paradigms (Chan & Mazzocco, 2017; Mazzocco et al., 2020) in which participants view a target picture and must identify which of several alternatives “goes with” or “is the same as” the target. Here, however, the mapping rule is explicitly numerical: exactly one option matches the target count, whereas the others instantiate distinct combinations of non-numerical similarity. This enables fine-grained analyses of error patterns—such as preferential selection of colour-only, pattern-only, or location-only foils—as behavioural indicators of which features dominate attention under different conditions, ages, or individual-difference profiles. By embedding these manipulations in a transparent, configurable image generator, the tool is intended to support rigorous experimental tests of how, when, and for whom numerosity functions as an attended dimension in complex, feature-rich visual environments.
+
+## Methodology
 
 ### Test Structure
 
-Each generated test follows a consistent structure:
+In line with SFON-inspired picture-matching paradigms (Chan & Mazzocco, 2017; Mazzocco et al., 2020), each generated test instance presents a single target array alongside four comparison arrays within a fixed spatial layout (see Figure 1):
 
 ```
 [Target Box] [Choice 1] [Choice 2] [Choice 3] [Choice 4]
 ```
 
-- **Target Box (目标)**: Displays the reference stimulus with a specific number of objects
-- **Four Choice Boxes**: Present alternative options, where exactly ONE matches the target's numerical quantity
+- **Target Box (目标)**: Displays the reference stimulus with a specific number of objects and a particular feature configuration (shape or fruit type, colour or overlay pattern, and spatial layout).
+- **Four Choice Boxes**: Present alternative options, exactly ONE of which matches the target's numerical quantity; the remaining options are structured foils that share only one feature dimension (e.g., colour, shape, pattern, or spatial location) or differ from the target on all controlled dimensions.
+
+This design preserves the intuitive “which picture goes with the target?” format familiar from child-friendly SFON tasks while making the numerical decision rule transparent and programmable. Because the correct answer is always the unique numerosity match, selection of a non-numerical foil can be interpreted as evidence that a competing feature, rather than number, dominated attention on that trial. In a full APA-style manuscript, the canonical layout illustrated above would typically be presented as **Figure 1** (stimulus configuration for the attention-to-number task).
 
 ### Experimental Conditions
 
@@ -76,6 +95,9 @@ Tests using geometric shapes to investigate number vs. shape/color attention.
 - **Target Color**: Six distinct colors (orange, teal, yellow, purple, blue, red)
 - **Target Pattern**: Solid fill, horizontal stripes, vertical stripes, checkered, or white dots
 - **Target Count**: 2-6 objects
+
+**Table 1**
+Feature structure of shape-based comparison options
 
 **Choice Generation Rules (Four-Role Structure):**
 - **Color-only foil**: Shares the target color but uses a different shape and a different count
@@ -94,6 +116,9 @@ Tests using fruit imagery to examine ecological validity and pattern processing.
 - **Target Fruit**: Apple, pear, orange, banana, or cherry
 - **Target Pattern**: Horizontal stripes, vertical stripes, checkered, white dots, or "Full Random"
 - **Target Count**: 2-6 objects
+
+**Table 2**
+Feature structure of fruit-based comparison options
 
 **Choice Generation Rules (Four-Role Structure, with fruit, pattern, and location as key dimensions):**
 
@@ -229,32 +254,35 @@ The generator provides an intuitive interface with real-time preview:
 
 ## Research Applications
 
-This stimulus generator supports investigations of:
+This stimulus generator is designed to support a broad range of basic and applied investigations at the interface of numerical cognition, attention, and visual feature processing:
 
-1. **Development of Numerical Cognition**
-   - Test children at different ages to track subitizing development
-   - Compare performance across different age groups
+1. **SFON and Chan & Mazzocco–Style Attention-to-Number Tasks**
+   - Implement picture-matching paradigms in which numerosity competes with object identity, colour, pattern, or spatial location as a basis for matching (Chan & Mazzocco, 2017).
+   - Use structured foils (colour-only, shape-only, pattern-only, location-only, full distractors) to quantify spontaneous attention to number and competing-feature salience in children and adults (Mazzocco et al., 2020).
 
-2. **Individual Differences**
-   - Examine whether some individuals have stronger number vs. feature attention
-   - Correlate with other cognitive measures (working memory, math ability)
-   - Leverage task contexts to study variability in spontaneous numerosity focus across populations (Mazzocco et al., 2020)
+2. **Development of Numerical Cognition**
+   - Test children at different ages to track subitizing development and approximate number processing.
+   - Compare performance across age groups and educational contexts while holding visual structure constant.
 
-3. **Perceptual Load Effects**
-   - Manipulate visual complexity through pattern variations.
-   - Study how increased perceptual load affects numerical processing, including color-driven biases and grouping effects (Li et al., 2018; Li et al., 2025).
+3. **Individual Differences**
+   - Examine whether some individuals show stronger number- versus feature-based attention, as reflected in systematic error patterns across foil types.
+   - Correlate attention-to-number indices with other cognitive measures (e.g., working memory, arithmetic ability, domain-general executive functions).
 
-4. **Cross-Cultural Studies**
-   - Test whether numerical attention patterns are universal or culturally influenced
-   - Use shape vs. fruit conditions to examine familiarity effects
+4. **Perceptual Load and Feature-Salience Effects**
+   - Manipulate visual complexity through pattern overlays, colour variety, and spatial groupings.
+   - Study how increased perceptual load and feature heterogeneity affect numerical processing, including colour-driven biases and grouping effects (Li et al., 2018; Li et al., 2025; Ziegler et al., 2023).
 
-5. **Clinical Populations**
-   - Assess numerical cognition in dyscalculia, ADHD, autism spectrum disorder
-   - Compare numerical attention patterns to neurotypical controls
+5. **Cross-Cultural and Ecological Validity Studies**
+   - Test whether numerical attention patterns are universal or culturally influenced across diverse samples.
+   - Contrast abstract shape-based stimuli with more ecologically valid fruit-based stimuli to examine familiarity effects and generalisability of SFON-related findings.
 
-6. **Neuroimaging Research**
-   - Use as stimulus material in fMRI or EEG studies
-   - Identify neural correlates of numerical vs. feature attention while maintaining precise control over spatial context (Gheorghiu & Dering, 2020; Pomè et al., 2020).
+6. **Clinical and Educational Applications**
+   - Assess numerical cognition and attention to number in developmental disorders (e.g., dyscalculia, ADHD, autism spectrum disorder) relative to neurotypical controls.
+   - Design targeted screening or intervention materials that manipulate competing-feature salience while preserving a clear numerical rule.
+
+7. **Neuroimaging and Psychophysiological Research**
+   - Use the images as stimulus material in fMRI, EEG, or other psychophysiological paradigms.
+   - Identify neural correlates of numerical versus feature-based attention while maintaining precise control over spatial layout, numerosity, and feature competition (Gheorghiu & Dering, 2020; Pomè et al., 2020).
 
 ## Technical Specifications
 
@@ -278,15 +306,19 @@ This stimulus generator supports investigations of:
 
 ### Why This Test Design?
 
-The experimental paradigm implemented here addresses several methodological challenges in numerical cognition research:
+The experimental paradigm implemented here is intended as a configurable, picture-matching framework that makes the mapping rule explicitly numerical while preserving the ecological and attentional richness highlighted in the literature. Conceptually, it sits at the intersection of research on subitizing and approximate number processing (Anobile et al., 2016; Burr & Ross, 2008; Feigenson et al., 2004), on the guidance of visual attention by multiple competing attributes (Wolfe & Horowitz, 2004), and on spontaneous attention to number in SFON-style tasks (Chan & Mazzocco, 2017; Mazzocco et al., 2020).
 
-1. **Feature Conflict**: By making the correct choice differ in salient features (shape, color) while matching in number, we create a situation where number must be explicitly attended to
+Several design choices are motivated directly by these considerations:
 
-2. **Unique Foils**: Ensuring all choices have unique counts prevents confusion and makes the numerical discrimination task clearer
+1. **Feature Conflict and SFON**: By construction, exactly one comparison array matches the target in numerosity, whereas other arrays share only colour, only shape, only pattern, only spatial location, or differ on all controlled dimensions. This creates scenarios in which a visually salient non-numerical match competes with the numerically correct alternative, closely mirroring the “competing features” logic in picture-matching studies of attention to number (Chan & Mazzocco, 2017). Error patterns thus provide a window into which features participants prioritise when numerical and non-numerical similarity are dissociated.
 
-3. **Varied Arrangements**: Spatial arrangement variations prevent participants from using position or configuration as a cue (must truly enumerate) and enable controlled investigations of grouping effects on perceived numerosity (Gheorghiu & Goldschmitt, 2022; Li et al., 2018).
+2. **Unique Foils and Diagnosticity**: Ensuring that all comparison choices have unique counts, and that the correct answer is the only option matching the target numerosity, reduces ambiguity in both participant experience and data interpretation. When a non-numerical foil is chosen, the associated role (e.g., colour-only, pattern-only, or location-only) can be interpreted as an index of feature-driven attention rather than as a by-product of poorly discriminated numerical differences.
 
-4. **Pattern Variation**: Pattern overlays add complexity without changing object identity, allowing study of how texture/pattern affects enumeration
+3. **Controlled Spatial Arrangements**: Systematic manipulation of spatial layout—including cluster position within each box and grid-like arrangements of items—prevents participants from relying on trivial positional cues while enabling targeted tests of grouping, segmentation, and attention allocation (Gheorghiu & Goldschmitt, 2022; Li et al., 2018; Ziegler et al., 2023). In the fruit-based condition, the constraint that all four edge locations (top, bottom, left, right) are used exactly once per trial enforces a clean spatial counterbalancing that is rarely achievable in hand-crafted stimuli.
+
+4. **Pattern and Texture Variation**: Overlay patterns increase visual complexity without changing object identity, permitting manipulation of perceptual load and texture-based salience while holding numerosity constant. This supports investigations into how additional feature variation (e.g., colour and pattern heterogeneity) influences perceived numerosity and enumeration strategies (Li et al., 2018, 2025).
+
+Collectively, these features are intended to make the generated image sets suitable for both basic and applied work: from testing theoretical claims about the status of numerosity as a perceptual attribute, to evaluating individual differences in SFON, to designing translational tasks for educational or clinical contexts. Because the generator exposes all task parameters transparently and produces exportable images, it can be integrated into diverse methodological pipelines (behavioural, neuroimaging, or cross-cultural) while maintaining strong control over the visual and numerical properties that drive performance.
 
 ### Limitations and Considerations
 
@@ -346,7 +378,7 @@ Contributions are welcome! Potential areas for enhancement:
 
 ## Contact
 
-For questions, suggestions, or collaboration opportunities, please open an issue on the GitHub repository.
+For questions, suggestions, or collaboration opportunities, please open an issue on the GitHub repository or email me at
 
 ---
 
