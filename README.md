@@ -95,12 +95,16 @@ Tests using fruit imagery to examine ecological validity and pattern processing.
 - **Target Pattern**: Horizontal stripes, vertical stripes, checkered, white dots, or "Full Random"
 - **Target Count**: 2-6 objects
 
-**Choice Generation Rules (Four-Role Structure, with pattern as the "color" dimension):**
-- **Pattern-only foil**: Shares the target’s overlay pattern (e.g., horizontal stripes) but uses a different fruit type and a different count
-- **Fruit-only foil**: Shares the target fruit type (e.g., apple) but uses a different overlay pattern and a different count
-- **Count-only option (correct answer)**: Shares the target count but uses a different fruit type and typically a different overlay pattern
-- **Full distractor**: Differs from the target in fruit type, overlay pattern, and count
-- Each choice uses a unique fruit type and a unique count to maximize diagnostic clarity
+**Choice Generation Rules (Four-Role Structure, with fruit, pattern, and location as key dimensions):**
+
+| Role                          | Fruit vs Target               | Pattern vs Target                    | Location vs Target                  | Count vs Target           |
+|-------------------------------|-------------------------------|--------------------------------------|-------------------------------------|---------------------------|
+| **Pattern-only foil**         | Different fruit               | **Same pattern**                     | Different spatial location          | Different count           |
+| **Location-only foil**        | Different fruit               | Different pattern                    | **Same spatial location**           | Different count           |
+| **Count-only option (correct)** | Different fruit             | Different pattern                    | Different spatial location          | **Same count**            |
+| **Full distractor (same fruit)** | **Same fruit**            | Different pattern                    | Different spatial location          | Different count           |
+
+Here, "spatial location" refers to the group position within a choice box (top, bottom, left, right, or center), and "pattern" refers to the white-on-color overlay (horizontal stripes, vertical stripes, checkered, or white dots).
 
 **Spatial Arrangement Feature:**
 - Fruit groups can be positioned at different locations within boxes (top, bottom, left, right, center)
@@ -108,8 +112,8 @@ Tests using fruit imagery to examine ecological validity and pattern processing.
 - This adds spatial attention as an additional dimension
 
 **Pattern Modes:**
-- **Fixed Pattern**: All fruit stimuli in a given test use the same selected white-on-color overlay (horizontal stripes, vertical stripes, checkered, or white dots) for the target, and the four comparison choices are then constructed according to the four-role rule above (pattern-only, fruit-only, count-only, distractor).
-- **Full Random**: The target uses a single concrete overlay pattern drawn from the four-pattern pool, and the four comparison choices are again constructed according to the four-role rule, with their overlays sampled from the same pool. This mode tests pattern discrimination alongside numerical attention and prevents color-driven numerosity biases observed in high-variety displays (Li et al., 2025).
+- **Fixed Pattern**: The target uses the selected white-on-color overlay (horizontal stripes, vertical stripes, checkered, or white dots), and the four comparison choices are constructed according to the pattern/location/count/distractor rule above while sampling only from that fixed overlay for the target and alternative overlays for foils.
+- **Full Random**: The target is assigned a single concrete overlay pattern drawn from the four-pattern pool, and the four comparison choices are again constructed according to the same four-role rule, with their overlays sampled from the same pool. This mode tests pattern discrimination and spatial attention alongside numerical attention and prevents color-driven numerosity biases observed in high-variety displays (Li et al., 2025).
 
 **Cognitive Focus**: Fruit stimuli provide more ecologically valid, real-world objects, allowing investigation of whether numerical processing differs for familiar vs. abstract objects. The condition also enables examination of how individual differences in spontaneous attention to numerosity manifest across task contexts (Mazzocco et al., 2020) and how spatial organisation or cross-modal cues influence enumeration strategies (Li et al., 2018; Ziegler et al., 2023).
 
